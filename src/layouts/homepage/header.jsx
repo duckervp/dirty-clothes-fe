@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -38,7 +39,7 @@ export default function Header({ onOpenNav }) {
 
       <Searchbar />
 
-      <Box sx={{ color: 'black', fontFamily: 'Audiowide', fontWeight: 'bold', m: 3 }}>
+      <Box component={Link} sx={{ color: 'black', fontFamily: 'Audiowide', fontWeight: 'bold', m: 3, textDecoration: "none" }} to="/">
         DIRTY CLOTHES
       </Box>
 

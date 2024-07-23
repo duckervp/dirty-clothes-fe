@@ -4,7 +4,9 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 import HomepageLayout from 'src/layouts/homepage';
 import DashboardLayout from 'src/layouts/dashboard';
 
-export const HomeView = lazy(() => import('src/pages/home'));
+export const HomePage = lazy(() => import('src/pages/home'));
+export const CartPage = lazy(() => import('src/pages/cart'));
+export const ProductDetailPage = lazy(() => import('src/pages/product-detail'));
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
 export const UserPage = lazy(() => import('src/pages/user'));
@@ -23,7 +25,9 @@ export default function Router() {
           </Suspense>
       ),
       children: [
-        { element: <HomepageLayout><HomeView /></HomepageLayout>, index: true },
+        { element: <HomepageLayout><HomePage /></HomepageLayout>, index: true },
+        { path: ':slug', element: <HomepageLayout><ProductDetailPage /></HomepageLayout>},
+        { path: '/cart', element: <HomepageLayout><CartPage /></HomepageLayout>},
         { path: 'admin', element: <DashboardLayout><IndexPage /></DashboardLayout> },
         { path: 'admin/user', element: <DashboardLayout><UserPage /></DashboardLayout> },
         { path: 'admin/products', element: <DashboardLayout><ProductsPage /></DashboardLayout> },

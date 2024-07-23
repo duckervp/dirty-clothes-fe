@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+
+import Box from '@mui/material/Box';
 import Badge from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
 
@@ -29,9 +32,11 @@ const StyledRoot = styled('div')(({ theme }) => ({
 export default function CartWidget() {
   return (
     <StyledRoot>
-      <Badge showZero badgeContent={0} color="error" max={99}>
-        <Iconify icon="eva:shopping-cart-fill" width={24} height={24} />
-      </Badge>
+      <Box component={Link} to="/cart" sx={{textDecoration: "none", color: "black"}}>
+        <Badge showZero badgeContent={0} color="error" max={99}>
+          <Iconify icon="eva:shopping-cart-fill" width={24} height={24} />
+        </Badge>
+      </Box>
     </StyledRoot>
   );
 }
