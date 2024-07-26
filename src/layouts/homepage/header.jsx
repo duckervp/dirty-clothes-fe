@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -15,6 +14,7 @@ import { bgBlur } from 'src/theme/css';
 
 import Iconify from 'src/components/iconify';
 
+import Logo from './logo';
 import CartWidget from './cart-widget';
 import headerNavConfig from './header-nav-config';
 import { HEADER } from '../dashboard/config-layout';
@@ -39,9 +39,7 @@ export default function Header({ onOpenNav }) {
 
       <Searchbar />
 
-      <Box component={Link} sx={{ color: 'black', fontFamily: 'Audiowide', fontWeight: 'bold', m: 3, textDecoration: "none" }} to="/">
-        DIRTY CLOTHES
-      </Box>
+      <Logo />
 
       <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
         {headerNavConfig.map((item) => (

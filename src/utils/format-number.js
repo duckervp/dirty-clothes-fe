@@ -35,3 +35,7 @@ function result(format, key = '.00') {
 
   return isInteger ? format.replace(key, '') : format;
 }
+
+export function numberWithCommas(x) {
+  return `${x}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}

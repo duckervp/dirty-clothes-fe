@@ -16,7 +16,7 @@ import store_branchs from './config-store-branches';
 export default function Footer() {
   const renderContent = (
     <Box sx={{ px: { lg: 5 }, pt: 3, pb: 5, background: (theme) => theme.palette.grey[200] }}>
-      <Stack direction="row" justifyContent="space-around">
+      <Stack direction="row" justifyContent="space-around" flexWrap="wrap">
         <Box>
           <Box sx={{ color: 'black', fontWeight: 'bold' }}>Dirty Clothes Branches</Box>
           <Box sx={{ ml: 2 }}>

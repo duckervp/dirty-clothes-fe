@@ -1,15 +1,16 @@
 import HelmetPro from 'src/layouts/common/helmet';
 
-import { LoginView } from 'src/sections/login';
+import { PaymentView } from 'src/sections/payment/view';
+
 
 // ----------------------------------------------------------------------
 
-export default function LoginPage() {
+export default function PaymentPage() {
   return (
     <>
-      <HelmetPro page="Login" />
+      <HelmetPro page="Payment" />
 
-      <LoginView />
+      <PaymentView />
     </>
   );
 }

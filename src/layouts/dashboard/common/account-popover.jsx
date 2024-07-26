@@ -74,13 +74,15 @@ export default function AccountPopover() {
         onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 0,
-            mt: 1,
-            ml: 0.75,
-            width: 200,
-          },
+        slotProps={{
+          paper: {
+            sx: {
+              p: 0,
+              mt: 1,
+              ml: 0.75,
+              width: 200,
+            },
+          }
         }}
       >
         <Box sx={{ my: 1.5, px: 2 }}>

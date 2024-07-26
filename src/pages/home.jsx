@@ -1,15 +1,13 @@
-import { Helmet } from 'react-helmet-async';
+import HelmetPro from 'src/layouts/common/helmet';
 
 import { HomeView } from 'src/sections/home/view';
 
 // ----------------------------------------------------------------------
 
-export default function AppPage() {
+export default function HomePage() {
   return (
     <>
-      <Helmet>
-        <title> Dirty Clothes </title>
-      </Helmet>
+      <HelmetPro page="Home" />
 
       <HomeView />
     </>

@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async';
+import HelmetPro from 'src/layouts/common/helmet';
 
 import { ProductsView } from 'src/sections/products/view';
 
@@ -7,9 +7,7 @@ import { ProductsView } from 'src/sections/products/view';
 export default function ProductsPage() {
   return (
     <>
-      <Helmet>
-        <title> Products | Minimal UI </title>
-      </Helmet>
+      <HelmetPro page="Products" />
 
       <ProductsView />
     </>

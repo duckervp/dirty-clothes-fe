@@ -1,15 +1,13 @@
-import { Helmet } from 'react-helmet-async';
+import HelmetPro from 'src/layouts/common/helmet';
 
 import CartView from 'src/sections/cart/view/cart-view';
 
 // ----------------------------------------------------------------------
 
-export default function AppPage() {
+export default function CartPage() {
   return (
     <>
-      <Helmet>
-        <title> Dirty Clothes </title>
-      </Helmet>
+      <HelmetPro page="Cart" />
 
       <CartView />
     </>

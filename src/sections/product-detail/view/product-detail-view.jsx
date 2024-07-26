@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
+import { numberWithCommas } from 'src/utils/format-number';
+
 // import Stack from '@mui/material/Stack';
 
 const images = [
@@ -86,7 +88,7 @@ const images = [
 const colors = ['Red', 'Hot Pink', 'Green'];
 const sizes = ['Size S', 'Size M', 'Size L', 'Size XXL'];
 
-function ToggleButtons({data}) {
+function ToggleButtons({ data }) {
   const [view, setView] = useState('list');
 
   const handleChange = (event, nextView) => {
@@ -94,31 +96,31 @@ function ToggleButtons({data}) {
   };
 
   return (
-      <ToggleButtonGroup
-        orientation="horizontal"
-        value={view}
-        exclusive
-        onChange={handleChange}
-      >
-        <Box sx={{display: 'flex', flexWrap: "wrap"}}>
-          {data.map((item) => (
-              <ToggleButton
-                key={item}
-                value={item}
-                aria-label={item}
-                style={{ border: '1px solid rgba(145, 158, 171, 0.2)', borderRadius: 0, width: 80, padding: "5px 8px"}}
-                sx={{m: .5, fontWeight: 100}}
-              >
-                {item}
-              </ToggleButton>
-          ))}
-        </Box>
-      </ToggleButtonGroup>
+    <ToggleButtonGroup orientation="horizontal" value={view} exclusive onChange={handleChange}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+        {data.map((item) => (
+          <ToggleButton
+            key={item}
+            value={item}
+            aria-label={item}
+            style={{
+              border: '1px solid rgba(145, 158, 171, 0.2)',
+              borderRadius: 0,
+              width: 80,
+              padding: '5px 8px',
+            }}
+            sx={{ m: 0.5, fontWeight: 100 }}
+          >
+            {item}
+          </ToggleButton>
+        ))}
+      </Box>
+    </ToggleButtonGroup>
   );
 }
 
 ToggleButtons.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.string)
+  data: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default function ProductDetail() {
@@ -137,8 +139,10 @@ export default function ProductDetail() {
           <Typography variant="h4" textAlign="center" fontWeight={500} marginBottom={0.5}>
             Product name very very long long long long
           </Typography>
-          <Typography textAlign="center" marginBottom={0.5} variant='body1'>900.000VND</Typography>
-          
+          <Typography textAlign="center" marginBottom={0.5} variant="body1">
+            {numberWithCommas(900000)} VND
+          </Typography>
+
           <Box marginBottom={1}>
             <ToggleButtons data={colors} />
           </Box>
@@ -146,11 +150,28 @@ export default function ProductDetail() {
             <ToggleButtons data={sizes} />
           </Box>
 
-          <Button variant="outlined" fullWidth sx={{borderRadius: "5px", mb: 1.5 }}>ADD TO CART</Button>
-          <Button variant="contained" fullWidth sx={{borderRadius: "5px"}} >BUY NOW</Button>
-          
-          <Box sx={{mt: 2}}>
-            <Typography sx={{fontWeight: "bold"}}>Description</Typography>
+          <Button
+            variant="outlined"
+            fullWidth
+            sx={{ borderRadius: '5px', mb: 1.5 }}
+            color="inherit"
+          >
+            ADD TO CART
+          </Button>
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{
+              borderRadius: '5px',
+              background: 'black',
+              '&:hover': { backgroundColor: '#31363F' },
+            }}
+          >
+            BUY NOW
+          </Button>
+
+          <Box sx={{ mt: 2 }}>
+            <Typography sx={{ fontWeight: 'bold' }}>Description</Typography>
             Detail Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa cumque atque culpa,
             amet, a corrupti reprehenderit quia non ad sit sequi beatae, aliquam ratione eaque sed.
             Ullam dolorum odio excepturi. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
@@ -161,7 +182,7 @@ export default function ProductDetail() {
       </Grid>
 
       <Box>
-        <Typography variant='h5'>Other products</Typography>
+        <Typography variant="h5">Other products</Typography>
       </Box>
     </Container>
   );
