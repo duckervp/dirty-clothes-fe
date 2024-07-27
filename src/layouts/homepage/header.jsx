@@ -16,11 +16,11 @@ import Iconify from 'src/components/iconify';
 
 import Logo from './logo';
 import CartWidget from './cart-widget';
+import Searchbar from '../common/searchbar';
 import headerNavConfig from './header-nav-config';
 import { HEADER } from '../dashboard/config-layout';
-import Searchbar from '../dashboard/common/searchbar';
-import AccountPopover from '../dashboard/common/account-popover';
-import LanguagePopover from '../dashboard/common/language-popover';
+import AccountPopover from '../common/account-popover';
+import LanguagePopover from '../common/language-popover';
 
 // ----------------------------------------------------------------------
 

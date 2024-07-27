@@ -60,5 +60,6 @@ export const products = [...Array(24)].map((_, index) => {
       (setIndex === 24 && PRODUCT_COLOR.slice(5, 6)) ||
       PRODUCT_COLOR,
     status: sample(['sale', 'new', '', '']),
+    slug: faker.string.uuid()
   };
 });

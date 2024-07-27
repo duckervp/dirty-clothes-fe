@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -9,7 +10,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
+import { useRouter } from 'src/routes/hooks';
+
+import useLogout from 'src/hooks/use-logout';
+
 import { account } from 'src/_mock/account';
+import { selectCurrentUser } from 'src/app/api/auth/authSlice';
 
 // ----------------------------------------------------------------------
 
@@ -33,6 +39,12 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
 
+  const router = useRouter();
+
+  const user = useSelector(selectCurrentUser);
+
+  const hanleLogout = useLogout();
+
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
@@ -40,6 +52,37 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(null);
   };
+
+  const handleClick = () => {
+    if (user) {
+      handleLogoutClick();
+    } else {
+      handleLoginClick();
+    }
+  };
+
+  const handleLogoutClick = () => {
+    hanleLogout();
+    handleClose();
+    router.push('/login');
+  };
+
+  const handleLoginClick = () => {
+    handleClose();
+    router.push('/login');
+  };
+
+  const renderUserOptions = (
+    <>
+      {MENU_OPTIONS.map((option) => (
+        <MenuItem key={option.label} onClick={handleClose}>
+          {option.label}
+        </MenuItem>
+      ))}
+
+      <Divider sx={{ borderStyle: 'dashed', m: 0 }} />
+    </>
+  );
 
   return (
     <>
@@ -57,14 +100,14 @@ export default function AccountPopover() {
       >
         <Avatar
           src={account.photoURL}
-          alt={account.displayName}
+          alt={user?.name || 'Anonymous'}
           sx={{
             width: 36,
             height: 36,
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >
-          {account.displayName.charAt(0).toUpperCase()}
+          {user?.name?.charAt(0).toUpperCase() || 'Anonymous'}
         </Avatar>
       </IconButton>
 
@@ -82,35 +125,29 @@ export default function AccountPopover() {
               ml: 0.75,
               width: 200,
             },
-          }
+          },
         }}
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {user?.name || 'Anonymous'}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {user?.email}
           </Typography>
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        {MENU_OPTIONS.map((option) => (
-          <MenuItem key={option.label} onClick={handleClose}>
-            {option.label}
-          </MenuItem>
-        ))}
-
-        <Divider sx={{ borderStyle: 'dashed', m: 0 }} />
+        {user && renderUserOptions}
 
         <MenuItem
           disableRipple
           disableTouchRipple
-          onClick={handleClose}
+          onClick={handleClick}
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
-          Logout
+          {user ? 'Logout' : 'Login'}
         </MenuItem>
       </Popover>
     </>

@@ -6,6 +6,8 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
+import { useRouter } from 'src/routes/hooks';
+
 import { fCurrency } from 'src/utils/format-number';
 
 import Label from 'src/components/label';
@@ -14,6 +16,13 @@ import { ColorPreview } from 'src/components/color-utils';
 // ----------------------------------------------------------------------
 
 export default function ShopProductCard({ product }) {
+
+  const router = useRouter();
+
+  const handleProductClick = () => {
+    router.push(`/${product.slug}`);
+  }
+
   const renderStatus = (
     <Label
       variant="filled"
@@ -63,7 +72,7 @@ export default function ShopProductCard({ product }) {
   );
 
   return (
-    <Card>
+    <Card onClick={handleProductClick}>
       <Box sx={{ pt: '100%', position: 'relative' }}>
         {product.status && renderStatus}
 

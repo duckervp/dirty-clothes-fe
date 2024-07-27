@@ -20,25 +20,24 @@ import useLogin from 'src/hooks/use-login';
 import { handleError } from 'src/utils/notify';
 
 import { bgGradient } from 'src/theme/css';
-import { useLoginMutation } from 'src/app/api/auth/authApiSlice';
+import { useRegisterMutation } from 'src/app/api/auth/authApiSlice';
 
 import Iconify from 'src/components/iconify';
 
-import { LOGO_NAME, EMAIL_REGEX } from '../../../config';
-
+import { LOGO_NAME, EMAIL_REGEX  } from '../../../config';
 
 // ----------------------------------------------------------------------
 
-export default function LoginView() {
+export default function RegisterView() {
   const theme = useTheme();
 
   const router = useRouter();
 
-  const [login, {isLoading}] = useLoginMutation();
-
   const defaultState = {
+    name: '',
     email: '',
     password: '',
+    confirmPassword: '',
   };
 
   const [state, setState] = useState(defaultState);
@@ -47,23 +46,11 @@ export default function LoginView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [register, { isLoading }] = useRegisterMutation();
+
   const hanleLogin = useLogin();
-
-  const handleClick = async () => {
-    if (!validate()) return;
-
-    try {
-      const response = await login(state).unwrap();
-      hanleLogin(response);
-      router.push('/');
-    } catch (error) {
-      handleError(error);
-    }
-  };
-
-  const handleRegisterClick = () => {
-    router.push('/register');
-  };
 
   const handleStateChange = (e) => {
     const newState = { ...state };
@@ -76,6 +63,27 @@ export default function LoginView() {
       setErr(newErr);
     }
   };
+
+  const handleClick = async (e) => {
+    if (!validate()) return;
+
+    try {
+      const response = await register(state).unwrap();
+      hanleLogin(response);
+      router.push('/');
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  const handleLoginClick = () => {
+    router.push('/login');
+  };
+
+  const isIncorrectConfirmPassword = () =>
+    state.password !== '' &&
+    state.confirmPassword !== '' &&
+    state.confirmPassword !== state.password;
 
   const isValidEmail = () =>
     state.email === '' || state.email.match(EMAIL_REGEX);
@@ -90,8 +98,8 @@ export default function LoginView() {
       }
     });
 
-    if (isValid && !state.email.match('^[a-zA-Z0-9+_.\\-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]+$')) {
-      newErr.email = 'Invalid email address!';
+    if (isValid && !state.email.match(EMAIL_REGEX)) {
+      newErr.email = "Invalid email address!"
       isValid = false;
     }
 
@@ -103,6 +111,16 @@ export default function LoginView() {
   const renderForm = (
     <>
       <Stack spacing={3}>
+        <TextField
+          name="name"
+          label="Your name"
+          autoComplete="false"
+          value={state.name}
+          onChange={handleStateChange}
+          error={err.name !== ''}
+          helperText={err.name !== '' && err.name}
+        />
+
         <TextField
           name="email"
           label="Email address"
@@ -134,12 +152,29 @@ export default function LoginView() {
           error={err.password !== ''}
           helperText={err.password !== '' && err.password}
         />
-      </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
-        <Link variant="subtitle2" underline="hover">
-          Forgot password?
-        </Link>
+        <TextField
+          name="confirmPassword"
+          label="Confirm Password"
+          type={showConfirmPassword ? 'text' : 'password'}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)} edge="end">
+                  <Iconify icon={showConfirmPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          autoComplete="false"
+          value={state.confirmPassword}
+          onChange={handleStateChange}
+          error={isIncorrectConfirmPassword() || err.confirmPassword !== ''}
+          helperText={
+            (isIncorrectConfirmPassword() && 'Confirm password does not match!') ||
+            (err.confirmPassword !== '' && err.confirmPassword)
+          }
+        />
       </Stack>
 
       <LoadingButton
@@ -149,9 +184,10 @@ export default function LoginView() {
         variant="contained"
         color="inherit"
         onClick={handleClick}
+        sx={{ mt: 3 }}
         loading={isLoading}
       >
-        Login
+        Register
       </LoadingButton>
     </>
   );
@@ -175,16 +211,16 @@ export default function LoginView() {
           }}
         >
           <Stack direction="row" alignItems="center">
-            <Typography variant="h4">Sign in to </Typography>
+            <Typography variant="h4">Register to </Typography>
             <Typography variant="h4" sx={{ ml: 1, fontFamily: 'Audiowide', display: 'inline' }}>
               {LOGO_NAME}
             </Typography>
           </Stack>
 
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
-            Don&apos;t have an account?
-            <Link variant="subtitle2" sx={{ ml: 0.5 }} onClick={handleRegisterClick}>
-              Get started
+            Already have an account?
+            <Link variant="subtitle2" sx={{ ml: 0.5 }} onClick={handleLoginClick}>
+              Login
             </Link>
           </Typography>
 
