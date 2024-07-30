@@ -3,3 +3,7 @@ export const API_AUTH = {
   register: "/api/v1/auth/register",
   refreshToken: "/api/v1/auth/refresh-token"
 };
+
+export const API = {
+  product: "/api/v1/product"
+};

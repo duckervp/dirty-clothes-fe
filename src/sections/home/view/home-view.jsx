@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
@@ -8,19 +8,37 @@ import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 
-import { products } from 'src/_mock/products';
+// import { products } from 'src/_mock/products';
+import { PAGE_SIZE } from 'src/config';
+import { useGetAllProductsQuery } from 'src/app/api/product/productApiSlice';
 
-import LazyLoadBanner from '../banner';
-import ProductCard from '../product-card';
-import ProductSort from '../product-sort';
-import ProductFilters from '../product-filters';
+import LazyLoadBanner from 'src/components/product/banner';
+import ProductCard from 'src/components/product/product-card';
+import ProductSort from 'src/components/product/product-sort';
+import ProductFilters from 'src/components/product/product-filters';
 
 // ----------------------------------------------------------------------
 
 export default function HomeView() {
+  const [params] = useSearchParams();
+
   const [openFilter, setOpenFilter] = useState(false);
 
-  const [page] = useState(1);
+  const page = params.get('page') || 1;
+
+  const [products, setProducts] = useState([]);
+
+  const { data: productData } = useGetAllProductsQuery({ pageNo: page - 1, pageSize: PAGE_SIZE });
+
+  const [totalPage, setTotalPage] = useState(10);
+
+  useEffect(() => {
+    if (productData) {
+      const { content, totalPages } = productData.data;
+      setProducts(content);
+      setTotalPage(totalPages);
+    }
+  }, [productData]);
 
   const handleOpenFilter = () => {
     setOpenFilter(true);
@@ -32,10 +50,6 @@ export default function HomeView() {
 
   return (
     <Container>
-      {/* <Typography variant="h4" sx={{ mb: 5 }}>
-        Products
-      </Typography> */}
-
       <LazyLoadBanner />
 
       <Stack
@@ -47,7 +61,7 @@ export default function HomeView() {
       >
         <Typography variant="subtitle2">ALL PRODUCTS</Typography>
 
-        <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
+        <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1, display: 'none' }}>
           <ProductFilters
             openFilter={openFilter}
             onOpenFilter={handleOpenFilter}
@@ -74,8 +88,8 @@ export default function HomeView() {
         sx={{ mt: 3, mb: 2 }}
       >
         <Pagination
-          page={page}
-          count={10}
+          page={parseInt(page, 10)}
+          count={totalPage}
           renderItem={(item) => (
             <PaginationItem
               component={Link}

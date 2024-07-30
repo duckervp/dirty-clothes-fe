@@ -39,3 +39,7 @@ function result(format, key = '.00') {
 export function numberWithCommas(x) {
   return `${x}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
+
+export function fViCurrency(x) {
+  return x ? numberWithCommas(x).concat('₫') : '';
+}

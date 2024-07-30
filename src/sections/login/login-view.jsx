@@ -24,7 +24,7 @@ import { useLoginMutation } from 'src/app/api/auth/authApiSlice';
 
 import Iconify from 'src/components/iconify';
 
-import { LOGO_NAME, EMAIL_REGEX } from '../../../config';
+import { LOGO_NAME, EMAIL_REGEX } from '../../config';
 
 
 // ----------------------------------------------------------------------

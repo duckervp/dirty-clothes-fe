@@ -4,24 +4,22 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 
 import { useRouter } from 'src/routes/hooks';
-
-import { fCurrency } from 'src/utils/format-number';
 
 import Label from 'src/components/label';
 import { ColorPreview } from 'src/components/color-utils';
 
+import ProductPrice from './product-price';
+
 // ----------------------------------------------------------------------
 
 export default function ShopProductCard({ product }) {
-
   const router = useRouter();
 
   const handleProductClick = () => {
     router.push(`/${product.slug}`);
-  }
+  };
 
   const renderStatus = (
     <Label
@@ -43,7 +41,7 @@ export default function ShopProductCard({ product }) {
     <Box
       component="img"
       alt={product.name}
-      src={product.cover}
+      src={product.avatarUrl}
       sx={{
         top: 0,
         width: 1,
@@ -54,25 +52,8 @@ export default function ShopProductCard({ product }) {
     />
   );
 
-  const renderPrice = (
-    <Typography variant="subtitle1">
-      <Typography
-        component="span"
-        variant="body1"
-        sx={{
-          color: 'text.disabled',
-          textDecoration: 'line-through',
-        }}
-      >
-        {product.priceSale && fCurrency(product.priceSale)}
-      </Typography>
-      &nbsp;
-      {fCurrency(product.price)}
-    </Typography>
-  );
-
   return (
-    <Card onClick={handleProductClick}>
+    <Card onClick={handleProductClick} sx={{ cursor: 'pointer' }}>
       <Box sx={{ pt: '100%', position: 'relative' }}>
         {product.status && renderStatus}
 
@@ -85,8 +66,8 @@ export default function ShopProductCard({ product }) {
         </Link>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <ColorPreview colors={product.colors} />
-          {renderPrice}
+          <ColorPreview colors={product.colors.map((item) => item.value)} />
+          <ProductPrice product={product} />
         </Stack>
       </Stack>
     </Card>

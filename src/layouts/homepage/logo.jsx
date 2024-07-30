@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 
-import { LOGO_NAME } from '../../../config';
+import { LOGO_NAME } from '../../config';
 
 
 export default function Logo({sx}) {

@@ -4,8 +4,6 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-// import Button from '@mui/material/Button';
-// import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -24,7 +22,7 @@ import { useRegisterMutation } from 'src/app/api/auth/authApiSlice';
 
 import Iconify from 'src/components/iconify';
 
-import { LOGO_NAME, EMAIL_REGEX  } from '../../../config';
+import { LOGO_NAME, EMAIL_REGEX  } from '../../config';
 
 // ----------------------------------------------------------------------
 

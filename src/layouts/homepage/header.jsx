@@ -20,7 +20,7 @@ import Searchbar from '../common/searchbar';
 import headerNavConfig from './header-nav-config';
 import { HEADER } from '../dashboard/config-layout';
 import AccountPopover from '../common/account-popover';
-import LanguagePopover from '../common/language-popover';
+// import LanguagePopover from '../common/language-popover';
 
 // ----------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ export default function Header({ onOpenNav }) {
       <Box sx={{ flexGrow: 1 }} />
 
       <Stack direction="row" alignItems="center" spacing={1}>
-        <LanguagePopover />
+        {/* <LanguagePopover /> */}
         <CartWidget />
         <AccountPopover />
       </Stack>
