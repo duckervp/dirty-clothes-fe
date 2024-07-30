@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import parse from 'html-react-parser';
+import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ImageGallery from 'react-image-gallery';
@@ -13,11 +14,16 @@ import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
+import { useRouter } from 'src/routes/hooks';
+
 import { toListObj } from 'src/utils/array';
+import { showSuccessMessage } from 'src/utils/notify';
 
 import { useGetProductDetailQuery } from 'src/app/api/product/productApiSlice';
+import { addProductToCart, setBuyNowProduct } from 'src/app/api/cart/cartSlice';
 
 import ProductPrice from 'src/components/product/product-price';
+import QuantityButtonGroup from 'src/components/product/quantity-button-group';
 
 function ToggleButtons({ data, itemId, setItemId }) {
   const [id, setId] = useState(itemId);
@@ -74,6 +80,10 @@ const mapSliderImages = (productDetailImages) => {
 export default function ProductDetail() {
   const { slug } = useParams();
 
+  const dispatch = useDispatch();
+
+  const router = useRouter();
+
   const { data: detailedProductData } = useGetProductDetailQuery(slug);
 
   const [detailedProduct, setDetailedProduct] = useState({});
@@ -83,6 +93,8 @@ export default function ProductDetail() {
   const [selectedColorId, setSelectedColorId] = useState(0);
 
   const [selectedSize, setSelectedSize] = useState();
+
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
 
   const [otherProducts] = useState([]);
 
@@ -136,14 +148,44 @@ export default function ProductDetail() {
     return { inventory: 0, sold: 0 };
   };
 
+  const getSelectedProductImage = () => {
+    if (detailedProduct.images) {
+      const result = detailedProduct.images.filter((item) => item.colorId === selectedColorId);
+      if (result.length > 0) {
+        return result[0];
+      }
+    }
+
+    return { inventory: 0, sold: 0 };
+  };
+
+  const getSelectedProductInfo = () => {
+    const productDetail = getSelectedProductDetail();
+    const productImage = getSelectedProductImage();
+    return {
+      productId: detailedProduct.id,
+      name: detailedProduct.name,
+      productDetailId: productDetail.id,
+      size: productDetail.size,
+      color: productImage.colorName,
+      image: productImage.imageUrl,
+      quantity: selectedQuantity,
+      price: detailedProduct.status === 'SALE' ? detailedProduct.salePrice : detailedProduct.price,
+    };
+  };
+
   const hanleAddToCartClick = () => {
+    const selectedProduct = getSelectedProductInfo();
+    dispatch(addProductToCart({ selectedProduct }));
 
-  }
+    showSuccessMessage("Added product to cart successfully!")
+  };
 
-  
   const hanleBuyNowClick = () => {
-
-  }
+    const selectedProduct = getSelectedProductInfo();
+    dispatch(setBuyNowProduct({ selectedProduct }));
+    router.push('/payment?buyNow=true');
+  };
 
   return (
     <Container sx={{ py: 5 }}>
@@ -163,7 +205,10 @@ export default function ProductDetail() {
             {detailedProduct?.name}
           </Typography>
 
-          <ProductPrice product={detailedProduct} sx={{ textAlign: 'center', fontWeight: 300, mb: 1 }} />
+          <ProductPrice
+            product={detailedProduct}
+            sx={{ textAlign: 'center', fontWeight: 300, mb: 1 }}
+          />
 
           <Box marginBottom={1}>
             <ToggleButtons
@@ -179,6 +224,10 @@ export default function ProductDetail() {
               setItemId={setSelectedSize}
             />
           </Box>
+
+          <Stack direction="row" justifyContent="center" sx={{ py: 2 }}>
+            <QuantityButtonGroup value={selectedQuantity} setValue={setSelectedQuantity} />
+          </Stack>
 
           <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
             <Typography variant="body2">

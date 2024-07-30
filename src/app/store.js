@@ -12,6 +12,7 @@ import {
 } from 'redux-persist'
 
 import authReducer from "./api/auth/authSlice";
+import cartReducer from "./api/cart/cartSlice";
 import { apiSlice, noAuthApiSlice } from "./api/apiSlice";
 
 const authPersistConfig = {
@@ -20,10 +21,16 @@ const authPersistConfig = {
   blacklist: ['token']
 }
 
+const cartPersistConfig = {
+  key: 'cart',
+  storage
+}
+
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
   [noAuthApiSlice.reducerPath]: noAuthApiSlice.reducer,
-  auth: persistReducer(authPersistConfig, authReducer)
+  auth: persistReducer(authPersistConfig, authReducer),
+  cart: persistReducer(cartPersistConfig, cartReducer),
 });
 
 export const store = configureStore({

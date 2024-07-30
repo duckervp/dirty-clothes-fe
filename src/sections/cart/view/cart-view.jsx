@@ -1,5 +1,7 @@
+// import { useEffect } from 'react';
 // import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -9,7 +11,6 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import TableRow from '@mui/material/TableRow';
-import AddIcon from '@mui/icons-material/Add';
 import Grid from '@mui/material/Unstable_Grid2';
 import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
@@ -17,29 +18,46 @@ import TableCell from '@mui/material/TableCell';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ToggleButton from '@mui/material/ToggleButton';
 import TableContainer from '@mui/material/TableContainer';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import { useRouter } from 'src/routes/hooks';
 
-import { numberWithCommas } from 'src/utils/format-number';
+import { fViCurrency } from 'src/utils/format-number';
 
-function createData(name, calories, fat, carbs, cover) {
-  return { name, calories, fat, carbs, cover };
-}
+import {
+  removeCartItem,
+  selectCartItems,
+  updateCartItemQuantity,
+} from 'src/app/api/cart/cartSlice';
 
-const rows = [
-  createData('Frozen yoghurt dfasf afds  fadsfds f ds dfas', 1, 6000000, 24, `/assets/images/products/product_1.jpg`),
-  createData('Ice cream sandwich', 1, 9.0, 37, `/assets/images/products/product_2.jpg`),
-  createData('Eclair', 1, 16.0, 24, `/assets/images/products/product_3.jpg`),
-  createData('Cupcake', 1, 3.7, 67, `/assets/images/products/product_4.jpg`),
-  createData('Gingerbread', 1, 16.0, 49, `/assets/images/products/product_5.jpg`),
-];
+import { ColorPreview } from 'src/components/color-utils';
+import QuantityButtonGroup from 'src/components/product/quantity-button-group';
 
-function CartItemTable() {
+const calTotalPrice = (price, quantity) => price * quantity;
+
+const calCartTotalPrice = (cartItems) => {
+  if (!cartItems) return 0;
+  let total = 0;
+
+  for (let i = 0; i < cartItems.length; i += 1) {
+    total += cartItems.at(i).price * cartItems.at(i).quantity;
+  }
+
+  return total;
+};
+
+function CartItemTable({ cartItems }) {
+  const dispatch = useDispatch();
+
+  const handleQuantityChange = (cartItem, newValue) => {
+    dispatch(updateCartItemQuantity({ selectedProduct: cartItem, newQuantity: newValue }));
+  };
+
+  const handleDeleteCartItem = (cartItem) => {
+    dispatch(removeCartItem({ selectedProduct: cartItem }));
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -58,41 +76,48 @@ function CartItemTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+          {cartItems?.map((item) => (
+            <TableRow
+              key={item?.productDetailId}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
               <TableCell component="th" scope="row">
                 <Stack direction="row">
                   <Box
                     component="img"
-                    alt={row.name}
-                    src={row.cover}
+                    alt={item?.name}
+                    src={item?.image}
                     sx={{
-                      width: '150px',
+                      // width: '150px',
                       height: '150px',
                       objectFit: 'cover',
                       borderRadius: '5px',
                     }}
                   />
-                  <Stack spacing={2} sx={{ p: 3 }}>
+                  <Stack spacing={2} sx={{ p: 2 }}>
                     <Link color="inherit" underline="hover" variant="subtitle2">
-                      {row.name}
+                      {item?.name}
                     </Link>
-
-                    <Stack direction="row" alignItems="center" justifyContent="space-between">
-                      {/* <ColorPreview colors={product.colors} /> */}
-                      {numberWithCommas(row.fat)} VND
+                    <Stack direction="row" sx={{ mb: 2 }}>
+                      <ColorPreview colors={[item?.color]} sx={{ mx: 0.75 }} />
+                      <Typography variant="caption">{item?.size}</Typography>
                     </Stack>
+                    <Typography variant="caption">{fViCurrency(item?.price)}</Typography>
                   </Stack>
                 </Stack>
               </TableCell>
               <TableCell align="center">
-                <QuantityButtonGroup value={row.calories} />
+                <QuantityButtonGroup
+                  value={item?.quantity}
+                  setValue={handleQuantityChange}
+                  cartItem={item}
+                />
               </TableCell>
               <TableCell align="center" sx={{ width: '150px' }}>
-                {numberWithCommas(row.fat)} VND
+                {fViCurrency(calTotalPrice(item?.price, item?.quantity))}
               </TableCell>
               <TableCell align="center">
-                <IconButton aria-label="delete">
+                <IconButton aria-label="delete" onClick={() => handleDeleteCartItem(item)}>
                   <DeleteIcon />
                 </IconButton>
               </TableCell>
@@ -104,35 +129,14 @@ function CartItemTable() {
   );
 }
 
-function QuantityButtonGroup({ value }) {
-  return (
-    <ToggleButtonGroup orientation="horizontal" exclusive>
-      <ToggleButton value="list" aria-label="list">
-        <RemoveIcon />
-      </ToggleButton>
-      <ToggleButton
-        value="module"
-        aria-label="module"
-        disabled
-        sx={{ width: 60 }}
-        style={{ color: 'black' }}
-      >
-        {value}
-      </ToggleButton>
-      <ToggleButton value="quilt" aria-label="quilt">
-        <AddIcon />
-      </ToggleButton>
-    </ToggleButtonGroup>
-  );
-}
-
-QuantityButtonGroup.propTypes = {
-  value: PropTypes.number,
+CartItemTable.propTypes = {
+  cartItems: PropTypes.array,
 };
 
 export default function CartView() {
-
   const router = useRouter();
+
+  const cartItems = useSelector(selectCartItems);
 
   const handlePaymentClick = () => {
     router.push('/payment');
@@ -140,17 +144,16 @@ export default function CartView() {
 
   return (
     <Container>
-      {/* <Typography variant="h4">Cart</Typography> */}
       <Grid container spacing={5}>
         <Grid xs={12} sm={12} md={8}>
-          <CartItemTable />
+          <CartItemTable cartItems={cartItems} />
         </Grid>
         <Grid xs={12} sm={12} md={4}>
           <Box sx={{ border: '1px solid rgba(145, 158, 171, 0.2)' }}>
             <Stack direction="row" justifyContent="space-between" sx={{ px: 3, py: 2 }}>
               <Typography variant="body2">Total</Typography>
               <Typography variant="body2" fontWeight="600">
-                100.000 VND
+                {fViCurrency(calCartTotalPrice(cartItems))}
               </Typography>
             </Stack>
             <Divider />
