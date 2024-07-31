@@ -1,0 +1,1 @@
+export { default as ProfileInfoView } from './profile-info-view';

@@ -1,0 +1,1 @@
+export { default as ProfileAddressView } from './profile-address-view';

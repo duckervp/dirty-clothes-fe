@@ -1,8 +1,12 @@
 import { lazy, Suspense } from 'react';
 import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
+import { Role } from 'src/config';
+import ProfileLayout from 'src/layouts/profile';
 import HomepageLayout from 'src/layouts/homepage';
 import DashboardLayout from 'src/layouts/dashboard';
+
+import RequireAuth from 'src/components/auth/RequireAuth';
 
 export const HomePage = lazy(() => import('src/pages/home'));
 export const CartPage = lazy(() => import('src/pages/cart'));
@@ -16,6 +20,9 @@ export const LoginPage = lazy(() => import('src/pages/login'));
 export const RegisterPage = lazy(() => import('src/pages/register'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
+export const UnauthorizedPage = lazy(() => import('src/pages/unauthorized'));
+export const ProfileInfoPage = lazy(() => import('src/pages/profile-info'));
+export const ProfileAddressPage = lazy(() => import('src/pages/profile-address'));
 
 // ----------------------------------------------------------------------
 
@@ -30,9 +37,29 @@ export default function Router() {
       children: [
         { element: <HomepageLayout><HomePage /></HomepageLayout>, index: true },
         { path: ':slug', element: <HomepageLayout><ProductDetailPage /></HomepageLayout>},
-        { path: '/cart', element: <HomepageLayout><CartPage /></HomepageLayout>},
-        { path: '/order-history', element: <HomepageLayout><OrderPage /></HomepageLayout>},
-        { path: '/payment', element: <PaymentPage />},
+        { path: 'cart', element: <HomepageLayout><CartPage /></HomepageLayout>},
+      ],
+    },
+    {
+      element: (
+        <Suspense>
+          <RequireAuth />
+        </Suspense>
+      ),
+      children: [
+        { path: 'order-history', element: <ProfileLayout><OrderPage /></ProfileLayout> },
+        { path: 'payment', element: <PaymentPage /> },
+        { path: 'profile', element: <ProfileLayout><ProfileInfoPage /></ProfileLayout> },
+        { path: 'profile/address', element: <ProfileLayout><ProfileAddressPage/></ProfileLayout> },
+      ],
+    },
+    {
+      element: (
+        <Suspense>
+          <RequireAuth allowedRole={Role.ADMIN}/>
+        </Suspense>
+      ),
+      children: [
         { path: 'admin', element: <DashboardLayout><IndexPage /></DashboardLayout> },
         { path: 'admin/user', element: <DashboardLayout><UserPage /></DashboardLayout> },
         { path: 'admin/products', element: <DashboardLayout><ProductsPage /></DashboardLayout> },
@@ -46,6 +73,10 @@ export default function Router() {
     {
       path: 'register',
       element: <RegisterPage />,
+    },
+    {
+      path: 'unauthorized',
+      element: <UnauthorizedPage />,
     },
     {
       path: '404',

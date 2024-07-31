@@ -99,7 +99,7 @@ export default function AddressForm({ ward, setWard, address, setAddress }) {
       <TextField
         id="name"
         name="name"
-        label="Name"
+        label="Receiver Name"
         variant="outlined"
         fullWidth
         sx={{ mb: 1.5 }}

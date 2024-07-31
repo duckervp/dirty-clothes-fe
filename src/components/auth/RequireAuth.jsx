@@ -20,7 +20,7 @@ const RequireAuth = ({ allowedRole }) => {
 };
 
 RequireAuth.propTypes = {
-  allowedRole: PropTypes.object,
+  allowedRole: PropTypes.string,
 };
 
 export default RequireAuth;
