@@ -47,14 +47,14 @@ export default function LoginView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const hanleLogin = useLogin();
+  const handleLogin = useLogin();
 
   const handleClick = async () => {
     if (!validate()) return;
 
     try {
       const response = await login(state).unwrap();
-      hanleLogin(response);
+      handleLogin(response);
       router.push('/');
     } catch (error) {
       handleError(error);

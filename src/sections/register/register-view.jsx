@@ -48,7 +48,7 @@ export default function RegisterView() {
 
   const [register, { isLoading }] = useRegisterMutation();
 
-  const hanleLogin = useLogin();
+  const handleLogin = useLogin();
 
   const handleStateChange = (e) => {
     const newState = { ...state };
@@ -67,7 +67,7 @@ export default function RegisterView() {
 
     try {
       const response = await register(state).unwrap();
-      hanleLogin(response);
+      handleLogin(response);
       router.push('/');
     } catch (error) {
       handleError(error);

@@ -36,9 +36,9 @@ MyFormControlLabel.propTypes = {
 
 export default function UseRadioGroup() {
   return (
-    <RadioGroup name="use-radio-group" defaultValue="first">
-      <MyFormControlLabel value="code" label="Cash On Delivery" control={<Radio />} />
-      <MyFormControlLabel value="paypal" label="Paypal" control={<Radio />} />
+    <RadioGroup name="use-radio-group" defaultValue="cod">
+      <MyFormControlLabel value="cod" label="Cash On Delivery" control={<Radio />} />
+      {/* <MyFormControlLabel value="vnpay" label="VNPay" control={<Radio />} /> */}
     </RadioGroup>
   );
 }

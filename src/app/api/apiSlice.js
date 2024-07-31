@@ -5,7 +5,7 @@ import { BASE_URL } from '../../config';
 import { logout, setCredentials } from './auth/authSlice';
 
 const baseQuery = fetchBaseQuery({
-  credentials: "include",
+  // credentials: "include",
   baseUrl: BASE_URL,
   prepareHeaders: (headers, { getState }) => {
     headers.set("ngrok-skip-browser-warning", true);
@@ -18,7 +18,7 @@ const baseQuery = fetchBaseQuery({
 });
 
 const baseQueryWithNoAuth = fetchBaseQuery({
-  credentials: "include",
+  // credentials: "include",
   baseUrl: BASE_URL,
   // prepareHeaders: (headers) => {
   //   headers.set("ngrok-skip-browser-warning", true);

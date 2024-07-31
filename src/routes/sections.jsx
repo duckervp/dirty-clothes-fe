@@ -6,6 +6,7 @@ import DashboardLayout from 'src/layouts/dashboard';
 
 export const HomePage = lazy(() => import('src/pages/home'));
 export const CartPage = lazy(() => import('src/pages/cart'));
+export const OrderPage = lazy(() => import('src/pages/order'));
 export const PaymentPage = lazy(() => import('src/pages/payment'));
 export const ProductDetailPage = lazy(() => import('src/pages/product-detail'));
 export const IndexPage = lazy(() => import('src/pages/app'));
@@ -30,6 +31,7 @@ export default function Router() {
         { element: <HomepageLayout><HomePage /></HomepageLayout>, index: true },
         { path: ':slug', element: <HomepageLayout><ProductDetailPage /></HomepageLayout>},
         { path: '/cart', element: <HomepageLayout><CartPage /></HomepageLayout>},
+        { path: '/order-history', element: <HomepageLayout><OrderPage /></HomepageLayout>},
         { path: '/payment', element: <PaymentPage />},
         { path: 'admin', element: <DashboardLayout><IndexPage /></DashboardLayout> },
         { path: 'admin/user', element: <DashboardLayout><UserPage /></DashboardLayout> },
