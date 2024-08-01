@@ -23,7 +23,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    deleteAddress: builder.mutation({
+      query: (id) => ({
+        url: `${API.address}/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useGetAllAddressesQuery, useGetAddressDetailQuery, useCreateAddressMutation } = authApiSlice;
+export const { useGetAllAddressesQuery, useGetAddressDetailQuery, useCreateAddressMutation, useDeleteAddressMutation } = authApiSlice;

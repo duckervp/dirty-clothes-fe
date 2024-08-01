@@ -50,10 +50,10 @@ export default function Router() {
         </Suspense>
       ),
       children: [
-        { path: 'order-history', element: <ProfileLayout><OrderPage /></ProfileLayout> },
+        { path: 'order', element: <ProfileLayout><OrderPage /></ProfileLayout> },
         { path: 'payment', element: <PaymentPage /> },
         { path: 'profile', element: <ProfileLayout><ProfileInfoPage /></ProfileLayout> },
-        { path: 'profile/address', element: <ProfileLayout><ProfileAddressPage/></ProfileLayout> },
+        { path: 'address', element: <ProfileLayout><ProfileAddressPage/></ProfileLayout> },
       ],
     },
     {

@@ -33,12 +33,12 @@ const MENU_OPTIONS = [
   {
     label: 'Orders',
     icon: 'eva:settings-2-fill',
-    link: '/order-history',
+    link: '/order',
   },
   {
     label: 'Address',
     icon: 'eva:settings-2-fill',
-    link: '/profile/address',
+    link: '/address',
   },
 ];
 

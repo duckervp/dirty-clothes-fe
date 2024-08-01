@@ -14,12 +14,12 @@ const navConfig = [
   },
   {
     title: 'Order',
-    path: '/order-history',
+    path: '/order',
     icon: icon('ic_cart'),
   },
   {
     title: 'Address',
-    path: '/profile/address',
+    path: '/address',
     icon: icon('ic_blog'),
   },
 ];

@@ -1,5 +1,5 @@
-import { useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -13,14 +13,11 @@ import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { useRouter } from 'src/routes/hooks';
+import { handleError, showSuccessMessage } from 'src/utils/notify';
 
-import useLogin from 'src/hooks/use-login';
-
-import { handleError } from 'src/utils/notify';
-
-import { selectCurrentUser } from 'src/app/api/auth/authSlice';
-import { useRegisterMutation } from 'src/app/api/auth/authApiSlice';
+import { useChangeNameMutation } from 'src/app/api/user/userApiSlice';
+import { useChangePasswordMutation } from 'src/app/api/auth/authApiSlice';
+import { logout, setUser, selectCurrentUser } from 'src/app/api/auth/authSlice';
 
 import Iconify from 'src/components/iconify';
 
@@ -29,9 +26,15 @@ import Iconify from 'src/components/iconify';
 export default function ProfileInfoView() {
   const user = useSelector(selectCurrentUser);
 
-  const router = useRouter();
+  const dispatch = useDispatch();
 
   const defaultState = {
+    name: user?.name,
+    oldPassword: '',
+    newPassword: '',
+  };
+
+  const defaultErrState = {
     name: '',
     oldPassword: '',
     newPassword: '',
@@ -39,23 +42,15 @@ export default function ProfileInfoView() {
 
   const [state, setState] = useState(defaultState);
 
-  const [err, setErr] = useState(defaultState);
+  const [err, setErr] = useState(defaultErrState);
 
   const [showPassword, setShowPassword] = useState(false);
 
   const [showNewPassword, setShowNewPassword] = useState(false);
 
-  const [register, { isLoading }] = useRegisterMutation();
+  const [changeName, { isLoading: isChangeNameLoading }] = useChangeNameMutation();
 
-  useEffect(() => {
-    if (user) {
-      const newState = { ...state };
-      newState.name = user?.name;
-      setState(newState);
-    }
-  }, [user, state]);
-
-  const handleLogin = useLogin();
+  const [changePassword, { isLoading: isChangePasswordLoading }] = useChangePasswordMutation();
 
   const handleStateChange = (e) => {
     const newState = { ...state };
@@ -69,27 +64,37 @@ export default function ProfileInfoView() {
     }
   };
 
-  const handleClick = async (e) => {
-    if (!validate()) return;
+  const handleChangeNameClick = async (e) => {
+    if (!validate(['name'])) return;
 
     try {
-      const response = await register(state).unwrap();
-      handleLogin(response);
-      router.push('/');
+      await changeName({ name: state.name }).unwrap();
+      dispatch(setUser({ ...user, name: state.name }));
     } catch (error) {
       handleError(error);
     }
   };
 
-  // const handleLoginClick = () => {
-  //   router.push('/login');
-  // };
+  const handleChangePasswordClick = async (e) => {
+    if (!validate(['oldPassword', 'newPassword'])) return;
 
-  const validate = () => {
+    try {
+      await changePassword({
+        oldPassword: state.oldPassword,
+        newPassword: state.newPassword,
+      }).unwrap();
+      showSuccessMessage('Changed password successfully. Please login again!');
+      dispatch(logout());
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  const validate = (fields) => {
     let isValid = true;
     const newErr = { ...err };
     Object.keys(state).forEach((key) => {
-      if (state[key] === '') {
+      if (fields.includes(key) && state[key] === '') {
         newErr[key] = 'Field value required!';
         isValid = false;
       }
@@ -163,14 +168,13 @@ export default function ProfileInfoView() {
             />
             <Stack direction="row" justifyContent="flex-end">
               <LoadingButton
-                // fullWidth
                 size="large"
                 type="submit"
                 variant="contained"
                 color="inherit"
-                // onClick={handleClick}
+                onClick={handleChangeNameClick}
                 sx={{ mt: 2 }}
-                // loading={isLoading}
+                loading={isChangeNameLoading}
               >
                 Update
               </LoadingButton>
@@ -201,7 +205,7 @@ export default function ProfileInfoView() {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <LockIcon style={{fontSize: "18px"}}/>
+                      <LockIcon style={{ fontSize: '18px' }} />
                     </InputAdornment>
                   ),
                   endAdornment: (
@@ -217,7 +221,7 @@ export default function ProfileInfoView() {
                 onChange={handleStateChange}
                 error={err.oldPassword !== ''}
                 helperText={err.oldPassword !== '' && err.oldPassword}
-                placeholder='Enter your old password'
+                placeholder="Enter your old password"
               />
             </Box>
             <Box>
@@ -231,7 +235,7 @@ export default function ProfileInfoView() {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <LockIcon style={{fontSize: "18px"}}/>
+                      <LockIcon style={{ fontSize: '18px' }} />
                     </InputAdornment>
                   ),
                   endAdornment: (
@@ -247,7 +251,7 @@ export default function ProfileInfoView() {
                 onChange={handleStateChange}
                 error={err.newPassword !== ''}
                 helperText={err.newPassword !== '' && err.newPassword}
-                placeholder='Enter your new password'
+                placeholder="Enter your new password"
               />
             </Box>
           </Stack>
@@ -258,9 +262,9 @@ export default function ProfileInfoView() {
               type="submit"
               variant="contained"
               color="inherit"
-              onClick={handleClick}
+              onClick={handleChangePasswordClick}
               sx={{ mt: 2 }}
-              loading={isLoading}
+              loading={isChangePasswordLoading}
             >
               Submit
             </LoadingButton>

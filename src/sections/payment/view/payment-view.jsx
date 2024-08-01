@@ -58,6 +58,9 @@ function CheckoutItem({ item, divider }) {
           <Stack direction="row" sx={{ mb: 1 }}>
             <ColorPreview colors={[item?.color]} sx={{ mx: 0.75 }} />
             <Typography variant="caption">{item?.size}</Typography>
+            <Typography variant="caption" sx={{ ml: 0.75, fontWeight: 700 }}>
+              x{item?.quantity}
+            </Typography>
           </Stack>
           <Typography variant="caption">{fViCurrency(item?.price)}</Typography>
         </Stack>
@@ -153,7 +156,7 @@ export default function PaymentView() {
     try {
       await createOrder(produceOrder()).unwrap();
       dispatch(removeAllCartItems());
-      router.push('/order-history');
+      router.push('/order');
     } catch (error) {
       handleError(error);
     }
@@ -322,9 +325,7 @@ export default function PaymentView() {
                     sx={{ '&:hover': { background: 'rgba(145, 158, 171, 0.2)' } }}
                   >
                     <Box sx={{ px: 2, py: 3 }}>
-                      <Typography variant="subtitle2">
-                        {selectedAddress?.name}
-                      </Typography>
+                      <Typography variant="subtitle2">{selectedAddress?.name}</Typography>
                       <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>
                         {selectedAddress?.phone}
                       </Typography>
@@ -355,7 +356,9 @@ export default function PaymentView() {
                             mr: 1,
                           }}
                         />
-                        <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>GHN</Typography>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>
+                          GHN
+                        </Typography>
                       </Stack>
                       <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>
                         {fViCurrency(shippingFee?.total)}

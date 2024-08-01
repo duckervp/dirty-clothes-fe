@@ -84,7 +84,7 @@ export default function ProductDetail() {
 
   const router = useRouter();
 
-  const { data: detailedProductData } = useGetProductDetailQuery(slug);
+  const { data: detailedProductData, error: detailedProductError } = useGetProductDetailQuery(slug);
 
   const [detailedProduct, setDetailedProduct] = useState({});
 
@@ -97,6 +97,12 @@ export default function ProductDetail() {
   const [selectedQuantity, setSelectedQuantity] = useState(1);
 
   const [otherProducts] = useState([]);
+
+  useEffect(() => {
+    if (detailedProductError && detailedProductError.data.code === 2000) {
+      router.push("404")
+    }
+  }, [detailedProductError, router])
 
   useEffect(() => {
     if (detailedProductData) {

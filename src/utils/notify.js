@@ -19,7 +19,8 @@ export const handleError = (err, defaultMessage) => {
 
 export const showSuccessMessage = (message) => {
   toast.success(message, {
-    position: "top-right"
+    position: "top-right",
+    autoClose: 1000
   });
 }
 

@@ -1,7 +1,7 @@
 import { API } from '../endpoints';
-import { apiSlice, noAuthApiSlice } from '../apiSlice';
+import { apiSlice } from '../apiSlice';
 
-export const noTokenApiSlice = noAuthApiSlice.injectEndpoints({
+export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllOrders: builder.query({
       query: (params) => ({
@@ -16,11 +16,6 @@ export const noTokenApiSlice = noAuthApiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
-  }),
-});
-
-export const authApiSlice = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
     createOrder: builder.mutation({
       query: (payload) => ({
         url: `${API.order}`,
@@ -31,6 +26,4 @@ export const authApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetAllOrdersQuery, useGetOrderDetailQuery } = noTokenApiSlice;
-
-export const { useCreateOrderMutation } = authApiSlice;
+export const { useCreateOrderMutation, useGetAllOrdersQuery, useGetOrderDetailQuery } = authApiSlice;

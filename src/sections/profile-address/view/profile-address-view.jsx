@@ -1,6 +1,6 @@
-import { useState } from 'react';
-// import { useNavigate } from "react-router-dom";
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
+// import { useNavigate } from "react-router-dom";
 // import { useDispatch } from 'react-redux';
 
 import Box from '@mui/material/Box';
@@ -18,14 +18,32 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import TableContainer from '@mui/material/TableContainer';
 
+import { showErrorMessage } from 'src/utils/notify';
+
+import {
+  useGetAllAddressesQuery,
+  useCreateAddressMutation,
+  useDeleteAddressMutation,
+} from 'src/app/api/address/addressApiSlice';
+
 import ModalPopup from 'src/components/modal/modal';
 
 import AddressForm from 'src/sections/payment/AddressForm';
 
-function AddressTable({ addresses }) {
-  // const dispatch = useDispatch();
+function AddressTable({ addresses, setAddresses }) {
+  const [deleteAddress] = useDeleteAddressMutation();
 
-  const handleDeleteAddress = (address) => {};
+  const handleDeleteAddress = async (address) => {
+    try {
+      await deleteAddress(address?.id).unwrap();
+      const indexOfDeletedElement = addresses.indexOf(address);
+      const newAddresses = [...addresses];
+      newAddresses.splice(indexOfDeletedElement, 1);
+      setAddresses(newAddresses);
+    } catch (error) {
+      showErrorMessage(error);
+    }
+  };
 
   return (
     <TableContainer component={Paper}>
@@ -75,51 +93,85 @@ function AddressTable({ addresses }) {
 
 AddressTable.propTypes = {
   addresses: PropTypes.array,
+  setAddresses: PropTypes.func,
 };
 
 const ProfileAddressView = () => {
   // const navigate = useNavigate();
 
-  const addresses = [
-    {
-      createdAt: '2024-07-31T18:35:57.218Z',
-      createdBy: 'string',
-      updatedBy: 'string',
-      updatedAt: '2024-07-31T18:35:57.218Z',
-      deleted: true,
-      id: 0,
-      userId: 0,
-      detailAddress: 'Dich Vong Hau, Cau Giay, Ha Noi',
-      phone: '0123456789',
-      postalCode: 0,
-      note: 'So nha 5, chi nhan giao hang buoi sang',
-      name: 'Duc Tran',
-      shippingInfo: 'string',
-    },
-  ];
+  const [addresses, setAddresses] = useState([]);
+
+  const [newAddress, setNewAddress] = useState({});
+
+  const [ward, setWard] = useState({});
+
+  const { data: addressData } = useGetAllAddressesQuery({ userOnly: true });
+
+  const [createAddress] = useCreateAddressMutation();
 
   const [createFormOpen, setCreateFromOpen] = useState(false);
+
+  useEffect(() => {
+    if (addressData) {
+      setAddresses(addressData.data.content);
+    }
+  }, [addressData]);
 
   const handleCreateAddressBtnClick = () => {
     setCreateFromOpen(true);
   };
 
+  const handleAddAddressClick = () => {
+    const payload = {
+      name: newAddress.name,
+      phone: newAddress.phone,
+      note: newAddress.note,
+      postalCode: newAddress.zip,
+      detailAddress: ''
+        .concat(newAddress.address)
+        .concat(', ')
+        .concat(newAddress.ward)
+        .concat(', ')
+        .concat(newAddress.district)
+        .concat(', ')
+        .concat(newAddress.province),
+      shippingInfo: JSON.stringify({
+        to_district_id: ward?.DistrictID,
+        to_ward_code: ward?.WardCode,
+      }),
+    };
+
+    createNewAddress(payload);
+    setCreateFromOpen(false);
+  };
+
+  const createNewAddress = async (payload) => {
+    const { data } = await createAddress(payload).unwrap();
+    const newAddresses = [...addresses];
+    newAddresses.push(data);
+    setAddresses(newAddresses);
+  };
+
   return (
     <Box>
       <ModalPopup open={createFormOpen} setOpen={setCreateFromOpen}>
-          <Typography variant="h5" textAlign="left" width="100%" sx={{ mb: 1 }}>
-            NEW ADDRESS
-          </Typography>
-        <AddressForm />
+        <Typography variant="h5" textAlign="left" width="100%" sx={{ mb: 1 }}>
+          NEW ADDRESS
+        </Typography>
+        <AddressForm
+          ward={ward}
+          setWard={setWard}
+          address={newAddress}
+          setAddress={setNewAddress}
+        />
         <LoadingButton
           fullWidth
           size="large"
           type="submit"
           variant="contained"
           color="inherit"
-          // onClick={handleClick}
+          onClick={handleAddAddressClick}
           sx={{ mt: 2 }}
-          // loading={isLoading}
         >
           Submit
         </LoadingButton>
@@ -127,7 +179,7 @@ const ProfileAddressView = () => {
       <Button onClick={handleCreateAddressBtnClick} startIcon={<AddBoxIcon />}>
         Create new Address
       </Button>
-      <AddressTable addresses={addresses} />
+      <AddressTable addresses={addresses} setAddresses={setAddresses} />
     </Box>
   );
 };

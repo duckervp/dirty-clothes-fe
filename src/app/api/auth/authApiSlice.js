@@ -50,9 +50,9 @@ export const noTokenApiSlice = noAuthApiSlice.injectEndpoints({
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    updatePassword: builder.mutation({
+    changePassword: builder.mutation({
       query: (payload) => ({
-        url: `/users/auth/change-password`,
+        url: API_AUTH.changePassword,
         method: 'PATCH',
         body: { ...payload },
       }),
@@ -69,4 +69,4 @@ export const {
   useRemoveRefreshTokenMutation,
 } = noTokenApiSlice;
 
-export const { useUpdatePasswordMutation } = authApiSlice;
+export const { useChangePasswordMutation } = authApiSlice;
