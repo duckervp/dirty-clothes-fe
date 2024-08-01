@@ -5,56 +5,70 @@ import { BASE_URL } from '../../config';
 import { logout, setCredentials } from './auth/authSlice';
 
 const baseQuery = fetchBaseQuery({
-  // credentials: "include",
   baseUrl: BASE_URL,
   prepareHeaders: (headers, { getState }) => {
-    headers.set("ngrok-skip-browser-warning", true);
-    const { token } = getState().auth;
-    if (token) {
-      headers.set("Authorization", `Bearer ${token}`)
+    headers.set('ngrok-skip-browser-warning', true);
+    const { accessToken } = getState().auth;
+    if (accessToken) {
+      headers.set('Authorization', `Bearer ${accessToken}`);
     }
     return headers;
-  }
+  },
 });
 
 const baseQueryWithNoAuth = fetchBaseQuery({
-  // credentials: "include",
   baseUrl: BASE_URL,
-  // prepareHeaders: (headers) => {
-  //   headers.set("ngrok-skip-browser-warning", true);
-  //   return headers;
-  // }
+  prepareHeaders: (headers) => {
+    headers.set('ngrok-skip-browser-warning', true);
+    return headers;
+  },
 });
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
+  console.log(result);
   const state = api.getState();
-  console.log('Current state:', state);
 
-  if (result?.error?.data?.code === 401) {
-    const refreshResult = await baseQueryWithNoAuth(API_AUTH.refreshToken, api, extraOptions);
-    const accessToken = refreshResult?.data?.access_token;
-    if (accessToken) {
-      api.dispatch(setCredentials({ accessToken }));
-      result = await baseQuery(args, api, extraOptions);
+  if (result.error?.status === 401) {
+    const refreshResult = await baseQueryWithNoAuth(
+      {
+        url: API_AUTH.refreshToken,
+        method: 'POST',
+        body: {
+          refreshToken: state.auth.refreshToken,
+        },
+      },
+      api,
+      extraOptions
+    );
+
+    console.log(refreshResult);
+    if (!refreshResult.error) {
+      const { accessToken, refreshToken } = refreshResult.data;
+      if (accessToken) {
+        api.dispatch(setCredentials({ accessToken, refreshToken }));
+        result = await baseQuery(args, api, extraOptions);
+      } else {
+        api.dispatch(logout());
+      }
     } else {
       api.dispatch(logout());
     }
   }
 
   return result;
-}
+};
 
 export const apiSlice = createApi({
-  reducerPath: "api",
+  reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
   refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({}),
 });
 
 export const noAuthApiSlice = createApi({
-  reducerPath: "noAuthApi",
+  reducerPath: 'noAuthApi',
   baseQuery: baseQueryWithNoAuth,
   refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({}),

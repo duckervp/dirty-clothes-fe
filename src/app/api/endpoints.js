@@ -7,6 +7,7 @@ export const API_AUTH = {
 export const API = {
   product: "/api/v1/product",
   order: "/api/v1/order",
+  address: "/api/v1/address",
 };
 
 export const GHN_API = {

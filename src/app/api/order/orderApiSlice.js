@@ -16,6 +16,11 @@ export const noTokenApiSlice = noAuthApiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+  }),
+});
+
+export const authApiSlice = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
     createOrder: builder.mutation({
       query: (payload) => ({
         url: `${API.order}`,
@@ -26,19 +31,6 @@ export const noTokenApiSlice = noAuthApiSlice.injectEndpoints({
   }),
 });
 
-export const authApiSlice = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
-    updatePassword: builder.mutation({
-      query: (payload) => ({
-        url: `/users/auth/change-password`,
-        method: 'PATCH',
-        body: { ...payload },
-      }),
-    }),
-  }),
-});
+export const { useGetAllOrdersQuery, useGetOrderDetailQuery } = noTokenApiSlice;
 
-export const { useGetAllOrdersQuery, useGetOrderDetailQuery, useCreateOrderMutation } =
-  noTokenApiSlice;
-
-export const { useUpdatePasswordMutation } = authApiSlice;
+export const { useCreateOrderMutation } = authApiSlice;

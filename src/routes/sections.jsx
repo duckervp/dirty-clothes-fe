@@ -7,6 +7,7 @@ import HomepageLayout from 'src/layouts/homepage';
 import DashboardLayout from 'src/layouts/dashboard';
 
 import RequireAuth from 'src/components/auth/RequireAuth';
+import PersistedLogin from 'src/components/auth/PersistedLogin';
 
 export const HomePage = lazy(() => import('src/pages/home'));
 export const CartPage = lazy(() => import('src/pages/cart'));
@@ -43,7 +44,9 @@ export default function Router() {
     {
       element: (
         <Suspense>
-          <RequireAuth />
+          <PersistedLogin>
+            <RequireAuth />
+          </PersistedLogin>
         </Suspense>
       ),
       children: [
@@ -56,7 +59,9 @@ export default function Router() {
     {
       element: (
         <Suspense>
-          <RequireAuth allowedRole={Role.ADMIN}/>
+          <PersistedLogin>
+            <RequireAuth allowedRole={Role.ADMIN} />
+          </PersistedLogin>
         </Suspense>
       ),
       children: [

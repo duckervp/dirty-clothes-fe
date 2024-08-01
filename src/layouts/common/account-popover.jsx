@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
-import MUILink from '@mui/material/Link';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
@@ -25,6 +23,7 @@ const MENU_OPTIONS = [
   {
     label: 'Home',
     icon: 'eva:home-fill',
+    link: '/',
   },
   {
     label: 'Profile',
@@ -32,8 +31,14 @@ const MENU_OPTIONS = [
     link: '/profile',
   },
   {
-    label: 'Settings',
+    label: 'Orders',
     icon: 'eva:settings-2-fill',
+    link: '/order-history',
+  },
+  {
+    label: 'Address',
+    icon: 'eva:settings-2-fill',
+    link: '/profile/address',
   },
 ];
 
@@ -64,6 +69,11 @@ export default function AccountPopover() {
     }
   };
 
+  const handleNavClick = (link) => {
+    handleClose();
+    router.push(link);
+  }
+
   const handleLogoutClick = () => {
     hanleLogout();
     handleClose();
@@ -78,10 +88,8 @@ export default function AccountPopover() {
   const renderUserOptions = (
     <>
       {MENU_OPTIONS.map((option) => (
-        <MenuItem key={option.label} onClick={handleClose}>
-          <MUILink component={Link} to={option.link}>
-            {option.label}
-          </MUILink>
+        <MenuItem key={option.label} onClick={() => handleNavClick(option.link)}>
+          {option.label}
         </MenuItem>
       ))}
 
