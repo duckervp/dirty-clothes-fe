@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link as RLink, useSearchParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -52,7 +52,13 @@ function CheckoutItem({ item, divider }) {
           }}
         />
         <Stack spacing={2} sx={{ p: 1 }}>
-          <Link color="inherit" underline="hover" variant="subtitle2">
+          <Link
+            component={RLink}
+            color="inherit"
+            underline="hover"
+            variant="subtitle2"
+            to={`/${item?.slug}`}
+          >
             {item?.name}
           </Link>
           <Stack direction="row" sx={{ mb: 1 }}>

@@ -4,12 +4,12 @@ import { HomeView } from 'src/sections/home/view';
 
 // ----------------------------------------------------------------------
 
-export default function HomePage() {
+export default function ShopPage() {
   return (
     <>
-      <HelmetPro page="Home" />
+      <HelmetPro page="Shop" />
 
-      <HomeView type="home" />
+      <HomeView type="shop" />
     </>
   );
 }

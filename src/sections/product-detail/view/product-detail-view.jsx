@@ -100,9 +100,9 @@ export default function ProductDetail() {
 
   useEffect(() => {
     if (detailedProductError && detailedProductError.data.code === 2000) {
-      router.push("404")
+      router.push('404');
     }
-  }, [detailedProductError, router])
+  }, [detailedProductError, router]);
 
   useEffect(() => {
     if (detailedProductData) {
@@ -177,6 +177,7 @@ export default function ProductDetail() {
       image: productImage.imageUrl,
       quantity: selectedQuantity,
       price: detailedProduct.status === 'SALE' ? detailedProduct.salePrice : detailedProduct.price,
+      slug: detailedProduct.slug,
     };
   };
 
@@ -184,7 +185,7 @@ export default function ProductDetail() {
     const selectedProduct = getSelectedProductInfo();
     dispatch(addProductToCart({ selectedProduct }));
 
-    showSuccessMessage("Added product to cart successfully!")
+    showSuccessMessage('Added product to cart successfully!');
   };
 
   const hanleBuyNowClick = () => {

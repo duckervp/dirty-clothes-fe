@@ -4,7 +4,7 @@ export const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const EMAIL_REGEX = "^[a-zA-Z0-9+_.\\-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]+$";
 
-export const PAGE_SIZE = 2;
+export const PAGE_SIZE = 10;
 
 export const Role = {
   ADMIN: "ADMIN",

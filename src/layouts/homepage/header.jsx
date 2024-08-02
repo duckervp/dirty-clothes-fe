@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -7,6 +8,8 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
+
+import { useRouter } from 'src/routes/hooks';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
@@ -20,7 +23,6 @@ import Searchbar from '../common/searchbar';
 import headerNavConfig from './header-nav-config';
 import { HEADER } from '../dashboard/config-layout';
 import AccountPopover from '../common/account-popover';
-// import LanguagePopover from '../common/language-popover';
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +30,14 @@ export default function Header({ onOpenNav }) {
   const theme = useTheme();
 
   const lgUp = useResponsive('up', 'lg');
+
+  const router = useRouter();
+
+  const location = useLocation();
+
+  const handleNav = (link) => {
+    router.push(link);
+  };
 
   const renderContent = (
     <>
@@ -43,7 +53,12 @@ export default function Header({ onOpenNav }) {
 
       <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
         {headerNavConfig.map((item) => (
-          <Button key={item.title} sx={{ color: '#000' }}>
+          <Button
+            key={item.title}
+            sx={{ color: '#000', mr: 1 }}
+            onClick={() => handleNav(item.path)}
+            variant={location.pathname === item.path ? "contained" : ""}
+          >
             {item.title}
           </Button>
         ))}

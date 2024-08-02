@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import { Link as RLink } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -22,6 +23,7 @@ import { useGetAllOrdersQuery, useGetOrderDetailQuery } from 'src/app/api/order/
 
 import ModalPopup from 'src/components/modal/modal';
 import { ColorPreview } from 'src/components/color-utils';
+import EmptyContainer from 'src/components/empty-container/empty-container';
 
 const calOrderTotalPrice = (orderItems) => {
   if (!orderItems) return 0;
@@ -142,7 +144,13 @@ function CheckoutItem({ item, divider }) {
           }}
         />
         <Stack spacing={2} sx={{ p: 1 }}>
-          <Link color="inherit" underline="hover" variant="subtitle2">
+          <Link
+            component={RLink}
+            color="inherit"
+            underline="hover"
+            variant="subtitle2"
+            to={`/${item?.slug}`}
+          >
             {item?.productName}
           </Link>
           <Stack direction="row" sx={{ mb: 1 }}>
@@ -266,6 +274,12 @@ export default function OrderView() {
     setSelectedOrderCode(item?.code);
     setOrderDetailModalOpen(true);
   };
+
+  if (orderItems.length === 0) {
+    return (
+      <EmptyContainer title='' message='You have no order yet.' />
+    );
+  }
 
   return (
     <Container>

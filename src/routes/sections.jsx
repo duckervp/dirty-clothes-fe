@@ -7,9 +7,9 @@ import HomepageLayout from 'src/layouts/homepage';
 import DashboardLayout from 'src/layouts/dashboard';
 
 import RequireAuth from 'src/components/auth/RequireAuth';
-import PersistedLogin from 'src/components/auth/PersistedLogin';
 
 export const HomePage = lazy(() => import('src/pages/home'));
+export const ShopPage = lazy(() => import('src/pages/shop'));
 export const CartPage = lazy(() => import('src/pages/cart'));
 export const OrderPage = lazy(() => import('src/pages/order'));
 export const PaymentPage = lazy(() => import('src/pages/payment'));
@@ -37,16 +37,15 @@ export default function Router() {
       ),
       children: [
         { element: <HomepageLayout><HomePage /></HomepageLayout>, index: true },
-        { path: ':slug', element: <HomepageLayout><ProductDetailPage /></HomepageLayout>},
+        { path: 'shop', element: <HomepageLayout><ShopPage /></HomepageLayout>},
         { path: 'cart', element: <HomepageLayout><CartPage /></HomepageLayout>},
+        { path: ':slug', element: <HomepageLayout><ProductDetailPage /></HomepageLayout>},
       ],
     },
     {
       element: (
         <Suspense>
-          <PersistedLogin>
             <RequireAuth />
-          </PersistedLogin>
         </Suspense>
       ),
       children: [
@@ -59,9 +58,7 @@ export default function Router() {
     {
       element: (
         <Suspense>
-          <PersistedLogin>
             <RequireAuth allowedRole={Role.ADMIN} />
-          </PersistedLogin>
         </Suspense>
       ),
       children: [

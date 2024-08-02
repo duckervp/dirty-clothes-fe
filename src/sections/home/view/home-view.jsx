@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
@@ -8,7 +9,6 @@ import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 
-// import { products } from 'src/_mock/products';
 import { PAGE_SIZE } from 'src/config';
 import { useGetAllProductsQuery } from 'src/app/api/product/productApiSlice';
 
@@ -19,7 +19,7 @@ import ProductFilters from 'src/components/product/product-filters';
 
 // ----------------------------------------------------------------------
 
-export default function HomeView() {
+export default function HomeView({ type }) {
   const [params] = useSearchParams();
 
   const [openFilter, setOpenFilter] = useState(false);
@@ -50,18 +50,23 @@ export default function HomeView() {
 
   return (
     <Container>
-      <LazyLoadBanner />
+      {type === 'home' && <LazyLoadBanner />}
 
       <Stack
         direction="row"
         alignItems="center"
         flexWrap="wrap-reverse"
-        justifyContent="space-between"
+        justifyContent={type === 'home' ? 'space-between' : 'flex-end'}
         sx={{ mt: 3, mb: 2 }}
       >
-        <Typography variant="subtitle2">ALL PRODUCTS</Typography>
+        {type === 'home' && <Typography variant="subtitle2">ALL PRODUCTS</Typography>}
 
-        <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1, display: 'none' }}>
+        <Stack
+          direction="row"
+          spacing={1}
+          flexShrink={0}
+          sx={type === 'shop' ? { my: 1 } : { display: 'none' }}
+        >
           <ProductFilters
             openFilter={openFilter}
             onOpenFilter={handleOpenFilter}
@@ -104,3 +109,7 @@ export default function HomeView() {
     </Container>
   );
 }
+
+HomeView.propTypes = {
+  type: PropTypes.oneOf(['home', 'shop', 'best_seller']),
+};

@@ -1,6 +1,5 @@
-// import { useEffect } from 'react';
-// import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Link as RLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
@@ -32,6 +31,7 @@ import {
 } from 'src/app/api/cart/cartSlice';
 
 import { ColorPreview } from 'src/components/color-utils';
+import EmptyContainer from 'src/components/empty-container/empty-container';
 import QuantityButtonGroup from 'src/components/product/quantity-button-group';
 
 const calTotalPrice = (price, quantity) => price * quantity;
@@ -88,14 +88,19 @@ function CartItemTable({ cartItems }) {
                     alt={item?.name}
                     src={item?.image}
                     sx={{
-                      // width: '150px',
                       height: '150px',
                       objectFit: 'cover',
                       borderRadius: '5px',
                     }}
                   />
                   <Stack spacing={2} sx={{ p: 2 }}>
-                    <Link color="inherit" underline="hover" variant="subtitle2">
+                    <Link
+                      component={RLink}
+                      color="inherit"
+                      underline="hover"
+                      variant="subtitle2"
+                      to={`/${item?.slug}`}
+                    >
                       {item?.name}
                     </Link>
                     <Stack direction="row" sx={{ mb: 2 }}>
@@ -141,6 +146,12 @@ export default function CartView() {
   const handlePaymentClick = () => {
     router.push('/payment');
   };
+
+  if (cartItems.length === 0) {
+    return (
+      <EmptyContainer title="Empty cart" message="You have not added any products to your cart." />
+    );
+  }
 
   return (
     <Container>
