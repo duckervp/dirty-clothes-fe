@@ -1,5 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+import { showErrorMessage } from 'src/utils/notify';
+
 import { API_AUTH } from './endpoints';
 import { BASE_URL } from '../../config';
 import { logout, setCredentials } from './auth/authSlice';
@@ -27,7 +29,6 @@ const baseQueryWithNoAuth = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  console.log(result);
   const state = api.getState();
 
   if (result.error?.status === 401) {
@@ -43,9 +44,8 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       extraOptions
     );
 
-    console.log(refreshResult);
     if (!refreshResult.error) {
-      const { accessToken, refreshToken } = refreshResult.data;
+      const { accessToken, refreshToken } = refreshResult.data.data;
       if (accessToken) {
         api.dispatch(setCredentials({ accessToken, refreshToken }));
         result = await baseQuery(args, api, extraOptions);
@@ -53,6 +53,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
         api.dispatch(logout());
       }
     } else {
+      showErrorMessage(refreshResult.error);
       api.dispatch(logout());
     }
   }

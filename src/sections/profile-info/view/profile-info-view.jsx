@@ -4,22 +4,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
+// import Avatar from '@mui/material/Avatar';
 import { alpha } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
+// import UploadIcon from '@mui/icons-material/Upload';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { handleError, showSuccessMessage } from 'src/utils/notify';
+import { handleError, showErrorMessage, showSuccessMessage } from 'src/utils/notify';
 
-import { useChangeNameMutation } from 'src/app/api/user/userApiSlice';
 import { useChangePasswordMutation } from 'src/app/api/auth/authApiSlice';
 import { logout, setUser, selectCurrentUser } from 'src/app/api/auth/authSlice';
+import { useChangeNameMutation, useUpdateAvatarMutation } from 'src/app/api/user/userApiSlice';
 
 import Iconify from 'src/components/iconify';
+import AvatarUpload from 'src/components/uploader/avatar-upload';
 
 // ----------------------------------------------------------------------
 
@@ -52,6 +54,8 @@ export default function ProfileInfoView() {
 
   const [changePassword, { isLoading: isChangePasswordLoading }] = useChangePasswordMutation();
 
+  const [updateAvatar] = useUpdateAvatarMutation();
+
   const handleStateChange = (e) => {
     const newState = { ...state };
     newState[e.target.name] = e.target.value;
@@ -70,6 +74,7 @@ export default function ProfileInfoView() {
     try {
       await changeName({ name: state.name }).unwrap();
       dispatch(setUser({ ...user, name: state.name }));
+      showSuccessMessage('Changed name successfully!');
     } catch (error) {
       handleError(error);
     }
@@ -105,6 +110,16 @@ export default function ProfileInfoView() {
     return isValid;
   };
 
+  const setImageUrl = async (avatarUrl) => {
+    try {
+      const { data } = await updateAvatar({ avatarUrl }).unwrap();
+      showSuccessMessage(data);
+      dispatch(setUser({ ...user, avatarUrl }));
+    } catch (error) {
+      showErrorMessage(error);
+    }
+  };
+
   const renderAccount = (
     <Box
       sx={{
@@ -116,9 +131,9 @@ export default function ProfileInfoView() {
         bgcolor: (th) => alpha(th.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={user?.avatarUrl} alt="photoURL" sx={{ width: 70, height: 70 }} />
+      <AvatarUpload imageUrl={user?.avatarUrl} setImageUrl={setImageUrl} />
 
-      <Box sx={{ ml: 2 }}>
+      <Box sx={{ ml: 6 }}>
         <Typography variant="subtitle2">{user?.name}</Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           {user?.email}
@@ -175,6 +190,7 @@ export default function ProfileInfoView() {
                 onClick={handleChangeNameClick}
                 sx={{ mt: 2 }}
                 loading={isChangeNameLoading}
+                disabled={state.name === user.name}
               >
                 Update
               </LoadingButton>
@@ -265,6 +281,11 @@ export default function ProfileInfoView() {
               onClick={handleChangePasswordClick}
               sx={{ mt: 2 }}
               loading={isChangePasswordLoading}
+              disabled={
+                state.oldPassword === '' ||
+                state.newPassword === '' ||
+                state.oldPassword === state.newPassword
+              }
             >
               Submit
             </LoadingButton>

@@ -14,7 +14,6 @@ import { useRouter } from 'src/routes/hooks';
 
 import useLogout from 'src/hooks/use-logout';
 
-import { account } from 'src/_mock/account';
 import { selectCurrentUser } from 'src/app/api/auth/authSlice';
 
 // ----------------------------------------------------------------------
@@ -112,7 +111,7 @@ export default function AccountPopover() {
         }}
       >
         <Avatar
-          src={account.photoURL}
+          src={user?.avatarUrl}
           alt={user?.name || 'Anonymous'}
           sx={{
             width: 36,

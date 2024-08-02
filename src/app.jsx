@@ -19,7 +19,7 @@ export default function App() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider>
-          <ToastContainer stacked style={{ marginTop: '100px' }} />
+          <ToastContainer stacked style={{ marginTop: 60 }} />
           <Router />
         </ThemeProvider>
       </PersistGate>

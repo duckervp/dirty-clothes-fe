@@ -10,6 +10,7 @@ export const API = {
   order: "/api/v1/order",
   address: "/api/v1/address",
   user: "/api/v1/user",
+  file: "/api/v1/file",
 };
 
 export const GHN_API = {

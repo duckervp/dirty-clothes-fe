@@ -1,28 +1,17 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
-// import Box from '@mui/material/Box';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Fade from '@mui/material/Fade';
 import Modal from '@mui/material/Modal';
 import Backdrop from '@mui/material/Backdrop';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 600,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4
-};
-
 export default function ModalPopup({ open, setOpen, children }) {
   const handleClose = () => setOpen(false);
 
   return (
-    <div>
+    <Box>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -37,10 +26,28 @@ export default function ModalPopup({ open, setOpen, children }) {
         }}
       >
         <Fade in={open}>
-          <Card sx={style}>{children}</Card>
+          <Card
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: 600,
+              bgcolor: 'background.paper',
+              boxShadow: 24,
+              p: 4,
+              maxHeight: '95%',
+              overflowY: 'auto',
+              '&::-webkit-scrollbar': {
+                display: 'none',
+              },
+            }}
+          >
+            {children}
+          </Card>
         </Fade>
       </Modal>
-    </div>
+    </Box>
   );
 }
 

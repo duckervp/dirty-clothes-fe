@@ -10,7 +10,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: { ...payload },
       }),
     }),
+    updateAvatar: builder.mutation({
+      query: (payload) => ({
+        url: `${API.user}/update-avatar`,
+        method: 'PATCH',
+        body: { ...payload },
+      }),
+    }),
   }),
 });
 
-export const { useChangeNameMutation } = authApiSlice;
+export const { useChangeNameMutation, useUpdateAvatarMutation } = authApiSlice;
