@@ -8,6 +8,8 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 
+import { useRouter } from 'src/routes/hooks';
+
 import { bgBlur } from 'src/theme/css';
 
 import Iconify from 'src/components/iconify';
@@ -42,12 +44,31 @@ const StyledSearchbar = styled('div')(({ theme }) => ({
 export default function Searchbar() {
   const [open, setOpen] = useState(false);
 
+  const [searchValue, setSearchValue] = useState('');
+
+  const router = useRouter();
+
   const handleOpen = () => {
     setOpen(!open);
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleSearch = () => {
+    handleClose();
+    router.push(`/shop?q=${searchValue}`);
+  };
+
+  const handleInputChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   return (
@@ -62,6 +83,8 @@ export default function Searchbar() {
         <Slide direction="down" in={open} mountOnEnter unmountOnExit>
           <StyledSearchbar>
             <Input
+              value={searchValue}
+              onChange={handleInputChange}
               autoFocus
               fullWidth
               disableUnderline
@@ -75,8 +98,9 @@ export default function Searchbar() {
                 </InputAdornment>
               }
               sx={{ mr: 1, fontWeight: 'fontWeightBold' }}
+              onKeyPress={handleKeyPress}
             />
-            <Button variant="contained" onClick={handleClose}>
+            <Button variant="contained" onClick={handleSearch}>
               Search
             </Button>
           </StyledSearchbar>

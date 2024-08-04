@@ -209,7 +209,7 @@ function OrderItemTable({ orderItems, handleOrderClick }) {
                     }}
                   />
                   <Stack spacing={2} sx={{ p: 2 }}>
-                    <Link color="inherit" underline="hover" variant="subtitle2">
+                    <Link color="inherit" underline="none" variant="subtitle2">
                       {item?.firstItem?.productName}
                     </Link>
                     <Stack direction="row" sx={{ mb: 2 }} alignItems="center">

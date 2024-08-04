@@ -10,6 +10,7 @@ import RequireAuth from 'src/components/auth/RequireAuth';
 
 export const HomePage = lazy(() => import('src/pages/home'));
 export const ShopPage = lazy(() => import('src/pages/shop'));
+export const BestSellerPage = lazy(() => import('src/pages/best-seller'));
 export const CartPage = lazy(() => import('src/pages/cart'));
 export const OrderPage = lazy(() => import('src/pages/order'));
 export const PaymentPage = lazy(() => import('src/pages/payment'));
@@ -37,7 +38,15 @@ export default function Router() {
       ),
       children: [
         { element: <HomepageLayout><HomePage /></HomepageLayout>, index: true },
-        { path: 'shop', element: <HomepageLayout><ShopPage /></HomepageLayout>},
+        { 
+          path: 'shop', 
+          element: <HomepageLayout><ShopPage /></HomepageLayout>, 
+          children: [
+            {path: ":category", element: <HomepageLayout><ShopPage /></HomepageLayout>},
+          ]
+        },
+        { path: 'best-seller', element: <HomepageLayout><BestSellerPage /></HomepageLayout>},
+        { path: 'contact', element: <HomepageLayout>Empty Page</HomepageLayout>},
         { path: 'cart', element: <HomepageLayout><CartPage /></HomepageLayout>},
         { path: ':slug', element: <HomepageLayout><ProductDetailPage /></HomepageLayout>},
       ],

@@ -44,7 +44,9 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
-  const [open, setOpen] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const router = useRouter();
 
@@ -53,11 +55,15 @@ export default function AccountPopover() {
   const hanleLogout = useLogout();
 
   const handleOpen = (event) => {
-    setOpen(event.currentTarget);
+    console.log(event.currentTarget);
+    
+    setAnchorEl(event.currentTarget);
+    setOpen(true);
   };
 
   const handleClose = () => {
-    setOpen(null);
+    setAnchorEl(null);
+    setOpen(false);
   };
 
   const handleClick = () => {
@@ -71,11 +77,11 @@ export default function AccountPopover() {
   const handleNavClick = (link) => {
     handleClose();
     router.push(link);
-  }
+  };
 
   const handleLogoutClick = () => {
-    hanleLogout();
     handleClose();
+    hanleLogout();
     router.push('/login');
   };
 
@@ -124,8 +130,8 @@ export default function AccountPopover() {
       </IconButton>
 
       <Popover
-        open={!!open}
-        anchorEl={open}
+        open={open}
+        anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -139,6 +145,7 @@ export default function AccountPopover() {
             },
           },
         }}
+        sx={{ position: 'fixed', top: 0 }}
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>

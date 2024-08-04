@@ -22,7 +22,7 @@ import { useRegisterMutation } from 'src/app/api/auth/authApiSlice';
 
 import Iconify from 'src/components/iconify';
 
-import { LOGO_NAME, EMAIL_REGEX  } from '../../config';
+import { LOGO_NAME, EMAIL_REGEX } from '../../config';
 
 // ----------------------------------------------------------------------
 
@@ -83,8 +83,7 @@ export default function RegisterView() {
     state.confirmPassword !== '' &&
     state.confirmPassword !== state.password;
 
-  const isValidEmail = () =>
-    state.email === '' || state.email.match(EMAIL_REGEX);
+  const isValidEmail = () => state.email === '' || state.email.match(EMAIL_REGEX);
 
   const validate = () => {
     let isValid = true;
@@ -97,13 +96,19 @@ export default function RegisterView() {
     });
 
     if (isValid && !state.email.match(EMAIL_REGEX)) {
-      newErr.email = "Invalid email address!"
+      newErr.email = 'Invalid email address!';
       isValid = false;
     }
 
     setErr(newErr);
 
     return isValid;
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleClick();
+    }
   };
 
   const renderForm = (
@@ -172,6 +177,7 @@ export default function RegisterView() {
             (isIncorrectConfirmPassword() && 'Confirm password does not match!') ||
             (err.confirmPassword !== '' && err.confirmPassword)
           }
+          onKeyPress={handleKeyPress}
         />
       </Stack>
 

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
@@ -11,13 +12,12 @@ import Iconify from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 const SORT_OPTIONS = [
-  { value: 'featured', label: 'Featured' },
-  { value: 'newest', label: 'Newest' },
-  { value: 'priceDesc', label: 'Price: High-Low' },
-  { value: 'priceAsc', label: 'Price: Low-High' },
+  { value: 'newest', label: 'Newest', sort: 'desc', sortBy: 'createdAt' },
+  { value: 'priceDesc', label: 'Price: High-Low', sort: 'desc', sortBy: 'price' },
+  { value: 'priceAsc', label: 'Price: Low-High', sort: 'asc', sortBy: 'price' },
 ];
 
-export default function ShopProductSort() {
+export default function ShopProductSort({ selectedOption, setSelectedOption }) {
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -26,6 +26,11 @@ export default function ShopProductSort() {
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const handleSort = (option) => {
+    setSelectedOption(option);
+    handleClose();
   };
 
   return (
@@ -38,7 +43,7 @@ export default function ShopProductSort() {
       >
         Sort By:&nbsp;
         <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-          Newest
+          {selectedOption.label}
         </Typography>
       </Button>
 
@@ -59,7 +64,11 @@ export default function ShopProductSort() {
         }}
       >
         {SORT_OPTIONS.map((option) => (
-          <MenuItem key={option.value} selected={option.value === 'newest'} onClick={handleClose}>
+          <MenuItem
+            key={option.value}
+            selected={option.value === selectedOption.value}
+            onClick={() => handleSort(option)}
+          >
             {option.label}
           </MenuItem>
         ))}
@@ -67,3 +76,8 @@ export default function ShopProductSort() {
     </>
   );
 }
+
+ShopProductSort.propTypes = {
+  selectedOption: PropTypes.object,
+  setSelectedOption: PropTypes.func,
+};

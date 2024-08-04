@@ -11,6 +11,8 @@ export const API = {
   address: "/api/v1/address",
   user: "/api/v1/user",
   file: "/api/v1/file",
+  color: "/api/v1/color",
+  category: "/api/v1/category",
 };
 
 export const GHN_API = {

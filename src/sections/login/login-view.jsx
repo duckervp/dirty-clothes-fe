@@ -100,6 +100,12 @@ export default function LoginView() {
     return isValid;
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleClick();
+    }
+  };
+
   const renderForm = (
     <>
       <Stack spacing={3}>
@@ -133,6 +139,7 @@ export default function LoginView() {
           onChange={handleStateChange}
           error={err.password !== ''}
           helperText={err.password !== '' && err.password}
+          onKeyPress={handleKeyPress}
         />
       </Stack>
 
