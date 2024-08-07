@@ -125,7 +125,7 @@ export default function AccountPopover() {
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >
-          {user?.name?.charAt(0).toUpperCase() || 'Anonymous'}
+          {user?.name?.charAt(0).toUpperCase() || 'A'}
         </Avatar>
       </IconButton>
 
