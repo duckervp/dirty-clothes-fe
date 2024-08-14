@@ -37,7 +37,7 @@ export default function Header({ onOpenNav }) {
 
       <Searchbar />
 
-      <Logo />
+      <Logo sx={{ml: 3, mr: 5}}/>
 
       <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
         <ShopMenu />

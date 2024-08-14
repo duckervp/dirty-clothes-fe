@@ -30,7 +30,7 @@ export default function HomeView({ type }) {
 
   const [products, setProducts] = useState([]);
 
-  const [totalPage, setTotalPage] = useState(10);
+  const [totalPage, setTotalPage] = useState(0);
 
   const [sort, setSort] = useState({
     value: 'newest',

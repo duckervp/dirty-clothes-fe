@@ -112,6 +112,7 @@ const ShopMenu = () => {
       {(popupState) => (
         <Box>
           <Button
+            color="inherit"
             variant={location.pathname.includes('/shop') ? 'outlined' : ''}
             {...bindHover(popupState)}
             sx={{ color: '#000', mr: 1 }}
@@ -122,6 +123,7 @@ const ShopMenu = () => {
           {headerNavConfig.map((item) => (
             <Button
               key={item.title}
+              color="inherit"
               sx={{ color: '#000', mr: 1 }}
               onClick={() => router.push(item.path)}
               variant={location.pathname === item.path ? 'outlined' : ''}

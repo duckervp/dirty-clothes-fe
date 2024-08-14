@@ -216,7 +216,7 @@ export default function RegisterView() {
         >
           <Stack direction="row" alignItems="center">
             <Typography variant="h4">Register to </Typography>
-            <Typography variant="h4" sx={{ ml: 1, fontFamily: 'Audiowide', display: 'inline' }}>
+            <Typography variant="h4" sx={{ ml: 1, fontFamily: 'Dancing Script', display: 'inline'}}>
               {LOGO_NAME}
             </Typography>
           </Stack>
