@@ -5,7 +5,7 @@ const headerNavConfig = [
   },
   {
     title: 'CONTACT',
-    path: '/contact'
+    path: '#contact'
   },
 ];
 

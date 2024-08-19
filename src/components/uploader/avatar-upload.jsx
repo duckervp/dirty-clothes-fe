@@ -42,7 +42,6 @@ const AvatarUpload = ({ imageUrl, setImageUrl }) => {
     if (newImage) {
       setRawImage(newImage);
       setImage(URL.createObjectURL(newImage));
-      console.log(URL.createObjectURL(newImage));
       setCanPerformSave(true);
     }
   };
@@ -62,6 +61,7 @@ const AvatarUpload = ({ imageUrl, setImageUrl }) => {
       const { data } = await uploadFile({ formData }).unwrap();
       const { url } = data;
       setImageUrl(url);
+      setCanPerformSave(false);
     } catch (error) {
       showErrorMessage(error);
     }

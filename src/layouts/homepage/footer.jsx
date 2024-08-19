@@ -70,7 +70,7 @@ export default function Footer() {
   );
 
   return (
-    <>
+    <Box id="contact">
       {renderContent}
       <Divider />
       <Box
@@ -84,6 +84,6 @@ export default function Footer() {
       >
         <Copyright />
       </Box>
-    </>
+    </Box>
   );
 }

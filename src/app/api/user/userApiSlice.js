@@ -17,7 +17,21 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: { ...payload },
       }),
     }),
+
+    getAllUsers: builder.query({
+      query: (params) => ({
+        url: API.user,
+        method: "GET",
+        params
+      }),
+    }),
+    getUserDetail: builder.query({
+      query: (id) => ({
+        url: `${API.user}/${id}`,
+        method: "GET"
+      }),
+    }),
   }),
 });
 
-export const { useChangeNameMutation, useUpdateAvatarMutation } = authApiSlice;
+export const { useChangeNameMutation, useUpdateAvatarMutation, useGetAllUsersQuery, useGetUserDetailQuery } = authApiSlice;

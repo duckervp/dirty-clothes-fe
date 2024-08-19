@@ -10,10 +10,7 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { useRouter } from 'src/routes/hooks';
-
 import { users } from 'src/_mock/user';
-import { useGetAllUsersQuery } from 'src/app/api/user/userApiSlice';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -27,8 +24,6 @@ import { emptyRows, applyFilter, getComparator } from 'src/components/table/util
 // ----------------------------------------------------------------------
 
 export default function UserPage() {
-  const router = useRouter();
-
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
@@ -40,9 +35,6 @@ export default function UserPage() {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const { data: userData } = useGetAllUsersQuery();
-
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -101,15 +93,6 @@ export default function UserPage() {
 
   const notFound = !dataFiltered.length && !!filterName;
 
-  //----------------------
-  const handleEdit = (id) => {
-    router.push(`/admin/user-management/edit-user/${id}`);
-  }
-
-  const handleDelete = (id) => {
-    console.log("delete: ", id)
-  }
-
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -139,30 +122,28 @@ export default function UserPage() {
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'name', label: 'Name' },
-                  { id: 'email', label: 'Email' },
-                  { id: 'role', label: 'Role'},
-                  { id: 'status', label: 'Status', align: "center" },
-                  { id: 'createdDate', label: 'Created Date', align: "center" },
+                  { id: 'company', label: 'Company' },
+                  { id: 'role', label: 'Role' },
+                  { id: 'isVerified', label: 'Verified', align: 'center' },
+                  { id: 'status', label: 'Status' },
                   { id: '' },
                 ]}
               />
               <TableBody>
-                {userData?.data?.content
+                {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
                     <CustomTableRow
                       key={row.id}
                       cells={[
-                        { value: row.name, type: "composite", imgUrl: row.avatarUrl },
-                        { value: row.email },
-                        { value: row.role},
-                        { value: row.status, type: "status", align: "center"},
-                        { value: row.createdAt, type: "datetime", align: "center" },
+                        {value: row.name, type: "composite", imgUrl: row.avatarUrl},
+                        {value: row.company},
+                        {value: row.role},
+                        {value: row.isVerified, type: "yn", align: "center"},
+                        {value: row.status, type: "status"},
                       ]}
                       selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => handleClick(event, row.name)}
-                      handleEdit={() => handleEdit(row.id)}
-                      handleDelete={() => handleDelete(row.id)}
                     />
                   ))}
 

@@ -8,6 +8,8 @@ import DashboardLayout from 'src/layouts/dashboard';
 
 import RequireAuth from 'src/components/auth/RequireAuth';
 
+import ScrollToAnchor from './scroll-to-anchor';
+
 export const HomePage = lazy(() => import('src/pages/home'));
 export const ShopPage = lazy(() => import('src/pages/shop'));
 export const BestSellerPage = lazy(() => import('src/pages/best-seller'));
@@ -18,6 +20,7 @@ export const ProductDetailPage = lazy(() => import('src/pages/product-detail'));
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
 export const UserPage = lazy(() => import('src/pages/user'));
+export const UserDetailPage = lazy(() => import('src/pages/user-detail'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const RegisterPage = lazy(() => import('src/pages/register'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
@@ -33,6 +36,7 @@ export default function Router() {
     {
       element: (
           <Suspense>
+            <ScrollToAnchor/>
             <Outlet />
           </Suspense>
       ),
@@ -72,7 +76,15 @@ export default function Router() {
       ),
       children: [
         { path: 'admin', element: <DashboardLayout><IndexPage /></DashboardLayout> },
-        { path: 'admin/user', element: <DashboardLayout><UserPage /></DashboardLayout> },
+        { 
+          path: 'admin/user-management', 
+          element: <DashboardLayout><UserPage /></DashboardLayout>, 
+          children: [
+            { path: 'detail', element: <DashboardLayout><UserDetailPage /></DashboardLayout> },
+            { path: 'create-user', element: <DashboardLayout><UserDetailPage /></DashboardLayout> },
+            { path: 'edit-user/:id', element: <DashboardLayout><UserDetailPage /></DashboardLayout> },
+          ]
+        },
         { path: 'admin/products', element: <DashboardLayout><ProductsPage /></DashboardLayout> },
         { path: 'admin/blog', element: <DashboardLayout><BlogPage /></DashboardLayout> },
       ],

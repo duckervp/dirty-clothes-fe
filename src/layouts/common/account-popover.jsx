@@ -14,6 +14,7 @@ import { useRouter } from 'src/routes/hooks';
 
 import useLogout from 'src/hooks/use-logout';
 
+import { Role } from 'src/config';
 import { selectCurrentUser } from 'src/app/api/auth/authSlice';
 
 // ----------------------------------------------------------------------
@@ -56,7 +57,7 @@ export default function AccountPopover() {
 
   const handleOpen = (event) => {
     console.log(event.currentTarget);
-    
+
     setAnchorEl(event.currentTarget);
     setOpen(true);
   };
@@ -157,6 +158,13 @@ export default function AccountPopover() {
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
+
+        {
+          user && user.role === Role.ADMIN &&
+          <MenuItem onClick={() => handleNavClick('/admin')}>
+            Admin Dashboard
+          </MenuItem>
+        }
 
         {user && renderUserOptions}
 
