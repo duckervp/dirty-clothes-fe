@@ -35,56 +35,51 @@ export default function Router() {
   const routes = useRoutes([
     {
       element: (
-          <Suspense>
-            <ScrollToAnchor/>
-            <Outlet />
-          </Suspense>
+        <Suspense>
+          <ScrollToAnchor />
+          <Outlet />
+        </Suspense>
       ),
       children: [
         { element: <HomepageLayout><HomePage /></HomepageLayout>, index: true },
-        { 
-          path: 'shop', 
-          element: <HomepageLayout><ShopPage /></HomepageLayout>, 
+        {
+          path: 'shop',
+          element: <HomepageLayout><ShopPage /></HomepageLayout>,
           children: [
-            {path: ":category", element: <HomepageLayout><ShopPage /></HomepageLayout>},
+            { path: ":category", element: <HomepageLayout><ShopPage /></HomepageLayout> },
           ]
         },
-        { path: 'best-seller', element: <HomepageLayout><BestSellerPage /></HomepageLayout>},
-        { path: 'contact', element: <HomepageLayout>Empty Page</HomepageLayout>},
-        { path: 'cart', element: <HomepageLayout><CartPage /></HomepageLayout>},
-        { path: ':slug', element: <HomepageLayout><ProductDetailPage /></HomepageLayout>},
+        { path: 'best-seller', element: <HomepageLayout><BestSellerPage /></HomepageLayout> },
+        { path: 'contact', element: <HomepageLayout>Empty Page</HomepageLayout> },
+        { path: 'cart', element: <HomepageLayout><CartPage /></HomepageLayout> },
+        { path: ':slug', element: <HomepageLayout><ProductDetailPage /></HomepageLayout> },
       ],
     },
     {
       element: (
         <Suspense>
-            <RequireAuth />
+          <RequireAuth />
         </Suspense>
       ),
       children: [
         { path: 'order', element: <ProfileLayout><OrderPage /></ProfileLayout> },
         { path: 'payment', element: <PaymentPage /> },
         { path: 'profile', element: <ProfileLayout><ProfileInfoPage /></ProfileLayout> },
-        { path: 'address', element: <ProfileLayout><ProfileAddressPage/></ProfileLayout> },
+        { path: 'address', element: <ProfileLayout><ProfileAddressPage /></ProfileLayout> },
       ],
     },
     {
       element: (
         <Suspense>
-            <RequireAuth allowedRole={Role.ADMIN} />
+          <RequireAuth allowedRole={Role.ADMIN} />
         </Suspense>
       ),
       children: [
         { path: 'admin', element: <DashboardLayout><IndexPage /></DashboardLayout> },
-        { 
-          path: 'admin/user-management', 
-          element: <DashboardLayout><UserPage /></DashboardLayout>, 
-          children: [
-            { path: 'detail', element: <DashboardLayout><UserDetailPage /></DashboardLayout> },
-            { path: 'create-user', element: <DashboardLayout><UserDetailPage /></DashboardLayout> },
-            { path: 'edit-user/:id', element: <DashboardLayout><UserDetailPage /></DashboardLayout> },
-          ]
-        },
+        { path: 'admin/user-management', element: <DashboardLayout><UserPage /></DashboardLayout> },
+        { path: 'admin/user-management/user-details/:id', element: <DashboardLayout><UserDetailPage /></DashboardLayout> },
+        { path: 'admin/user-management/create-user', element: <DashboardLayout><UserDetailPage /></DashboardLayout> },
+        { path: 'admin/user-management/edit-user/:id', element: <DashboardLayout><UserDetailPage /></DashboardLayout> },
         { path: 'admin/products', element: <DashboardLayout><ProductsPage /></DashboardLayout> },
         { path: 'admin/blog', element: <DashboardLayout><BlogPage /></DashboardLayout> },
       ],

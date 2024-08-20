@@ -30,7 +30,8 @@ export default function CustomTableRow({
   cells,
   handleClick,
   handleEdit,
-  handleDelete
+  handleDelete,
+  handleRowClick
 }) {
   const [open, setOpen] = useState(null);
 
@@ -63,7 +64,7 @@ export default function CustomTableRow({
           cells.map(cell => {
             if (cell.type === "datetime") {
               return (
-                <TableCell key={cell.value} align={cell.align}>
+                <TableCell key={cell.value} align={cell.align} onClick={handleRowClick}>
                   {fDateTime(cell.value)}
                 </TableCell>
               );
@@ -71,7 +72,7 @@ export default function CustomTableRow({
 
             if (cell.type === "status") {
               return (
-                <TableCell key={cell.value} align={cell.align}>
+                <TableCell key={cell.value} align={cell.align} onClick={handleRowClick}>
                   <Label color={(cell.value === false && 'error') || 'success'}>{cell.value ? "ACTIVE" : "INACTIVE"}</Label>
                 </TableCell>
               );
@@ -79,7 +80,7 @@ export default function CustomTableRow({
 
             if (cell.type === "composite") {
               return (
-                <TableCell key={cell.value} component="th" scope="row" padding="none" align={cell.align}>
+                <TableCell key={cell.value} component="th" scope="row" padding="none" align={cell.align} onClick={handleRowClick}>
                   <Stack direction="row" alignItems="center" spacing={2}>
                     <Avatar alt={cell.value} src={cell.imgUrl} />
                     <Typography variant="subtitle2" noWrap>
@@ -91,11 +92,11 @@ export default function CustomTableRow({
             }
 
             if (cell.type === "yn") {
-              return <TableCell key={cell.value} align={cell.align}>{cell.value ? 'Yes' : 'No'}</TableCell>;
+              return <TableCell key={cell.value} align={cell.align} onClick={handleRowClick}>{cell.value ? 'Yes' : 'No'}</TableCell>;
             }
 
             return (
-              <TableCell key={cell.value} align={cell.align}>{cell.value}</TableCell>
+              <TableCell key={cell.value} align={cell.align} onClick={handleRowClick}>{cell.value}</TableCell>
             );
           })
         }
@@ -138,5 +139,6 @@ CustomTableRow.propTypes = {
   handleClick: PropTypes.func,
   selected: PropTypes.any,
   handleEdit: PropTypes.func,
-  handleDelete: PropTypes.func
+  handleDelete: PropTypes.func,
+  handleRowClick: PropTypes.func
 };

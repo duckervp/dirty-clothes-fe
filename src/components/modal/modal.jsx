@@ -7,7 +7,7 @@ import Fade from '@mui/material/Fade';
 import Modal from '@mui/material/Modal';
 import Backdrop from '@mui/material/Backdrop';
 
-export default function ModalPopup({ open, setOpen, children }) {
+export default function ModalPopup({ open, setOpen, children, sx }) {
   const handleClose = () => setOpen(false);
 
   return (
@@ -41,6 +41,7 @@ export default function ModalPopup({ open, setOpen, children }) {
               '&::-webkit-scrollbar': {
                 display: 'none',
               },
+              ...sx
             }}
           >
             {children}
@@ -55,4 +56,5 @@ ModalPopup.propTypes = {
   open: PropTypes.bool,
   setOpen: PropTypes.func,
   children: PropTypes.node,
+  sx: PropTypes.object
 };

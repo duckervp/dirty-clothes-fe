@@ -110,12 +110,20 @@ export default function UserPage() {
     console.log("delete: ", id)
   }
 
+  const handleCreateNew = () => {
+    router.push(`/admin/user-management/create-user`);
+  }
+
+  const handleRowClick = (id) => {
+    router.push(`/admin/user-management/user-details/${id}`);
+  }
+
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Users</Typography>
 
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
+        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleCreateNew}>
           New User
         </Button>
       </Stack>
@@ -163,6 +171,7 @@ export default function UserPage() {
                       handleClick={(event) => handleClick(event, row.name)}
                       handleEdit={() => handleEdit(row.id)}
                       handleDelete={() => handleDelete(row.id)}
+                      handleRowClick={() => handleRowClick(row.id)}
                     />
                   ))}
 

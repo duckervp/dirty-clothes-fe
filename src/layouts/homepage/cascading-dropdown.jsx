@@ -89,6 +89,7 @@ function CascadingMenu({ popupState, ...props }) {
 
 const ShopMenu = () => {
   const shopPath = '/shop';
+  
   const router = useRouter();
 
   const location = useLocation();
