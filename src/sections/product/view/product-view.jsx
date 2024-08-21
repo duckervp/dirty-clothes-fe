@@ -14,10 +14,9 @@ import PaginationItem from '@mui/material/PaginationItem';
 
 import { useRouter } from 'src/routes/hooks';
 
-import { handleError, showSuccessMessage } from 'src/utils/notify';
-
 import { PAGE_SIZE } from 'src/config';
-import { useGetAllUsersQuery, useDeleteUserMutation, useDeleteUsersMutation } from 'src/app/api/user/userApiSlice';
+import { users } from 'src/_mock/user';
+import { useGetAllProductsQuery } from 'src/app/api/product/productApiSlice';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -31,7 +30,7 @@ import DeleteConfirmPopup from 'src/components/modal/delete-confirm-popup';
 
 // ----------------------------------------------------------------------
 
-export default function UserPage() {
+export default function ProductView() {
   const router = useRouter();
 
   const [params] = useSearchParams();
@@ -50,14 +49,12 @@ export default function UserPage() {
 
   const [nameFilter, setNameFilter] = useState('');
 
-  const [deleteMultipleItems, setDeleteMultipleItems] = useState(false);
-
-  const { data: userData } = useGetAllUsersQuery({
+  const { data: userData } = useGetAllProductsQuery({
     pageNo: page - 1,
     pageSize: PAGE_SIZE,
     sort: order,
     sortBy: orderBy,
-    name: nameFilter.trim() !== '' ? nameFilter : undefined
+    name: nameFilter !== '' ? nameFilter : undefined
   });
 
   useEffect(() => {
@@ -66,10 +63,6 @@ export default function UserPage() {
       setTotalPage(totalPages);
     }
   }, [userData]);
-
-  const [deleteUser] = useDeleteUserMutation();
-
-  const [deleteUsers] = useDeleteUsersMutation();
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -81,7 +74,7 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = userData?.data?.content?.map((n) => n.id);
+      const newSelecteds = users.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -125,13 +118,8 @@ export default function UserPage() {
     router.push(`/admin/user-management/edit-user/${id}`);
   }
 
-  const handleDelete = async (id) => {
-    try {
-      const { data } = await deleteUser(id).unwrap();
-      showSuccessMessage(data);
-    } catch (error) {
-      handleError(error);
-    }
+  const handleDelete = (id) => {
+    console.log("delete: ", id)
   }
 
   const handleCreateNew = () => {
@@ -152,33 +140,11 @@ export default function UserPage() {
 
   const handleCloseDeleteCfMenu = () => {
     setDeleteCfOpen(false);
-    setDeleteMultipleItems(false);
   };
 
   const handleConfirmDelete = () => {
-    if (deleteMultipleItems) {
-      handleDeleteSelectedItems();
-      setDeleteMultipleItems(false);
-      handleCloseDeleteCfMenu();
-      setSelected([]);
-    } else {
-      handleDelete(deleteId);
-      handleCloseDeleteCfMenu();
-    }
-  }
-
-  const handleDeleteMultipleItems = () => {
-    setDeleteCfOpen(true);
-    setDeleteMultipleItems(true);
-  }
-
-  const handleDeleteSelectedItems = async () => {
-    try {
-      const { data } = await deleteUsers(selected).unwrap();
-      showSuccessMessage(data);
-    } catch (error) {
-      handleError(error);
-    }
+    handleDelete(deleteId);
+    handleCloseDeleteCfMenu();
   }
 
   return (
@@ -192,8 +158,7 @@ export default function UserPage() {
       </Stack>
 
       <DeleteConfirmPopup
-        object={deleteMultipleItems && selected.length > 1 ? "users" : "user"}
-        plural={deleteMultipleItems && selected.length > 1}
+        object="user"
         popupOpen={deleteCfOpen}
         setPopupOpen={setDeleteCfOpen}
         handleCancel={handleCloseDeleteCfMenu}
@@ -205,7 +170,6 @@ export default function UserPage() {
           numSelected={selected.length}
           filterName={filterName}
           onFilterName={handleFilterByName}
-          handleDeleteMultipleItems={handleDeleteMultipleItems}
         />
 
         <Scrollbar>
@@ -214,7 +178,7 @@ export default function UserPage() {
               <CustomTableHead
                 order={order}
                 orderBy={orderBy}
-                rowCount={userData?.data?.content?.length}
+                rowCount={users.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
@@ -239,8 +203,8 @@ export default function UserPage() {
                         { value: row.status, type: "status", align: "center" },
                         { value: row.createdAt, type: "datetime", align: "center" },
                       ]}
-                      selected={selected.indexOf(row.id) !== -1}
-                      handleClick={(event) => handleClick(event, row.id)}
+                      selected={selected.indexOf(row.name) !== -1}
+                      handleClick={(event) => handleClick(event, row.name)}
                       handleEdit={() => handleEdit(row.id)}
                       handleDelete={() => handleDeleteCfOpenMenu(row.id)}
                       handleRowClick={() => handleRowClick(row.id)}
@@ -249,7 +213,7 @@ export default function UserPage() {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, 1, userData?.data?.content?.length)}
+                  emptyRows={emptyRows(page, 1, users.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}

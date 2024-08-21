@@ -130,7 +130,7 @@ export default function HomeView({ type }) {
 
       {products.length === 0 && (type === 'shop' || type === 'best-seller') && (
         <Stack alignItems="center" justifyContent="center">
-          <ProductNoData query={type} />
+          <ProductNoData query={category ? type.concat(" ").concat(category) : type} />
         </Stack>
       )}
 

@@ -9,4 +9,4 @@ export const toListObj = (org, idKey, nameKey) => {
     if (!org) return [];
     const newArr = org.map((item) => ({ id: item[idKey], name: item[nameKey] }));
     return newArr.filter((value, index, self) => index === self.findIndex((t) => t.id === value.id));
-  };
+};

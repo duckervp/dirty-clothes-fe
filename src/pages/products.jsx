@@ -1,6 +1,6 @@
 import HelmetPro from 'src/layouts/common/helmet';
 
-import { ProductsView } from 'src/sections/products/view';
+import { ProductView } from 'src/sections/product/view';
 
 // ----------------------------------------------------------------------
 
@@ -9,7 +9,7 @@ export default function ProductsPage() {
     <>
       <HelmetPro page="Products" />
 
-      <ProductsView />
+      <ProductView />
     </>
   );
 }
