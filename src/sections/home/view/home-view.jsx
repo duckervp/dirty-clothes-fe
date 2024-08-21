@@ -16,6 +16,7 @@ import LazyLoadBanner from 'src/components/product/banner';
 import ProductCard from 'src/components/product/product-card';
 import ProductSort from 'src/components/product/product-sort';
 import ProductFilters from 'src/components/product/product-filters';
+import ProductNoData from 'src/components/product/product-not-found';
 
 // ----------------------------------------------------------------------
 
@@ -101,16 +102,13 @@ export default function HomeView({ type }) {
         alignItems="center"
         flexWrap="wrap-reverse"
         justifyContent={
-          type === 'home' || (products.length === 0 && (type === 'shop' || type === 'best-seller'))
+          type === 'home'
             ? 'space-between'
             : 'flex-end'
         }
         sx={{ mt: 3, mb: 2 }}
       >
-        {type === 'home' && <Typography variant="subtitle2">ALL PRODUCTS</Typography>}
-        {products.length === 0 && (type === 'shop' || type === 'best-seller') && (
-          <Typography variant="body1">No product found.</Typography>
-        )}
+        {type === 'home' && <Typography variant="subtitle1" fontWeight="bold">ALL PRODUCTS</Typography>}
 
         <Stack
           direction="row"
@@ -129,6 +127,12 @@ export default function HomeView({ type }) {
           />
         </Stack>
       </Stack>
+
+      {products.length === 0 && (type === 'shop' || type === 'best-seller') && (
+        <Stack alignItems="center" justifyContent="center">
+          <ProductNoData query={type} />
+        </Stack>
+      )}
 
       <Grid container spacing={3}>
         {products.map((product) => (
