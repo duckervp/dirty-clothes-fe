@@ -1,4 +1,4 @@
-export const LOGO_NAME = "Việt Phục";
+export const LOGO_NAME = "Cổ Trang Việt VTT";
 
 export const BASE_URL = import.meta.env.VITE_BASE_URL;
 

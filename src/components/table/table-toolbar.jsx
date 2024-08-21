@@ -11,7 +11,7 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function TableToolbar({ numSelected, filterName, onFilterName }) {
+export default function TableToolbar({ numSelected, filterName, onFilterName, placeholder }) {
   return (
     <Toolbar
       sx={{
@@ -33,7 +33,7 @@ export default function TableToolbar({ numSelected, filterName, onFilterName }) 
         <OutlinedInput
           value={filterName}
           onChange={onFilterName}
-          placeholder="Search user..."
+          placeholder={placeholder || "Search by name..."}
           startAdornment={
             <InputAdornment position="start">
               <Iconify
@@ -52,7 +52,7 @@ export default function TableToolbar({ numSelected, filterName, onFilterName }) 
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
+        <Tooltip title="Filter list" sx={{display: "none"}}>
           <IconButton>
             <Iconify icon="ic:round-filter-list" />
           </IconButton>
@@ -66,4 +66,5 @@ TableToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,
+  placeholder: PropTypes.string,
 };

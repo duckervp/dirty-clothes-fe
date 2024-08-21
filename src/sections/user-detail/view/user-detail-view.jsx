@@ -13,16 +13,15 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
 
-import useLogin from 'src/hooks/use-login';
-
-import { handleError } from 'src/utils/notify';
+import { fDateTime } from 'src/utils/format-time';
+import { handleError, showSuccessMessage } from 'src/utils/notify';
 
 import { Role, EMAIL_REGEX } from 'src/config';
-import { useRegisterMutation } from 'src/app/api/auth/authApiSlice';
-import { useGetUserDetailMutation } from 'src/app/api/user/userApiSlice';
+import { useUpdateUserMutation, useCreateUserMutation, useDeleteUserMutation, useGetUserDetailMutation } from 'src/app/api/user/userApiSlice';
 
 import Iconify from 'src/components/iconify';
 import TitleBar from 'src/components/title-bar/TitleBar';
+import ConfirmPopup from 'src/components/modal/confirm-popup';
 
 // ----------------------------------------------------------------------
 
@@ -36,7 +35,15 @@ export default function UserDetailView() {
 
   const isDetailScreen = location.pathname.includes('detail');
 
+  const isCreateScreen = location.pathname.includes('create');
+
   const [getUserDetail] = useGetUserDetailMutation();
+
+  const [createUser, { isLoading: isCreating }] = useCreateUserMutation();
+
+  const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
+
+  const [deleteUser] = useDeleteUserMutation();
 
   const router = useRouter();
 
@@ -64,9 +71,7 @@ export default function UserDetailView() {
 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const [register, { isLoading }] = useRegisterMutation();
-
-  const handleLogin = useLogin();
+  const [updatePassword, setUpdatePassword] = useState(false);
 
   const handleStateChange = (e) => {
     const newState = { ...state };
@@ -84,17 +89,27 @@ export default function UserDetailView() {
     if (!validate()) return;
 
     try {
-      const response = await register(state).unwrap();
-      handleLogin(response);
-      router.push('/');
+      const payload = {
+        name: state.name,
+        email: state.email,
+        status: state.status,
+        role: state.role,
+        password: state.password,
+      };
+      console.log(state);
+
+      if (!isEditScreen) {
+        const { data } = await createUser(payload).unwrap();
+        showSuccessMessage(data);
+      } else {
+        const { data } = await updateUser({ id, payload }).unwrap();
+        showSuccessMessage(data);
+      }
+      router.push('/admin/user-management');
     } catch (error) {
       handleError(error);
     }
   };
-
-  // const handleLoginClick = () => {
-  //   router.push('/login');
-  // };
 
   const isIncorrectConfirmPassword = () =>
     state.password !== '' &&
@@ -108,8 +123,12 @@ export default function UserDetailView() {
     const newErr = { ...err };
     Object.keys(state).forEach((key) => {
       if (state[key] === '') {
-        newErr[key] = 'Field value required!';
-        isValid = false;
+        if (isEditScreen && !updatePassword && ['password', 'confirmPassword'].includes(key)) {
+          // do nothing
+        } else {
+          newErr[key] = 'Field value required!';
+          isValid = false;
+        }
       }
     });
 
@@ -132,7 +151,11 @@ export default function UserDetailView() {
         status: data.data.status,
         role: data.data.role,
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        createdAt: data.data.createdAt,
+        createdBy: data.data.createdBy,
+        updatedAt: data.data.updatedAt,
+        updatedBy: data.data.updatedBy,
       });
     }
 
@@ -142,13 +165,104 @@ export default function UserDetailView() {
   }, [id, getUserDetail]);
 
   const handleStatusSwitchChange = (e) => {
-    setState({...state, status: e.target.checked})
+    setState({ ...state, status: e.target.checked })
   }
 
   const handleRoleSwitchChange = (e) => {
-    const role  =  e.target.checked ? Role.ADMIN : Role.USER;
-    setState({...state, role})
+    const role = e.target.checked ? Role.ADMIN : Role.USER;
+    setState({ ...state, role })
   }
+
+  const handleEdit = () => {
+    router.push(`/admin/user-management/edit-user/${id}`);
+  }
+
+  const handleDelete = async () => {
+    try {
+      const { data } = await deleteUser(id).unwrap();
+      showSuccessMessage(data);
+      router.push('/admin/user-management/');
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  const handlePasswordUpdate = (e) => {
+    setUpdatePassword(e.target.checked);
+  }
+
+  const [popupOpen, setPopupOpen] = useState(false);
+
+  const handleCancel = () => {
+    setPopupOpen(true);
+  }
+
+  const handleConfirmCancel = () => {
+    router.push("/admin/user-management");
+    setPopupOpen(false);
+  }
+
+  const handleCancelCancel = () => {
+    setPopupOpen(false);
+  }
+
+  const renderPasswordField = (
+    <Box>
+      <Typography variant="subtitle2">
+        <span style={{ color: 'red' }}>*</span> {isEditScreen ? 'New Password' : 'Password'}
+      </Typography>
+      <TextField
+        inputRef={input => input && updatePassword && input.focus()}
+        fullWidth
+        name="password"
+        type={showPassword ? 'text' : 'password'}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+        autoComplete="false"
+        value={state.password}
+        onChange={handleStateChange}
+        error={err.password !== ''}
+        helperText={err.password !== '' && err.password}
+      />
+    </Box>
+  );
+
+  const renderConfirmPasswordField = (
+    <Box>
+      <Typography variant="subtitle2">
+        <span style={{ color: 'red' }}>*</span> Confirm Password
+      </Typography>
+      <TextField
+        fullWidth
+        name="confirmPassword"
+        type={showConfirmPassword ? 'text' : 'password'}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)} edge="end">
+                <Iconify icon={showConfirmPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+        autoComplete="false"
+        value={state.confirmPassword}
+        onChange={handleStateChange}
+        error={isIncorrectConfirmPassword() || err.confirmPassword !== ''}
+        helperText={
+          (isIncorrectConfirmPassword() && 'Confirm password does not match!') ||
+          (err.confirmPassword !== '' && err.confirmPassword)
+        }
+      />
+    </Box>
+  )
 
   const renderForm = (
     <>
@@ -165,6 +279,7 @@ export default function UserDetailView() {
             onChange={handleStateChange}
             error={err.name !== ''}
             helperText={err.name !== '' && err.name}
+            disabled={isDetailScreen}
           />
         </Box>
 
@@ -182,122 +297,112 @@ export default function UserDetailView() {
             helperText={
               (!isValidEmail() && 'Invalid email address!') || (err.email !== '' && err.email)
             }
+            disabled={isDetailScreen || isEditScreen}
           />
         </Box>
 
-        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: 160 }}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: 200 }}>
           <Typography variant="subtitle2">
-            <span style={{ color: 'red' }}>*</span> Status
+            Status
           </Typography>
-          <Switch sx={{ inputProps: { ariaLabel: 'Status switch' } }} checked={state.status} onChange={handleStatusSwitchChange} />
+          <Switch
+            sx={{ inputProps: { ariaLabel: 'Status switch' } }}
+            checked={state.status}
+            onChange={handleStatusSwitchChange}
+            disabled={isDetailScreen}
+          />
         </Stack>
 
-        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: 160 }}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: 200 }}>
           <Typography variant="subtitle2">
-            <span style={{ color: 'red' }}>*</span> Is Admin
+            Is Admin
           </Typography>
-          <Switch sx={{ inputProps: { ariaLabel: 'Role switch' } }} checked={state.role === Role.ADMIN} onChange={handleRoleSwitchChange}/>
+          <Switch
+            sx={{ inputProps: { ariaLabel: 'Role switch' } }}
+            checked={state.role === Role.ADMIN}
+            onChange={handleRoleSwitchChange}
+            disabled={isDetailScreen}
+          />
         </Stack>
 
         {
-          !isDetailScreen &&
-          <Box>
-            <Typography variant="subtitle2">
-              <span style={{ color: 'red' }}>*</span> {isEditScreen ? 'New Password' : 'Password'}
-            </Typography>
-            <TextField
-              fullWidth
-              name="password"
-              type={showPassword ? 'text' : 'password'}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                      <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              autoComplete="false"
-              value={state.password}
-              onChange={handleStateChange}
-              error={err.password !== ''}
-              helperText={err.password !== '' && err.password}
+          isEditScreen &&
+          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: 200 }}>
+            <Typography variant="subtitle2"> Change Password </Typography>
+            <Switch
+              sx={{ inputProps: { ariaLabel: 'Role switch' } }}
+              checked={updatePassword}
+              onChange={handlePasswordUpdate}
             />
-          </Box>
+          </Stack>
         }
 
-        {
-          !isDetailScreen &&
-          <Box>
-            <Typography variant="subtitle2">
-              <span style={{ color: 'red' }}>*</span> Confirm Password
-            </Typography>
-            <TextField
-              fullWidth
-              name="confirmPassword"
-              type={showConfirmPassword ? 'text' : 'password'}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)} edge="end">
-                      <Iconify icon={showConfirmPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              autoComplete="false"
-              value={state.confirmPassword}
-              onChange={handleStateChange}
-              error={isIncorrectConfirmPassword() || err.confirmPassword !== ''}
-              helperText={
-                (isIncorrectConfirmPassword() && 'Confirm password does not match!') ||
-                (err.confirmPassword !== '' && err.confirmPassword)
-              }
-            />
-          </Box>
-        }
+        {(isCreateScreen || (isEditScreen && updatePassword)) && renderPasswordField}
 
+        {(isCreateScreen || (isEditScreen && updatePassword)) && renderConfirmPasswordField}
       </Stack>
 
-      <LoadingButton
-        size="large"
-        type="submit"
-        variant="contained"
-        color="inherit"
-        onClick={handleClick}
-        sx={{ mt: 3, width: "200px", mr: 3 }}
-        loading={isLoading}
-        disabled
-      >
-        Cancel
-      </LoadingButton>
-      <LoadingButton
-        size="large"
-        type="submit"
-        variant="contained"
-        color="inherit"
-        onClick={handleClick}
-        sx={{ mt: 3, width: "200px" }}
-        loading={isLoading}
-      >
-        Save
-      </LoadingButton>
+      <Stack sx={{ mt: 3 }}>
+        {!isCreateScreen && <Typography variant="body2"> Created by: <b>{state.createdBy}</b> in <b>{fDateTime(state.createdAt)}</b></Typography>}
+        {isDetailScreen && <Typography variant="body2"> Last modified by: <b>{state.updatedBy}</b> in <b>{fDateTime(state.updatedAt)}</b></Typography>}
+      </Stack>
+
+      {
+        !isDetailScreen &&
+        <Box>
+          <LoadingButton
+            size="large"
+            type="submit"
+            variant="contained"
+            color="inherit"
+            onClick={handleCancel}
+            sx={{ mt: 3, width: "200px", mr: 3 }}
+          >
+            Cancel
+          </LoadingButton>
+          <LoadingButton
+            size="large"
+            type="submit"
+            variant="contained"
+            color="primary"
+            onClick={handleClick}
+            sx={{ mt: 3, width: "200px" }}
+            loading={isEditScreen ? isUpdating : isCreating}
+          >
+            Save
+          </LoadingButton>
+        </Box>
+      }
     </>
   );
 
+  const object = "user";
+  const action = isCreateScreen ? "creation" : "editing";
+
   return (
     <Box>
+      <ConfirmPopup
+        content={{
+          title: `CANCEL ${object.toUpperCase()} ${action.toUpperCase()}`,
+          message: `If you cancel, all unsaved data will be lost. Are you sure you want to cancel ${object} ${action}?`,
+          cancelBtnText: "NO",
+          confirmBtnText: "YES"
+        }}
+        popupOpen={popupOpen}
+        setPopupOpen={setPopupOpen}
+        handleCancel={handleCancelCancel}
+        handleConfirm={handleConfirmCancel}
+      />
       <Stack alignItems="center" justifyContent="center" >
         <Card
           sx={{
-            p: 5,
+            px: 5, pt: 2.5, pb: 5,
             width: "100%",
           }}
         >
-          {isDetailScreen && <TitleBar title="User Details" />}
-          {isEditScreen && <TitleBar title="Edit User" />}
-          {!isDetailScreen && !isEditScreen && <TitleBar title="Create User" />}
+          {isDetailScreen && <TitleBar title="User Details" screen="detail" handleEdit={handleEdit} handleDelete={handleDelete} />}
+          {isEditScreen && <TitleBar title="Edit User" screen="edit" />}
+          {isCreateScreen && <TitleBar title="Create  User" screen="create" />}
 
           {renderForm}
         </Card>

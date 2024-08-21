@@ -16,14 +16,7 @@ import { fDateTime } from 'src/utils/format-time';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
-
 // ----------------------------------------------------------------------
-
-// const cells = [{
-//   value: "",
-//   align: "",
-//   type: ""
-// }]
 
 export default function CustomTableRow({
   selected,
