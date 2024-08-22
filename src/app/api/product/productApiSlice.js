@@ -9,6 +9,7 @@ export const noTokenApiSlice = noAuthApiSlice.injectEndpoints({
         method: "GET",
         params
       }),
+      providesTags: ['Product'],
     }),
     getProductDetail: builder.query({
       query: (slug) => ({
@@ -21,22 +22,55 @@ export const noTokenApiSlice = noAuthApiSlice.injectEndpoints({
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    updatePassword: builder.mutation({
+    createProduct: builder.mutation({
       query: (payload) => ({
-        url: `/users/auth/change-password`,
-        method: "PATCH",
-        body: {...payload}
+        url: `${API.product}`,
+        method: "POST",
+        body: { ...payload }
       }),
+      invalidatesTags: ['Product'],
+    }),
+    getProductDetail: builder.mutation({
+      query: (id) => ({
+        url: `${API.product}/${id}`,
+        method: "GET"
+      }),
+    }),
+    deleteProduct: builder.mutation({
+      query: (id) => ({
+        url: `${API.product}/${id}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ['Product'],
+    }),
+    updateProduct: builder.mutation({
+      query: ({ id, payload }) => ({
+        url: `${API.product}/${id}`,
+        method: "PATCH",
+        body: { ...payload },
+      }),
+      invalidatesTags: ['Product'],
+    }),
+    deleteProducts: builder.mutation({
+      query: (ids) => ({
+        url: `${API.product}/${ids.join()}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ['Product'],
     }),
   }),
 });
 
-export const { 
-  useGetAllProductsQuery, 
+export const {
+  useGetAllProductsQuery,
   useGetProductDetailQuery
 } = noTokenApiSlice;
 
-export const { 
-  useUpdatePasswordMutation,
+export const {
+  useCreateProductMutation,
+  useGetProductDetailMutation,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
+  useDeleteProductsMutation,
 } = authApiSlice;
 

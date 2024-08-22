@@ -1,281 +1,329 @@
-import PropTypes from 'prop-types';
-import parse from 'html-react-parser';
-import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import ImageGallery from 'react-image-gallery';
+import { useParams, useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Unstable_Grid2';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import { useRouter } from 'src/routes/hooks';
 
-import { toListObj } from 'src/utils/array';
-import { showSuccessMessage } from 'src/utils/notify';
+import { fDateTime } from 'src/utils/format-time';
+import { handleError, showSuccessMessage } from 'src/utils/notify';
 
-import { useGetProductDetailQuery } from 'src/app/api/product/productApiSlice';
-import { addProductToCart, setBuyNowProduct } from 'src/app/api/cart/cartSlice';
+import { TARGET_OPTIONS, PRODUCT_STATUS_OPTIONS } from 'src/config';
+import { useUpdateProductMutation, useCreateProductMutation, useDeleteProductMutation, useGetProductDetailMutation } from 'src/app/api/product/productApiSlice';
 
-import ProductPrice from 'src/components/product/product-price';
-import QuantityButtonGroup from 'src/components/product/quantity-button-group';
+// import Iconify from 'src/components/iconify';
+import Editor from 'src/components/ckeditor/ckeditor';
+import TitleBar from 'src/components/title-bar/TitleBar';
+import ConfirmPopup from 'src/components/modal/confirm-popup';
 
-function ToggleButtons({ data, itemId, setItemId }) {
-  const [id, setId] = useState(itemId);
+import ProductDetailCategory from '../product-detail-category';
 
-  useEffect(() => {
-    setId(itemId);
-  }, [itemId]);
+// ----------------------------------------------------------------------
 
-  const handleChange = (event, nextId) => {
-    if (nextId !== null) {
-      setId(nextId);
-      setItemId(nextId);
-    }
-  };
+export default function ProductDetailView() {
 
-  return (
-    <ToggleButtonGroup orientation="horizontal" value={id} exclusive onChange={handleChange}>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-        {data.map((item) => (
-          <ToggleButton
-            key={item.id}
-            value={item.id}
-            aria-label={item.name}
-            style={{
-              border: '1px solid rgba(145, 158, 171, 0.2)',
-              borderRadius: 0,
-              width: 80,
-              padding: '5px 8px',
-            }}
-            sx={{ m: 0.5, fontWeight: 100 }}
-          >
-            {item.name}
-          </ToggleButton>
-        ))}
-      </Box>
-    </ToggleButtonGroup>
-  );
-}
+  const location = useLocation();
 
-ToggleButtons.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object),
-  itemId: PropTypes.any,
-  setItemId: PropTypes.func,
-};
+  const { id } = useParams();
 
-const mapSliderImages = (productDetailImages) => {
-  if (!productDetailImages) return [];
-  return productDetailImages.map((item) => ({
-    original: item.imageUrl,
-    thumbnail: item.imageUrl,
-  }));
-};
+  const isEditScreen = location.pathname.includes('edit');
 
-export default function ProductDetail() {
-  const { slug } = useParams();
+  const isDetailScreen = location.pathname.includes('detail');
 
-  const dispatch = useDispatch();
+  const isCreateScreen = location.pathname.includes('create');
+
+  const [getProductDetail] = useGetProductDetailMutation();
+
+  const [createProduct, { isLoading: isCreating }] = useCreateProductMutation();
+
+  const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
+
+  const [deleteProduct] = useDeleteProductMutation();
 
   const router = useRouter();
 
-  const { data: detailedProductData, error: detailedProductError } = useGetProductDetailQuery(slug);
+  const defaultState = {
+    name: "",
+    target: "",
+    status: "",
+    price: "",
+    salePrice: "",
+    description: ""
+  };
 
-  const [detailedProduct, setDetailedProduct] = useState({});
+  const defaultErrState = {
+    name: "",
+    target: "",
+    status: "",
+    price: "",
+    salePrice: "",
+    description: ""
+  };
 
-  const [imageDisplayIndex, setImageDisplayIndex] = useState(0);
+  const [state, setState] = useState(defaultState);
 
-  const [selectedColorId, setSelectedColorId] = useState(0);
+  const [productDetail, setProductDetail] = useState({});
 
-  const [selectedSize, setSelectedSize] = useState();
+  const [err, setErr] = useState(defaultErrState);
 
-  const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const [description, setDescription] = useState();
 
-  const [otherProducts] = useState([]);
+  const handleStateChange = (e) => {
+    const newState = { ...state };
+    newState[e.target.name] = e.target.value;
+    setState(newState);
+
+    if (err[e.target.name] !== '') {
+      const newErr = { ...err };
+      newErr[e.target.name] = '';
+      setErr(newErr);
+    }
+  };
+
+  const handleClick = async (e) => {
+    if (!validate()) return;
+
+    try {
+      const payload = {
+        ...state,
+        description
+      };
+      console.log(state);
+
+      if (!isEditScreen) {
+        const { data } = await createProduct(payload).unwrap();
+        showSuccessMessage(data);
+      } else {
+        const { data } = await updateProduct({ id, payload }).unwrap();
+        showSuccessMessage(data);
+      }
+      router.push('/admin/product-management');
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  const validate = () => {
+    let isValid = true;
+    const newErr = { ...err };
+    Object.keys(state).forEach((key) => {
+      if (state[key] === '') {
+        if ((key === 'description' && description !== '') || (key === 'salePrice' && state.status !== "SALE")) {
+          // do nothing
+        } else {
+          newErr[key] = 'Field value required!';
+          isValid = false;
+        }
+      }
+    });
+
+    setErr(newErr);
+
+    console.log(isValid, newErr);
+
+
+    return isValid;
+  };
 
   useEffect(() => {
-    if (detailedProductError && detailedProductError.data.code === 2000) {
-      router.push('404');
-    }
-  }, [detailedProductError, router]);
+    const fetchProductDetail = async () => {
+      const { data } = await getProductDetail(id);
+      setState({
+        name: data.data.name,
+        target: data.data.target,
+        status: data.data.status,
+        price: data.data.price,
+        salePrice: data.data.salePrice,
+        description: data.data.description,
+        createdAt: data.data.createdAt,
+        createdBy: data.data.createdBy,
+        updatedAt: data.data.updatedAt,
+        updatedBy: data.data.updatedBy,
+      });
 
-  useEffect(() => {
-    if (detailedProductData) {
-      const { data } = detailedProductData;
-      console.log(data);
-      setDetailedProduct(data);
-      if (data.images && data.images.length > 0) {
-        setSelectedColorId(data.images[0]?.colorId);
-      }
-
-      if (data.productDetails && data.productDetails.length > 0) {
-        setSelectedSize(data.productDetails[0].size);
-      }
-    }
-  }, [detailedProductData]);
-
-  useEffect(() => {
-    if (detailedProduct) {
-      const productImages = detailedProduct.images;
-      if (productImages) {
-        const image = productImages.filter((item) => item.colorId === selectedColorId)[0];
-        setImageDisplayIndex(productImages.indexOf(image));
-      }
-    }
-  }, [detailedProduct, selectedColorId]);
-
-  const hanleImageSlideChange = (index) => {
-    console.log('index', index);
-    setImageDisplayIndex(index);
-    if (detailedProduct) {
-      const productImages = detailedProduct.images;
-      if (productImages) {
-        const image = productImages[index];
-        setSelectedColorId(image.colorId);
-      }
-    }
-  };
-
-  const getSelectedProductDetail = () => {
-    if (detailedProduct.productDetails) {
-      const result = detailedProduct.productDetails.filter(
-        (item) => item.colorId === selectedColorId && item.size === selectedSize
-      );
-      if (result.length > 0) {
-        return result[0];
-      }
+      setProductDetail(data.data);
     }
 
-    return { inventory: 0, sold: 0 };
-  };
-
-  const getSelectedProductImage = () => {
-    if (detailedProduct.images) {
-      const result = detailedProduct.images.filter((item) => item.colorId === selectedColorId);
-      if (result.length > 0) {
-        return result[0];
-      }
+    if (id) {
+      fetchProductDetail();
     }
+  }, [id, getProductDetail]);
 
-    return { inventory: 0, sold: 0 };
-  };
+  const handleEdit = () => {
+    router.push(`/admin/product-management/edit-product/${id}`);
+  }
 
-  const getSelectedProductInfo = () => {
-    const productDetail = getSelectedProductDetail();
-    const productImage = getSelectedProductImage();
-    return {
-      productId: detailedProduct.id,
-      name: detailedProduct.name,
-      productDetailId: productDetail.id,
-      size: productDetail.size,
-      color: productImage.colorName,
-      image: productImage.imageUrl,
-      quantity: selectedQuantity,
-      price: detailedProduct.status === 'SALE' ? detailedProduct.salePrice : detailedProduct.price,
-      slug: detailedProduct.slug,
-    };
-  };
+  const handleDelete = async () => {
+    try {
+      const { data } = await deleteProduct(id).unwrap();
+      showSuccessMessage(data);
+      router.push('/admin/product-management/');
+    } catch (error) {
+      handleError(error);
+    }
+  }
 
-  const hanleAddToCartClick = () => {
-    const selectedProduct = getSelectedProductInfo();
-    dispatch(addProductToCart({ selectedProduct }));
+  const [popupOpen, setPopupOpen] = useState(false);
 
-    showSuccessMessage('Added product to cart successfully!');
-  };
+  const handleCancel = () => {
+    setPopupOpen(true);
+  }
 
-  const hanleBuyNowClick = () => {
-    const selectedProduct = getSelectedProductInfo();
-    dispatch(setBuyNowProduct({ selectedProduct }));
-    router.push('/payment?buyNow=true');
-  };
+  const handleConfirmCancel = () => {
+    router.push("/admin/product-management");
+    setPopupOpen(false);
+  }
+
+  const handleCancelCancel = () => {
+    setPopupOpen(false);
+  }
+
+  const renderForm = (
+    <Stack spacing={3}>
+      <Box>
+        <Typography variant="subtitle2">
+          <span style={{ color: 'red' }}>*</span> Name
+        </Typography>
+        <TextField
+          name="name"
+          fullWidth
+          autoComplete="false"
+          value={state.name}
+          onChange={handleStateChange}
+          error={err.name !== ''}
+          helperText={err.name !== '' && err.name}
+          disabled={isDetailScreen}
+        />
+      </Box>
+      <Box>
+        <Typography variant="subtitle2">
+          <span style={{ color: 'red' }}>*</span> Target
+        </Typography>
+        <Select id="select-target" value={state.target} onChange={handleStateChange} name='target' fullWidth disabled={isDetailScreen}>
+          {TARGET_OPTIONS.map(item => <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>)}
+        </Select>
+      </Box>
+      <Box>
+        <Typography variant="subtitle2">
+          <span style={{ color: 'red' }}>*</span> Status
+        </Typography>
+        <Select id="select-target" value={state.status} onChange={handleStateChange} name='status' fullWidth disabled={isDetailScreen}>
+          {PRODUCT_STATUS_OPTIONS.map(item => <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>)}
+        </Select>
+      </Box>
+      <Box>
+        <Typography variant="subtitle2">
+          <span style={{ color: 'red' }}>*</span> Price (₫)
+        </Typography>
+        <TextField
+          name="price"
+          fullWidth
+          autoComplete="false"
+          value={state.price}
+          onChange={handleStateChange}
+          error={err.price !== ''}
+          helperText={err.price !== '' && err.price}
+          disabled={isDetailScreen}
+        />
+      </Box>
+      {
+        state.status === 'SALE' &&
+        <Box>
+          <Typography variant="subtitle2">
+            <span style={{ color: 'red' }}>*</span> Sale Price (₫)
+          </Typography>
+          <TextField
+            name="salePrice"
+            fullWidth
+            autoComplete="false"
+            value={state.salePrice}
+            onChange={handleStateChange}
+            error={err.salePrice !== ''}
+            helperText={err.salePrice !== '' && err.salePrice}
+            disabled={isDetailScreen}
+          />
+        </Box>
+      }
+
+    </Stack>
+  );
+
+  const object = "product";
+  const action = isCreateScreen ? "creation" : "editing";
 
   return (
-    <Container sx={{ py: 5 }}>
-      <Grid container spacing={5}>
-        <Grid xs={12} sm={12} md={8}>
-          <ImageGallery
-            items={mapSliderImages(detailedProduct?.images)}
-            showFullscreenButton={false}
-            showPlayButton={false}
-            showNav={false}
-            startIndex={imageDisplayIndex}
-            onSlide={hanleImageSlideChange}
-          />
-        </Grid>
-        <Grid xs={12} sm={12} md={4}>
-          <Typography variant="h4" textAlign="center" fontWeight={500} marginBottom={0.5}>
-            {detailedProduct?.name}
-          </Typography>
+    <Box>
+      <ConfirmPopup
+        content={{
+          title: `CANCEL ${object.toUpperCase()} ${action.toUpperCase()}`,
+          message: `If you cancel, all unsaved data will be lost. Are you sure you want to cancel ${object} ${action}?`,
+          cancelBtnText: "NO",
+          confirmBtnText: "YES"
+        }}
+        popupOpen={popupOpen}
+        setPopupOpen={setPopupOpen}
+        handleCancel={handleCancelCancel}
+        handleConfirm={handleConfirmCancel}
+      />
+      <Stack alignItems="center" justifyContent="center" >
+        <Card
+          sx={{
+            px: 5, pt: 2.5, pb: 5,
+            width: "100%",
+          }}
+        >
+          {isDetailScreen && <TitleBar title="Product Details" screen="detail" handleEdit={handleEdit} handleDelete={handleDelete} />}
+          {isEditScreen && <TitleBar title="Edit Product" screen="edit" />}
+          {isCreateScreen && <TitleBar title="Create  Product" screen="create" />}
 
-          <ProductPrice
-            product={detailedProduct}
-            sx={{ textAlign: 'center', fontWeight: 300, mb: 1 }}
-          />
+          {renderForm}
 
-          <Box marginBottom={1}>
-            <ToggleButtons
-              data={toListObj(detailedProduct?.images, 'colorId', 'colorName')}
-              itemId={selectedColorId}
-              setItemId={setSelectedColorId}
-            />
-          </Box>
-          <Box marginBottom={1}>
-            <ToggleButtons
-              data={toListObj(detailedProduct?.productDetails, 'size', 'size')}
-              itemId={selectedSize}
-              setItemId={setSelectedSize}
-            />
-          </Box>
+          <Stack spacing={3} sx={{ mt: 3 }}>
+            <ProductDetailCategory categories={productDetail.categories} disabled={isDetailScreen} />
 
-          <Stack direction="row" justifyContent="center" sx={{ py: 2 }}>
-            <QuantityButtonGroup value={selectedQuantity} setValue={setSelectedQuantity} />
+            <Editor label='Description' data={state.description} setData={setDescription} disabled={isDetailScreen} />
+            
+            <Stack>
+              {!isCreateScreen && <Typography variant="body2"> Created by: <b>{state.createdBy}</b> in <b>{fDateTime(state.createdAt)}</b></Typography>}
+              {isDetailScreen && <Typography variant="body2"> Last modified by: <b>{state.updatedBy}</b> in <b>{fDateTime(state.updatedAt)}</b></Typography>}
+            </Stack>
+
+            {
+              !isDetailScreen &&
+              <Box>
+                <LoadingButton
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  color="inherit"
+                  onClick={handleCancel}
+                  sx={{ mt: 3, width: "200px", mr: 3 }}
+                >
+                  Cancel
+                </LoadingButton>
+                <LoadingButton
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  onClick={handleClick}
+                  sx={{ mt: 3, width: "200px" }}
+                  loading={isEditScreen ? isUpdating : isCreating}
+                >
+                  Save
+                </LoadingButton>
+              </Box>
+            }
           </Stack>
-
-          <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
-            <Typography variant="body2">
-              Inventory: {getSelectedProductDetail()?.inventory}
-            </Typography>
-            <Typography variant="body2">Sold: {getSelectedProductDetail()?.sold}</Typography>
-          </Stack>
-
-          <Button
-            variant="outlined"
-            fullWidth
-            sx={{ borderRadius: '5px', mb: 1.5 }}
-            color="inherit"
-            onClick={hanleAddToCartClick}
-          >
-            ADD TO CART
-          </Button>
-          <Button
-            variant="contained"
-            fullWidth
-            sx={{
-              borderRadius: '5px',
-              background: 'black',
-              '&:hover': { backgroundColor: '#31363F' },
-            }}
-            onClick={hanleBuyNowClick}
-          >
-            BUY NOW
-          </Button>
-
-          <Box sx={{ mt: 2 }}>
-            {/* <Typography sx={{ fontWeight: 'bold' }}>Description</Typography> */}
-            {parse(detailedProduct?.description || '')}
-          </Box>
-        </Grid>
-      </Grid>
-      {otherProducts.length > 0 && (
-        <Box>
-          <Typography variant="h5">Other products</Typography>
-        </Box>
-      )}
-    </Container>
+        </Card>
+      </Stack>
+    </Box>
   );
 }

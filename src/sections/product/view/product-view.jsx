@@ -14,13 +14,16 @@ import PaginationItem from '@mui/material/PaginationItem';
 
 import { useRouter } from 'src/routes/hooks';
 
+import { fViCurrency } from 'src/utils/format-number';
+import { handleError, showSuccessMessage } from 'src/utils/notify';
+
 import { PAGE_SIZE } from 'src/config';
-import { users } from 'src/_mock/user';
 import { useGetAllProductsQuery } from 'src/app/api/product/productApiSlice';
+import { useDeleteUserMutation, useDeleteUsersMutation } from 'src/app/api/user/userApiSlice';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
-import { emptyRows } from 'src/components/table/utils';
+import Loading from 'src/components/auth/Loading';
 import CustomTableRow from 'src/components/table/table-row';
 import TableNoData from 'src/components/table/table-no-data';
 import CustomTableHead from 'src/components/table/table-head';
@@ -49,20 +52,26 @@ export default function ProductView() {
 
   const [nameFilter, setNameFilter] = useState('');
 
-  const { data: userData } = useGetAllProductsQuery({
+  const [deleteMultipleItems, setDeleteMultipleItems] = useState(false);
+
+  const { data: productData, isLoading } = useGetAllProductsQuery({
     pageNo: page - 1,
     pageSize: PAGE_SIZE,
     sort: order,
     sortBy: orderBy,
-    name: nameFilter !== '' ? nameFilter : undefined
+    name: nameFilter.trim() !== '' ? nameFilter : undefined
   });
 
   useEffect(() => {
-    if (userData) {
-      const { totalPages } = userData.data;
+    if (productData) {
+      const { totalPages } = productData.data;
       setTotalPage(totalPages);
     }
-  }, [userData]);
+  }, [productData]);
+
+  const [deleteUser] = useDeleteUserMutation();
+
+  const [deleteUsers] = useDeleteUsersMutation();
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -74,7 +83,7 @@ export default function ProductView() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.name);
+      const newSelecteds = productData?.data?.content?.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -115,19 +124,24 @@ export default function ProductView() {
 
   //----------------------
   const handleEdit = (id) => {
-    router.push(`/admin/user-management/edit-user/${id}`);
+    router.push(`/admin/product-management/edit-product/${id}`);
   }
 
-  const handleDelete = (id) => {
-    console.log("delete: ", id)
+  const handleDelete = async (id) => {
+    try {
+      const { data } = await deleteUser(id).unwrap();
+      showSuccessMessage(data);
+    } catch (error) {
+      handleError(error);
+    }
   }
 
   const handleCreateNew = () => {
-    router.push(`/admin/user-management/create-user`);
+    router.push(`/admin/product-management/create-product`);
   }
 
   const handleRowClick = (id) => {
-    router.push(`/admin/user-management/user-details/${id}`);
+    router.push(`/admin/product-management/product-details/${id}`);
   }
 
   const [deleteCfOpen, setDeleteCfOpen] = useState(false);
@@ -140,36 +154,61 @@ export default function ProductView() {
 
   const handleCloseDeleteCfMenu = () => {
     setDeleteCfOpen(false);
+    setDeleteMultipleItems(false);
   };
 
   const handleConfirmDelete = () => {
-    handleDelete(deleteId);
-    handleCloseDeleteCfMenu();
+    if (deleteMultipleItems) {
+      handleDeleteSelectedItems();
+      setDeleteMultipleItems(false);
+      handleCloseDeleteCfMenu();
+      setSelected([]);
+    } else {
+      handleDelete(deleteId);
+      handleCloseDeleteCfMenu();
+    }
+  }
+
+  const handleDeleteMultipleItems = () => {
+    setDeleteCfOpen(true);
+    setDeleteMultipleItems(true);
+  }
+
+  const handleDeleteSelectedItems = async () => {
+    try {
+      const { data } = await deleteUsers(selected).unwrap();
+      showSuccessMessage(data);
+    } catch (error) {
+      handleError(error);
+    }
   }
 
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Users</Typography>
+        <Typography variant="h4">Products</Typography>
 
         <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleCreateNew}>
-          New User
+          New Product
         </Button>
       </Stack>
 
       <DeleteConfirmPopup
-        object="user"
+        object={deleteMultipleItems && selected.length > 1 ? "products" : "product"}
+        plural={deleteMultipleItems && selected.length > 1}
         popupOpen={deleteCfOpen}
         setPopupOpen={setDeleteCfOpen}
         handleCancel={handleCloseDeleteCfMenu}
         handleConfirm={handleConfirmDelete}
       />
 
+      {isLoading && <Loading type='linear' />}
       <Card>
         <TableToolbar
           numSelected={selected.length}
           filterName={filterName}
           onFilterName={handleFilterByName}
+          handleDeleteMultipleItems={handleDeleteMultipleItems}
         />
 
         <Scrollbar>
@@ -178,33 +217,33 @@ export default function ProductView() {
               <CustomTableHead
                 order={order}
                 orderBy={orderBy}
-                rowCount={users.length}
+                rowCount={productData?.data?.content?.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'name', label: 'Name' },
-                  { id: 'email', label: 'Email' },
-                  { id: 'role', label: 'Role' },
+                  { id: 'price', label: 'Price' },
+                  { id: 'sale', label: 'Sale Price' },
                   { id: 'status', label: 'Status', align: "center" },
                   { id: 'createdAt', label: 'Created Date', align: "center" },
                   { id: '' },
                 ]}
               />
-              <TableBody>
-                {userData?.data?.content
+              {!isLoading && <TableBody>
+                {productData?.data?.content
                   .map((row) => (
                     <CustomTableRow
                       key={row.id}
                       cells={[
-                        { value: row.name, type: "composite", imgUrl: row.avatarUrl },
-                        { value: row.email },
-                        { value: row.role },
-                        { value: row.status, type: "status", align: "center" },
+                        { value: row.name, type: "composite2", imgUrl: row.avatarUrl },
+                        { value: fViCurrency(row.price) },
+                        { value: fViCurrency(row.salePrice)},
+                        { value: row.status, align: "center" },
                         { value: row.createdAt, type: "datetime", align: "center" },
                       ]}
-                      selected={selected.indexOf(row.name) !== -1}
-                      handleClick={(event) => handleClick(event, row.name)}
+                      selected={selected.indexOf(row.id) !== -1}
+                      handleClick={(event) => handleClick(event, row.id)}
                       handleEdit={() => handleEdit(row.id)}
                       handleDelete={() => handleDeleteCfOpenMenu(row.id)}
                       handleRowClick={() => handleRowClick(row.id)}
@@ -213,11 +252,10 @@ export default function ProductView() {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, 1, users.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
-              </TableBody>
+              </TableBody>}
             </Table>
           </TableContainer>
         </Scrollbar>

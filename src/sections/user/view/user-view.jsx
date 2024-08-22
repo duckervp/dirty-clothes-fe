@@ -21,7 +21,7 @@ import { useGetAllUsersQuery, useDeleteUserMutation, useDeleteUsersMutation } fr
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
-import { emptyRows } from 'src/components/table/utils';
+import Loading from 'src/components/auth/Loading';
 import CustomTableRow from 'src/components/table/table-row';
 import TableNoData from 'src/components/table/table-no-data';
 import CustomTableHead from 'src/components/table/table-head';
@@ -52,7 +52,7 @@ export default function UserPage() {
 
   const [deleteMultipleItems, setDeleteMultipleItems] = useState(false);
 
-  const { data: userData } = useGetAllUsersQuery({
+  const { data: userData, isLoading } = useGetAllUsersQuery({
     pageNo: page - 1,
     pageSize: PAGE_SIZE,
     sort: order,
@@ -200,6 +200,7 @@ export default function UserPage() {
         handleConfirm={handleConfirmDelete}
       />
 
+      {isLoading && <Loading type='linear'/>}
       <Card>
         <TableToolbar
           numSelected={selected.length}
@@ -227,7 +228,7 @@ export default function UserPage() {
                   { id: '' },
                 ]}
               />
-              <TableBody>
+              {!isLoading && <TableBody>
                 {userData?.data?.content
                   .map((row) => (
                     <CustomTableRow
@@ -249,11 +250,10 @@ export default function UserPage() {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, 1, userData?.data?.content?.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
-              </TableBody>
+              </TableBody>}
             </Table>
           </TableContainer>
         </Scrollbar>

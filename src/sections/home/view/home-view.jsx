@@ -12,6 +12,7 @@ import PaginationItem from '@mui/material/PaginationItem';
 import { PAGE_SIZE } from 'src/config';
 import { useGetAllProductsQuery } from 'src/app/api/product/productApiSlice';
 
+import Loading from 'src/components/auth/Loading';
 import LazyLoadBanner from 'src/components/product/banner';
 import ProductCard from 'src/components/product/product-card';
 import ProductSort from 'src/components/product/product-sort';
@@ -75,7 +76,7 @@ export default function HomeView({ type }) {
     return param;
   };
 
-  const { data: productData } = useGetAllProductsQuery(getParam());
+  const { data: productData, isLoading } = useGetAllProductsQuery(getParam());
 
   useEffect(() => {
     if (productData) {
@@ -134,13 +135,18 @@ export default function HomeView({ type }) {
         </Stack>
       )}
 
-      <Grid container spacing={3}>
-        {products.map((product) => (
-          <Grid key={product.id} xs={12} sm={6} md={3}>
-            <ProductCard product={product} />
+      {
+        isLoading ?
+          <Loading />
+          :
+          <Grid container spacing={3}>
+            {products.map((product) => (
+              <Grid key={product.id} xs={12} sm={6} md={3}>
+                <ProductCard product={product} />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+      }
 
       {totalPage > 1 && (
         <Stack

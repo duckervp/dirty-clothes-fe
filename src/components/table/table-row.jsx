@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Popover from '@mui/material/Popover';
@@ -58,7 +59,7 @@ export default function CustomTableRow({
             if (cell.type === "datetime") {
               return (
                 <TableCell key={cell.value} align={cell.align} onClick={handleRowClick}>
-                  {fDateTime(cell.value)}
+                  {fDateTime(cell.value) || "-"}
                 </TableCell>
               );
             }
@@ -77,7 +78,29 @@ export default function CustomTableRow({
                   <Stack direction="row" alignItems="center" spacing={2}>
                     <Avatar alt={cell.value} src={cell.imgUrl} />
                     <Typography variant="subtitle2" noWrap>
-                      {cell.value}
+                      {cell.value || "-"}
+                    </Typography>
+                  </Stack>
+                </TableCell>
+              );
+            }
+
+            if (cell.type === "composite2") {
+              return (
+                <TableCell key={cell.value} component="th" scope="row" padding="none" align={cell.align} onClick={handleRowClick}>
+                  <Stack direction="row" alignItems="center" spacing={2}>
+                    <Box
+                      component="img"
+                      alt={cell.value}
+                      src={cell.imgUrl}
+                      sx={{
+                        height: '65px',
+                        objectFit: 'cover',
+                        borderRadius: '5px',
+                      }}
+                    />
+                    <Typography variant="subtitle2" noWrap>
+                      {cell.value || "-"}
                     </Typography>
                   </Stack>
                 </TableCell>
@@ -89,7 +112,7 @@ export default function CustomTableRow({
             }
 
             return (
-              <TableCell key={cell.value} align={cell.align} onClick={handleRowClick}>{cell.value}</TableCell>
+              <TableCell key={cell.value} align={cell.align} onClick={handleRowClick}>{cell.value || "-"}</TableCell>
             );
           })
         }

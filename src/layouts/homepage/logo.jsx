@@ -10,7 +10,7 @@ export default function Logo({ sx }) {
     <Box
       component={Link}
       sx={{
-        color: 'white',
+        color: 'black',
         px: 2,
         py: 1,
         fontFamily: 'Pacifico',
@@ -18,7 +18,6 @@ export default function Logo({ sx }) {
         mx: 3,
         textDecoration: 'none',
         fontSize: '20px',
-        background: 'black',
         borderRadius: 0.5,
         ...sx,
       }}
