@@ -18,8 +18,7 @@ import { fViCurrency } from 'src/utils/format-number';
 import { handleError, showSuccessMessage } from 'src/utils/notify';
 
 import { PAGE_SIZE } from 'src/config';
-import { useGetAllProductsQuery } from 'src/app/api/product/productApiSlice';
-import { useDeleteUserMutation, useDeleteUsersMutation } from 'src/app/api/user/userApiSlice';
+import { useGetAllProductsQuery, useDeleteProductMutation, useDeleteProductsMutation } from 'src/app/api/product/productApiSlice';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -69,9 +68,9 @@ export default function ProductView() {
     }
   }, [productData]);
 
-  const [deleteUser] = useDeleteUserMutation();
+  const [deleteProduct] = useDeleteProductMutation();
 
-  const [deleteUsers] = useDeleteUsersMutation();
+  const [deleteProducts] = useDeleteProductsMutation();
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -129,7 +128,7 @@ export default function ProductView() {
 
   const handleDelete = async (id) => {
     try {
-      const { data } = await deleteUser(id).unwrap();
+      const { data } = await deleteProduct(id).unwrap();
       showSuccessMessage(data);
     } catch (error) {
       handleError(error);
@@ -176,7 +175,7 @@ export default function ProductView() {
 
   const handleDeleteSelectedItems = async () => {
     try {
-      const { data } = await deleteUsers(selected).unwrap();
+      const { data } = await deleteProducts(selected).unwrap();
       showSuccessMessage(data);
     } catch (error) {
       handleError(error);
@@ -238,7 +237,7 @@ export default function ProductView() {
                       cells={[
                         { value: row.name, type: "composite2", imgUrl: row.avatarUrl },
                         { value: fViCurrency(row.price) },
-                        { value: fViCurrency(row.salePrice)},
+                        { value: fViCurrency(row.salePrice) },
                         { value: row.status, align: "center" },
                         { value: row.createdAt, type: "datetime", align: "center" },
                       ]}

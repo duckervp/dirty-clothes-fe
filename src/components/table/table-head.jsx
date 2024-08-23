@@ -19,6 +19,7 @@ export default function CustomTableHead({
   numSelected,
   onRequestSort,
   onSelectAllClick,
+  disabled
 }) {
   const onSort = (property) => (event) => {
     onRequestSort(event, property);
@@ -27,13 +28,14 @@ export default function CustomTableHead({
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+
+        {!disabled && <TableCell padding="checkbox">
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
           />
-        </TableCell>
+        </TableCell>}
 
         {headLabel.map((headCell) => (
           <TableCell
@@ -70,4 +72,5 @@ CustomTableHead.propTypes = {
   numSelected: PropTypes.number,
   onRequestSort: PropTypes.func,
   onSelectAllClick: PropTypes.func,
+  disabled: PropTypes.bool,
 };

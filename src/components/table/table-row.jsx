@@ -17,6 +17,8 @@ import { fDateTime } from 'src/utils/format-time';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
+import { ColorPreview } from '../color-utils';
+
 // ----------------------------------------------------------------------
 
 export default function CustomTableRow({
@@ -25,7 +27,8 @@ export default function CustomTableRow({
   handleClick,
   handleEdit,
   handleDelete,
-  handleRowClick
+  handleRowClick,
+  disabled
 }) {
   const [open, setOpen] = useState(null);
 
@@ -50,23 +53,35 @@ export default function CustomTableRow({
   return (
     <>
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
-        <TableCell padding="checkbox">
-          <Checkbox disableRipple checked={selected} onChange={handleClick} />
-        </TableCell>
-
+        {!disabled &&
+          <TableCell padding="checkbox">
+            <Checkbox disableRipple checked={selected} onChange={handleClick} />
+          </TableCell>
+        }
         {
-          cells.map(cell => {
+          cells.map((cell, index) => {
+            if (cell.type === "color") {
+              return (
+                <TableCell key={index} align={cell.align} onClick={handleRowClick}>
+                  <Stack direction="row" alignItems="center" spacing={2}>
+                    <ColorPreview colors={[cell.value]} />
+                    <Typography variant='body2'>{cell.label}</Typography>
+                  </Stack>
+                </TableCell>
+              );
+            }
+
             if (cell.type === "datetime") {
               return (
-                <TableCell key={cell.value} align={cell.align} onClick={handleRowClick}>
-                  {fDateTime(cell.value) || "-"}
+                <TableCell key={index} align={cell.align} onClick={handleRowClick}>
+                  <Typography variant='body2'>{fDateTime(cell.value) || "-"}</Typography>
                 </TableCell>
               );
             }
 
             if (cell.type === "status") {
               return (
-                <TableCell key={cell.value} align={cell.align} onClick={handleRowClick}>
+                <TableCell key={index} align={cell.align} onClick={handleRowClick}>
                   <Label color={(cell.value === false && 'error') || 'success'}>{cell.value ? "ACTIVE" : "INACTIVE"}</Label>
                 </TableCell>
               );
@@ -74,7 +89,7 @@ export default function CustomTableRow({
 
             if (cell.type === "composite") {
               return (
-                <TableCell key={cell.value} component="th" scope="row" padding="none" align={cell.align} onClick={handleRowClick}>
+                <TableCell key={index} component="th" scope="row" padding="none" align={cell.align} onClick={handleRowClick}>
                   <Stack direction="row" alignItems="center" spacing={2}>
                     <Avatar alt={cell.value} src={cell.imgUrl} />
                     <Typography variant="subtitle2" noWrap>
@@ -87,7 +102,7 @@ export default function CustomTableRow({
 
             if (cell.type === "composite2") {
               return (
-                <TableCell key={cell.value} component="th" scope="row" padding="none" align={cell.align} onClick={handleRowClick}>
+                <TableCell key={index} component="th" scope="row" padding="none" align={cell.align} onClick={handleRowClick}>
                   <Stack direction="row" alignItems="center" spacing={2}>
                     <Box
                       component="img"
@@ -107,21 +122,44 @@ export default function CustomTableRow({
               );
             }
 
+            if (cell.type === "image") {
+              return (
+                <TableCell key={index} component="th" scope="row" padding="none" align={cell.align} onClick={handleRowClick}>
+                  <Stack direction="row" alignItems="center" justifyContent={cell.align} spacing={2}>
+                    <Box
+                      component="img"
+                      alt="product image"
+                      src={cell.value}
+                      sx={{
+                        height: '65px',
+                        objectFit: 'cover',
+                        borderRadius: '5px',
+                      }}
+                    />
+                  </Stack>
+                </TableCell>
+              );
+            }
+
             if (cell.type === "yn") {
-              return <TableCell key={cell.value} align={cell.align} onClick={handleRowClick}>{cell.value ? 'Yes' : 'No'}</TableCell>;
+              return (<TableCell key={index} align={cell.align} onClick={handleRowClick}>
+                <Typography variant='body2'>{cell.value ? 'Yes' : 'No'}</Typography>
+              </TableCell>);
             }
 
             return (
-              <TableCell key={cell.value} align={cell.align} onClick={handleRowClick}>{cell.value || "-"}</TableCell>
+              <TableCell key={index} align={cell.align} onClick={handleRowClick}>
+                <Typography variant='body2'>{cell.value || "-"}</Typography>
+              </TableCell>
             );
           })
         }
 
-        <TableCell align="right">
+        {!disabled && <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>
-        </TableCell>
+        </TableCell>}
       </TableRow>
 
       <Popover
@@ -156,5 +194,6 @@ CustomTableRow.propTypes = {
   selected: PropTypes.any,
   handleEdit: PropTypes.func,
   handleDelete: PropTypes.func,
-  handleRowClick: PropTypes.func
+  handleRowClick: PropTypes.func,
+  disabled: PropTypes.bool,
 };

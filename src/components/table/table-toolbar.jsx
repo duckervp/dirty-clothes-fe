@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -12,6 +13,28 @@ import Iconify from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 export default function TableToolbar({ numSelected, filterName, onFilterName, placeholder, handleDeleteMultipleItems }) {
+  const renderFilter = (
+    filterName ?
+      <OutlinedInput
+        value={filterName}
+        onChange={onFilterName}
+        placeholder={placeholder || "Search by name..."}
+        startAdornment={
+          <InputAdornment position="start">
+            <Iconify
+              icon="eva:search-fill"
+              sx={{ color: 'text.disabled', width: 20, height: 20 }}
+            />
+          </InputAdornment>
+        }
+      />
+      : <Box />
+  )
+
+  if (numSelected === 0) {
+    return <Box/>;
+  }
+
   return (
     <Toolbar
       sx={{
@@ -29,21 +52,7 @@ export default function TableToolbar({ numSelected, filterName, onFilterName, pl
         <Typography component="div" variant="subtitle1">
           {numSelected} selected
         </Typography>
-      ) : (
-        <OutlinedInput
-          value={filterName}
-          onChange={onFilterName}
-          placeholder={placeholder || "Search by name..."}
-          startAdornment={
-            <InputAdornment position="start">
-              <Iconify
-                icon="eva:search-fill"
-                sx={{ color: 'text.disabled', width: 20, height: 20 }}
-              />
-            </InputAdornment>
-          }
-        />
-      )}
+      ) : renderFilter}
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
@@ -52,7 +61,7 @@ export default function TableToolbar({ numSelected, filterName, onFilterName, pl
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list" sx={{display: "none"}}>
+        <Tooltip title="Filter list" sx={{ display: "none" }}>
           <IconButton>
             <Iconify icon="ic:round-filter-list" />
           </IconButton>

@@ -15,7 +15,7 @@ import { useRouter } from 'src/routes/hooks';
 import { fDateTime } from 'src/utils/format-time';
 import { handleError, showSuccessMessage } from 'src/utils/notify';
 
-import { TARGET_OPTIONS, PRODUCT_STATUS_OPTIONS } from 'src/config';
+import { SIZE_OPTIONS, TARGET_OPTIONS, PRODUCT_STATUS_OPTIONS } from 'src/config';
 import { useUpdateProductMutation, useCreateProductMutation, useDeleteProductMutation, useGetProductDetailMutation } from 'src/app/api/product/productApiSlice';
 
 // import Iconify from 'src/components/iconify';
@@ -23,6 +23,8 @@ import Editor from 'src/components/ckeditor/ckeditor';
 import TitleBar from 'src/components/title-bar/TitleBar';
 import ConfirmPopup from 'src/components/modal/confirm-popup';
 
+import ProductDetailItem from '../product-detail-item';
+import ProductDetailImage from '../product-detail-image';
 import ProductDetailCategory from '../product-detail-category';
 
 // ----------------------------------------------------------------------
@@ -71,13 +73,21 @@ export default function ProductDetailView() {
 
   const [productDetail, setProductDetail] = useState({});
 
+  const [productDetailItems, setProductDetailItems] = useState([]);
+
+  const [productDetailImages, setProductDetailImages] = useState([]);
+
+  const [categories, setCategories] = useState([]);
+  console.log(categories);
+  
+
   const [err, setErr] = useState(defaultErrState);
 
   const [description, setDescription] = useState();
 
   const handleStateChange = (e) => {
     const newState = { ...state };
-    newState[e.target.name] = e.target.value;
+    newState[e.target.name] = e.target.type === 'number' ? parseInt(e.target.value, 10) : e.target.value;
     setState(newState);
 
     if (err[e.target.name] !== '') {
@@ -91,11 +101,23 @@ export default function ProductDetailView() {
     if (!validate()) return;
 
     try {
+
+      const productDetails = [];
+      productDetailItems.forEach(item => {
+        SIZE_OPTIONS.forEach(sz => {
+          if (item.size === sz.label) {
+            const newItem = { ...item, size: sz.value };
+            productDetails.push(newItem);
+          }
+        })
+      });
       const payload = {
         ...state,
-        description
+        description,
+        productDetails,
+        images: productDetailImages
       };
-      console.log(state);
+      console.log(payload);
 
       if (!isEditScreen) {
         const { data } = await createProduct(payload).unwrap();
@@ -104,7 +126,7 @@ export default function ProductDetailView() {
         const { data } = await updateProduct({ id, payload }).unwrap();
         showSuccessMessage(data);
       }
-      router.push('/admin/product-management');
+      // router.push('/admin/product-management');
     } catch (error) {
       handleError(error);
     }
@@ -149,6 +171,9 @@ export default function ProductDetailView() {
       });
 
       setProductDetail(data.data);
+      setCategories(data.data.categories);
+      setProductDetailItems(data.data.productDetails);
+      setProductDetailImages(data.data.images);
     }
 
     if (id) {
@@ -231,6 +256,7 @@ export default function ProductDetailView() {
           error={err.price !== ''}
           helperText={err.price !== '' && err.price}
           disabled={isDetailScreen}
+          type='number'
         />
       </Box>
       {
@@ -248,6 +274,7 @@ export default function ProductDetailView() {
             error={err.salePrice !== ''}
             helperText={err.salePrice !== '' && err.salePrice}
             disabled={isDetailScreen}
+            type='number'
           />
         </Box>
       }
@@ -275,21 +302,30 @@ export default function ProductDetailView() {
       <Stack alignItems="center" justifyContent="center" >
         <Card
           sx={{
-            px: 5, pt: 2.5, pb: 5,
+            pt: 2.5, pb: 5,
             width: "100%",
           }}
         >
-          {isDetailScreen && <TitleBar title="Product Details" screen="detail" handleEdit={handleEdit} handleDelete={handleDelete} />}
-          {isEditScreen && <TitleBar title="Edit Product" screen="edit" />}
-          {isCreateScreen && <TitleBar title="Create  Product" screen="create" />}
+          <Box sx={{ px: 5, }}>
+            {isDetailScreen && <TitleBar title="Product Details" screen="detail" handleEdit={handleEdit} handleDelete={handleDelete} />}
+            {isEditScreen && <TitleBar title="Edit Product" screen="edit" />}
+            {isCreateScreen && <TitleBar title="Create  Product" screen="create" />}
 
-          {renderForm}
+            {renderForm}
+          </Box>
 
-          <Stack spacing={3} sx={{ mt: 3 }}>
-            <ProductDetailCategory categories={productDetail.categories} disabled={isDetailScreen} />
-
+          <Stack spacing={3} sx={{ mt: 3, px: 5, }}>
+            <ProductDetailCategory categories={productDetail.categories} disabled={isDetailScreen} setCategories={setCategories} />
+          </Stack>
+          <Stack spacing={3} sx={{ mt: 3, px: 5, pt: 2, pb: 5, background: "#E7FBE6" }}>
+            <ProductDetailItem productDetailItems={productDetailItems} setProductDetailItems={setProductDetailItems} disabled={isDetailScreen} />
+          </Stack>
+          <Stack spacing={3} sx={{ mt: 3, px: 5, pt: 2, pb: 5, background: "#E7FBE6" }}>
+            <ProductDetailImage productDetailImages={productDetailImages} setProductDetailImages={setProductDetailImages} disabled={isDetailScreen} />
+          </Stack>
+          <Stack spacing={3} sx={{ mt: 3, px: 5, }}>
             <Editor label='Description' data={state.description} setData={setDescription} disabled={isDetailScreen} />
-            
+
             <Stack>
               {!isCreateScreen && <Typography variant="body2"> Created by: <b>{state.createdBy}</b> in <b>{fDateTime(state.createdAt)}</b></Typography>}
               {isDetailScreen && <Typography variant="body2"> Last modified by: <b>{state.updatedBy}</b> in <b>{fDateTime(state.updatedAt)}</b></Typography>}
