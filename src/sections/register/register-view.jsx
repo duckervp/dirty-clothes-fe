@@ -22,7 +22,7 @@ import { useRegisterMutation } from 'src/app/api/auth/authApiSlice';
 
 import Iconify from 'src/components/iconify';
 
-import { LOGO_NAME, EMAIL_REGEX } from '../../config';
+import { LOGO_FONT, LOGO_NAME, EMAIL_REGEX } from '../../config';
 
 // ----------------------------------------------------------------------
 
@@ -216,7 +216,7 @@ export default function RegisterView() {
         >
           <Stack direction="row" alignItems="center">
             <Typography variant="h4">Register to </Typography>
-            <Typography variant="h4" sx={{ ml: 1, fontFamily: 'Dancing Script', display: 'inline'}}>
+            <Typography variant="h4" sx={{ ml: 1, fontFamily: LOGO_FONT, display: 'inline' }}>
               {LOGO_NAME}
             </Typography>
           </Stack>
@@ -227,44 +227,6 @@ export default function RegisterView() {
               Login
             </Link>
           </Typography>
-
-          {/* <Stack direction="row" spacing={2}>
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:google-fill" color="#DF3E30" />
-            </Button>
-
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:facebook-fill" color="#1877F2" />
-            </Button>
-
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:twitter-fill" color="#1C9CEA" />
-            </Button>
-          </Stack>
-
-          <Divider sx={{ my: 3 }}>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              OR
-            </Typography>
-          </Divider> */}
 
           {renderForm}
         </Card>

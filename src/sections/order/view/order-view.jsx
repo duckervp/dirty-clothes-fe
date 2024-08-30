@@ -204,6 +204,7 @@ function OrderItemTable({ orderItems, handleOrderClick }) {
                     src={item?.firstItem?.imageUrl}
                     sx={{
                       height: '150px',
+                      width: '150px',
                       objectFit: 'cover',
                       borderRadius: '5px',
                     }}

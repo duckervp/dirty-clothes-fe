@@ -75,6 +75,11 @@ export default function AccountPopover() {
     }
   };
 
+  const handleRegisterClick = () => {
+    handleClose();
+    router.push('/register');
+  };
+
   const handleNavClick = (link) => {
     handleClose();
     router.push(link);
@@ -172,9 +177,22 @@ export default function AccountPopover() {
           disableRipple
           disableTouchRipple
           onClick={handleClick}
-          sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
+          sx={
+            user ?
+              { typography: 'body2', color: 'error.main', py: 1.5 }
+              : { typography: 'body2', py: 1.5 }
+          }
         >
           {user ? 'Logout' : 'Login'}
+        </MenuItem>
+
+        <MenuItem
+          disableRipple
+          disableTouchRipple
+          onClick={handleRegisterClick}
+          sx={{ typography: 'body2', py: 1.5 }}
+        >
+          {!user && 'Register'}
         </MenuItem>
       </Popover>
     </>

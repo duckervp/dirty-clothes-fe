@@ -22,6 +22,7 @@ import { useUpdateProductMutation, useCreateProductMutation, useDeleteProductMut
 import Editor from 'src/components/ckeditor/ckeditor';
 import TitleBar from 'src/components/title-bar/TitleBar';
 import ConfirmPopup from 'src/components/modal/confirm-popup';
+import ImageUploader from 'src/components/uploader/image-upload';
 
 import ProductDetailItem from '../product-detail-item';
 import ProductDetailImage from '../product-detail-image';
@@ -57,7 +58,8 @@ export default function ProductDetailView() {
     status: "",
     price: "",
     salePrice: "",
-    description: ""
+    description: "",
+    avatarUrl: "",
   };
 
   const defaultErrState = {
@@ -66,7 +68,8 @@ export default function ProductDetailView() {
     status: "",
     price: "",
     salePrice: "",
-    description: ""
+    description: "",
+    avatarUrl: "",
   };
 
   const [state, setState] = useState(defaultState);
@@ -77,9 +80,7 @@ export default function ProductDetailView() {
 
   const [productDetailImages, setProductDetailImages] = useState([]);
 
-  const [categories, setCategories] = useState([]);
-  console.log(categories);
-  
+  const [categoryIds, setCategoryIds] = useState([]);
 
   const [err, setErr] = useState(defaultErrState);
 
@@ -101,11 +102,12 @@ export default function ProductDetailView() {
     if (!validate()) return;
 
     try {
-
       const productDetails = [];
       productDetailItems.forEach(item => {
         SIZE_OPTIONS.forEach(sz => {
-          if (item.size === sz.label) {
+          if (item.size === sz.value) {
+            productDetails.push(item);
+          } else if (item.size === sz.label) {
             const newItem = { ...item, size: sz.value };
             productDetails.push(newItem);
           }
@@ -114,6 +116,7 @@ export default function ProductDetailView() {
       const payload = {
         ...state,
         description,
+        categoryIds,
         productDetails,
         images: productDetailImages
       };
@@ -122,11 +125,11 @@ export default function ProductDetailView() {
       if (!isEditScreen) {
         const { data } = await createProduct(payload).unwrap();
         showSuccessMessage(data);
+        router.push('/admin/product-management');
       } else {
         const { data } = await updateProduct({ id, payload }).unwrap();
         showSuccessMessage(data);
       }
-      // router.push('/admin/product-management');
     } catch (error) {
       handleError(error);
     }
@@ -147,10 +150,6 @@ export default function ProductDetailView() {
     });
 
     setErr(newErr);
-
-    console.log(isValid, newErr);
-
-
     return isValid;
   };
 
@@ -168,10 +167,10 @@ export default function ProductDetailView() {
         createdBy: data.data.createdBy,
         updatedAt: data.data.updatedAt,
         updatedBy: data.data.updatedBy,
+        avatarUrl: data.data.avatarUrl,
       });
 
       setProductDetail(data.data);
-      setCategories(data.data.categories);
       setProductDetailItems(data.data.productDetails);
       setProductDetailImages(data.data.images);
     }
@@ -210,6 +209,15 @@ export default function ProductDetailView() {
     setPopupOpen(false);
   }
 
+  const setAvatarUrl = (url) => {
+    setState({ ...state, avatarUrl: url });
+    if (err.avatarUrl !== '') {
+      const newErr = { ...err };
+      newErr.avatarUrl = '';
+      setErr(newErr);
+    }
+  }
+
   const renderForm = (
     <Stack spacing={3}>
       <Box>
@@ -226,6 +234,15 @@ export default function ProductDetailView() {
           helperText={err.name !== '' && err.name}
           disabled={isDetailScreen}
         />
+      </Box>
+      <Box>
+        <Typography variant="subtitle2">
+          <span style={{ color: 'red' }}>*</span> Image
+        </Typography>
+        <ImageUploader imageUrl={state.avatarUrl} setImageUrl={setAvatarUrl} disabled={isDetailScreen} />
+        {err.avatarUrl && <Typography variant="caption" color="red">
+          {err.avatarUrl}
+        </Typography>}
       </Box>
       <Box>
         <Typography variant="subtitle2">
@@ -315,7 +332,7 @@ export default function ProductDetailView() {
           </Box>
 
           <Stack spacing={3} sx={{ mt: 3, px: 5, }}>
-            <ProductDetailCategory categories={productDetail.categories} disabled={isDetailScreen} setCategories={setCategories} />
+            <ProductDetailCategory categories={productDetail.categories} disabled={isDetailScreen} setSelectedCategories={setCategoryIds} />
           </Stack>
           <Stack spacing={3} sx={{ mt: 3, px: 5, pt: 2, pb: 5, background: "#E7FBE6" }}>
             <ProductDetailItem productDetailItems={productDetailItems} setProductDetailItems={setProductDetailItems} disabled={isDetailScreen} />

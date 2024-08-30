@@ -2,6 +2,8 @@ import { fViCurrency } from 'src/utils/format-number';
 
 export const LOGO_NAME = "Cổ Trang Việt VTT";
 
+export const LOGO_FONT = "Pacifico";
+
 export const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const EMAIL_REGEX = "^[a-zA-Z0-9+_.\\-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]+$";

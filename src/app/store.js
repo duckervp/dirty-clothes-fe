@@ -42,8 +42,7 @@ export const store = configureStore({
       },
     }
   )
-    .concat(apiSlice.middleware)
-    .concat(noAuthApiSlice.middleware),
+    .concat(apiSlice.middleware, noAuthApiSlice.middleware),
   devTools: process.env.NODE_ENV !== 'production',
 });
 

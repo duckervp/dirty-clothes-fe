@@ -73,5 +73,6 @@ export const noAuthApiSlice = createApi({
   reducerPath: 'noAuthApi',
   baseQuery: baseQueryWithNoAuth,
   refetchOnMountOrArgChange: true,
+  tagTypes: ['User', 'Product'],
   endpoints: (builder) => ({}),
 });

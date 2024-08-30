@@ -70,6 +70,8 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
   };
 
   const validate = () => {
+    console.log(state);
+
     let isValid = true;
     const newErr = { ...err };
     Object.keys(state).forEach((key) => {
@@ -84,6 +86,11 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
 
   const setImageUrl = (url) => {
     setState({ ...state, imageUrl: url });
+    if (err.imageUrl !== '') {
+      const newErr = { ...err };
+      newErr.imageUrl = '';
+      setErr(newErr);
+    }
   }
 
   return (
@@ -96,12 +103,18 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
         <Select id="select-color" value={state?.colorId} onChange={handleStateChange} name='colorId' fullWidth >
           {colors?.map(item => <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>)}
         </Select>
+        {err.colorId && <Typography variant="caption" color="red">
+          {err.colorId}
+        </Typography>}
       </Box>
       <Box>
         <Typography variant="subtitle2">
           <span style={{ color: 'red' }}>*</span> Image
         </Typography>
         <ImageUploader imageUrl={state.imageUrl} setImageUrl={setImageUrl} />
+        {err.imageUrl && <Typography variant="caption" color="red">
+          {err.imageUrl}
+        </Typography>}
       </Box>
 
       <Stack direction="row" justifyContent="space-around" alignItems="center">
@@ -152,7 +165,7 @@ export default function ProductDetailImage({ productDetailImages, setProductDeta
   }, [colorData]);
 
   const getColor = (id) => {
-    const filteredColors = colors.filter(color => color.id === id);
+    const filteredColors = colors?.filter(color => color.id === id) || [];
     if (filteredColors.length > 0) {
       return filteredColors.at(0);
     }
@@ -404,7 +417,7 @@ export default function ProductDetailImage({ productDetailImages, setProductDeta
                     <CustomTableRow
                       key={row.id}
                       cells={[
-                        { value: getColor(row.colorId).value, type: "color", label: getColor(row.colorId).name },
+                        { value: getColor(row.colorId)?.value, type: "color", label: getColor(row.colorId)?.name },
                         { value: row.imageUrl, type: "image", align: "center" },
                         { value: row.createdAt, type: "datetime", align: "center" },
                       ]}

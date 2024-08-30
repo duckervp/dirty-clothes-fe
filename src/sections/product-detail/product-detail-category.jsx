@@ -11,7 +11,7 @@ import CategorySelector from './category-select';
 //------------------------------------------------------------------
 
 const ProductDetailCategory = ({ categories, setSelectedCategories, disabled }) => {
-  const [categoryNames, setCategoryNames] = useState();
+  const [allCategories, setAllCategories] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState();
 
   const { data: categoryData } = useGetAllCategoriesQuery();
@@ -30,18 +30,37 @@ const ProductDetailCategory = ({ categories, setSelectedCategories, disabled }) 
         names.push(item.parent.name);
         item.children.forEach(child => names.push(child.name));
       })
-      setCategoryNames(names);
+      setAllCategories(names);
     }
   }, [categoryData]);
+
+  useEffect(() => {
+    const categoryIds = [];
+    selectedOptions?.forEach(category => {
+      categoryData?.data?.forEach(item => {
+        if (category === item.parent.name) {
+          categoryIds.push(item.parent.id);
+        } else {
+          item.children.forEach(child => {
+            if (category === child.name) {
+              categoryIds.push(child.id)
+            }
+          });
+        }
+      })
+    })
+    
+    setSelectedCategories(categoryIds);
+  }, [selectedOptions, categoryData, setSelectedCategories])
 
   return (
     <Box>
       <Typography variant="subtitle2">
         <span style={{ color: 'red', display: "none" }}>*</span> Category
       </Typography>
-      {categoryNames &&
+      {allCategories &&
         <CategorySelector
-          options={categoryNames}
+          options={allCategories}
           selectedOptions={selectedOptions}
           onSelectionChange={setSelectedOptions}
           disabled={disabled}

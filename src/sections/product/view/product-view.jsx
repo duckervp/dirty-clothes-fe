@@ -18,7 +18,7 @@ import { fViCurrency } from 'src/utils/format-number';
 import { handleError, showSuccessMessage } from 'src/utils/notify';
 
 import { PAGE_SIZE } from 'src/config';
-import { useGetAllProductsQuery, useDeleteProductMutation, useDeleteProductsMutation } from 'src/app/api/product/productApiSlice';
+import { useGetAdminProductsQuery, useDeleteProductMutation, useDeleteProductsMutation } from 'src/app/api/product/productApiSlice';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -53,7 +53,7 @@ export default function ProductView() {
 
   const [deleteMultipleItems, setDeleteMultipleItems] = useState(false);
 
-  const { data: productData, isLoading } = useGetAllProductsQuery({
+  const { data: productData, isLoading } = useGetAdminProductsQuery({
     pageNo: page - 1,
     pageSize: PAGE_SIZE,
     sort: order,

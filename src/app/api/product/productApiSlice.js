@@ -22,6 +22,14 @@ export const noTokenApiSlice = noAuthApiSlice.injectEndpoints({
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    getAdminProducts: builder.query({
+      query: (params) => ({
+        url: API.product,
+        method: "GET",
+        params
+      }),
+      providesTags: ['Product'],
+    }),
     createProduct: builder.mutation({
       query: (payload) => ({
         url: `${API.product}`,
@@ -63,10 +71,11 @@ export const authApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetAllProductsQuery,
-  useGetProductDetailQuery
+  useGetProductDetailQuery,
 } = noTokenApiSlice;
 
 export const {
+  useGetAdminProductsQuery,
   useCreateProductMutation,
   useGetProductDetailMutation,
   useUpdateProductMutation,

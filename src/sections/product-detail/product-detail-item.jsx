@@ -98,6 +98,9 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
         <Select id="select-color" value={state?.colorId} onChange={handleStateChange} name='colorId' fullWidth >
           {colors?.map(item => <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>)}
         </Select>
+        {err.colorId && <Typography variant="caption" color="red">
+          {err.colorId}
+        </Typography>}
       </Box>
       <Box>
         <Typography variant="subtitle2">
@@ -106,6 +109,9 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
         <Select id="select-size" value={state?.size} onChange={handleStateChange} name='size' fullWidth >
           {SIZE_OPTIONS.map(item => <MenuItem key={item.label} value={item.label}>{item.label}</MenuItem>)}
         </Select>
+        {err.size && <Typography variant="caption" color="red">
+          {err.size}
+        </Typography>}
       </Box>
       <Box>
         <Typography variant="subtitle2">
@@ -184,7 +190,7 @@ export default function ProductDetailItem({ productDetailItems, setProductDetail
   const [colors, setColors] = useState([]);
 
   const getColor = (id) => {
-    const filteredColors = colors.filter(color => color.id === id);
+    const filteredColors = colors?.filter(color => color.id === id) || [];
     if (filteredColors.length > 0) {
       return filteredColors.at(0);
     }
@@ -294,10 +300,6 @@ export default function ProductDetailItem({ productDetailItems, setProductDetail
   const handleCreateNew = () => {
     setEditDetail(false);
     setDetailPopupOpen(true);
-  }
-
-  const handleRowClick = (id) => {
-
   }
 
   const [deleteCfOpen, setDeleteCfOpen] = useState(false);
@@ -455,7 +457,6 @@ export default function ProductDetailItem({ productDetailItems, setProductDetail
                       handleClick={(event) => handleClick(event, row.id)}
                       handleEdit={() => handleEdit(row)}
                       handleDelete={() => handleDeleteCfOpenMenu(row.id)}
-                      handleRowClick={() => handleRowClick(row.id)}
                       disabled={disabled}
                     />
                   ))}

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 
-import { LOGO_NAME } from '../../config';
+import { LOGO_FONT, LOGO_NAME } from '../../config';
 
 export default function Logo({ sx }) {
   return (
@@ -13,7 +13,7 @@ export default function Logo({ sx }) {
         color: 'black',
         px: 2,
         py: 1,
-        fontFamily: 'Pacifico',
+        fontFamily: LOGO_FONT,
         fontWeight: '700',
         mx: 3,
         textDecoration: 'none',

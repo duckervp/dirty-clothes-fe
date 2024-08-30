@@ -110,6 +110,7 @@ export default function CustomTableRow({
                       src={cell.imgUrl}
                       sx={{
                         height: '65px',
+                        width: '65px',
                         objectFit: 'cover',
                         borderRadius: '5px',
                       }}
@@ -132,6 +133,7 @@ export default function CustomTableRow({
                       src={cell.value}
                       sx={{
                         height: '65px',
+                        width: '65px',
                         objectFit: 'cover',
                         borderRadius: '5px',
                       }}
