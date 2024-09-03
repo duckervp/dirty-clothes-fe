@@ -1,0 +1,13 @@
+{
+  "no-data": {
+    "title": "Not found",
+    "content": "No results found for\u00a0<strong>\"{{query}}\"</strong> product. <br /> Try clearing all filters or try a different filter instead."
+  },
+  "filter": {
+    "text": "Filters",
+    "targets": "Targets"
+  },
+  "sort": {
+    "text": "Sort By"
+  }
+}

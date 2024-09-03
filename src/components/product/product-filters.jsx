@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -33,6 +34,8 @@ export default function ProductFilters({
   onOpenFilter,
   onCloseFilter,
 }) {
+  const { t } = useTranslation('product', { keyPrefix: 'filter' });
+
   const { data: colorData } = useGetAllColorsQuery({ all: true });
 
   const [colorOptions, setColorOptions] = useState([]);
@@ -114,7 +117,7 @@ export default function ProductFilters({
 
   const renderTarget = (
     <Stack spacing={1}>
-      <Typography variant="subtitle2">Targets</Typography>
+      <Typography variant="subtitle2">{t('targets')}</Typography>
       <FormGroup>
         <Grid container>
           {TARGET_OPTIONS.map((item) => (
@@ -268,7 +271,7 @@ export default function ProductFilters({
         endIcon={<Iconify icon="ic:round-filter-list" />}
         onClick={onOpenFilter}
       >
-        Filters&nbsp;
+        {t('text')}&nbsp;
       </Button>
 
       <Drawer
@@ -286,7 +289,7 @@ export default function ProductFilters({
           sx={{ px: 1, py: 2 }}
         >
           <Typography variant="h6" sx={{ ml: 1 }}>
-            Filters
+            {t('text')}
           </Typography>
           <IconButton onClick={onCloseFilter}>
             <Iconify icon="eva:close-fill" />

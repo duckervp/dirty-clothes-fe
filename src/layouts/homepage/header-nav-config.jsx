@@ -1,10 +1,10 @@
 const headerNavConfig = [
   {
-    title: 'BEST SELLER',
+    title: 'best-seller',
     path: '/best-seller'
   },
   {
-    title: 'CONTACT',
+    title: 'contact',
     path: '#contact'
   },
 ];

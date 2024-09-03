@@ -13,6 +13,7 @@ import {
 
 import authReducer from "./api/auth/authSlice";
 import cartReducer from "./api/cart/cartSlice";
+import langReducer from "./api/lang/langSlice";
 import { apiSlice, noAuthApiSlice } from "./api/apiSlice";
 
 const authPersistConfig = {
@@ -26,11 +27,17 @@ const cartPersistConfig = {
   storage
 }
 
+const langPersistConfig = {
+  key: 'lang',
+  storage
+}
+
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
   [noAuthApiSlice.reducerPath]: noAuthApiSlice.reducer,
   auth: persistReducer(authPersistConfig, authReducer),
   cart: persistReducer(cartPersistConfig, cartReducer),
+  lang: persistReducer(langPersistConfig, langReducer)
 });
 
 export const store = configureStore({

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import PopupState, { bindMenu, bindHover } from 'material-ui-popup-state';
 
 import Box from '@mui/material/Box';
@@ -88,8 +89,9 @@ function CascadingMenu({ popupState, ...props }) {
 }
 
 const ShopMenu = () => {
+  const { t } = useTranslation('translation', { keyPrefix: 'header.menu' });
   const shopPath = '/shop';
-  
+
   const router = useRouter();
 
   const location = useLocation();
@@ -116,20 +118,20 @@ const ShopMenu = () => {
             color="inherit"
             variant={location.pathname.includes('/shop') ? 'outlined' : ''}
             {...bindHover(popupState)}
-            sx={{ color: '#000', mr: 1 }}
+            sx={{ color: '#000', mr: 0.5 }}
             onClick={() => router.push(shopPath)}
           >
-            SHOP
+            {t('shop')}
           </Button>
           {headerNavConfig.map((item) => (
             <Button
               key={item.title}
               color="inherit"
-              sx={{ color: '#000', mr: 1 }}
+              sx={{ color: '#000', mr: 0.5 }}
               onClick={() => router.push(item.path)}
               variant={location.pathname === item.path ? 'outlined' : ''}
             >
-              {item.title}
+              {t(item.title)}
             </Button>
           ))}
           <CascadingMenu

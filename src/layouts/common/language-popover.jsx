@@ -1,34 +1,48 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 
+import { changeLang, selectCurrentLang } from 'src/app/api/lang/langSlice';
+
 // ----------------------------------------------------------------------
 
 const LANGS = [
   {
+    value: 'vi',
+    label: 'Vietnamese',
+    icon: '/assets/icons/ic_flag_vi.svg',
+  },
+  {
     value: 'en',
     label: 'English',
     icon: '/assets/icons/ic_flag_en.svg',
-  },
-  {
-    value: 'de',
-    label: 'German',
-    icon: '/assets/icons/ic_flag_de.svg',
-  },
-  {
-    value: 'fr',
-    label: 'French',
-    icon: '/assets/icons/ic_flag_fr.svg',
   },
 ];
 
 // ----------------------------------------------------------------------
 
 export default function LanguagePopover() {
+  const { t, i18n } = useTranslation('translation', { keyPrefix: 'lang' });
+
   const [open, setOpen] = useState(null);
+
+  const currentLang = useSelector(selectCurrentLang);
+
+  const [lang, setLang] = useState(currentLang);
+
+  const dispatch = useDispatch();
+
+  const handleChangeLang = (lng) => {
+    i18n.changeLanguage(lng.value);
+    setLang(lng);
+    dispatch(changeLang(lng));
+    handleClose();
+  }
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -50,7 +64,7 @@ export default function LanguagePopover() {
           }),
         }}
       >
-        <img src={LANGS[0].icon} alt={LANGS[0].label} />
+        <img src={lang.icon} alt={lang.label} />
       </IconButton>
 
       <Popover
@@ -71,13 +85,13 @@ export default function LanguagePopover() {
         {LANGS.map((option) => (
           <MenuItem
             key={option.value}
-            selected={option.value === LANGS[0].value}
-            onClick={() => handleClose()}
+            selected={option.value === lang.value}
+            onClick={() => handleChangeLang(option)}
             sx={{ typography: 'body2', py: 1 }}
           >
             <Box component="img" alt={option.label} src={option.icon} sx={{ width: 28, mr: 2 }} />
 
-            {option.label}
+            {t(option.value)}
           </MenuItem>
         ))}
       </Popover>

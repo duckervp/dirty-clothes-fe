@@ -1,0 +1,34 @@
+{
+  "lang": {
+    "en": "Tiếng Anh",
+    "vi": "Tiếng Việt"
+  },
+  "header": {
+    "search": {
+      "placeholder": "Tìm kiếm sản phẩm…",
+      "button": "Tìm"
+    },
+    "menu": {
+      "shop": "Sản Phẩm",
+      "best-seller": "Bán Chạy",
+      "contact": "Liên Hệ"
+    },
+    "account": {
+      "home": "Trang Chủ",
+      "profile": "Hồ Sơ",
+      "order": "Đơn Hàng",
+      "address": "Địa Chỉ",
+      "admin-dashboard": "Trang Quản Lý",
+      "login": "Đăng Nhập",
+      "logout": "Đăng Xuất",
+      "register": "Đăng Ký"
+    }
+  },
+  "footer": {
+    "store": "Cửa Hàng",
+    "social-media": "Mạng Xã Hội"
+  },
+  "home": {
+    "products": "TẤT CẢ SẢN PHẨM"
+  }
+}

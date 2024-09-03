@@ -1,0 +1,13 @@
+{
+  "no-data": {
+    "title": "Không tìm thấy sản phẩm nào",
+    "content": "Không tìm thấy thông tin về sản phẩm thuộc danh mục\u00a0<strong>\"{{query}}\"</strong> . <br /> Hãy thay đổi bộ lọc hoặc chọn danh mục sản phẩm khác."
+  },
+  "filter": {
+    "text": "Lọc",
+    "targets": "Targets"
+  },
+  "sort": {
+    "text": "Sắp Xếp"
+  }
+}

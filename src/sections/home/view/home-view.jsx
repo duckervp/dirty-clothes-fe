@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
@@ -22,6 +23,8 @@ import ProductNoData from 'src/components/product/product-not-found';
 // ----------------------------------------------------------------------
 
 export default function HomeView({ type }) {
+  const { t } = useTranslation('translation', { keyPrefix: 'home' });
+
   const [params] = useSearchParams();
 
   const { category } = useParams();
@@ -109,7 +112,7 @@ export default function HomeView({ type }) {
         }
         sx={{ mt: 3, mb: 2 }}
       >
-        {type === 'home' && <Typography variant="subtitle1" fontWeight="bold">ALL PRODUCTS</Typography>}
+        {type === 'home' && <Typography variant="subtitle1" fontWeight="bold">{t('products')}</Typography>}
 
         <Stack
           direction="row"
@@ -129,7 +132,7 @@ export default function HomeView({ type }) {
         </Stack>
       </Stack>
 
-      {products.length === 0 && (type === 'shop' || type === 'best-seller') && (
+      {!isLoading && productData.data.totalPages === 0 && (type === 'shop' || type === 'best-seller') && (
         <Stack alignItems="center" justifyContent="center">
           <ProductNoData query={category ? type.concat(" ").concat(category) : type} />
         </Stack>

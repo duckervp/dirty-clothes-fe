@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
@@ -18,6 +19,8 @@ const SORT_OPTIONS = [
 ];
 
 export default function ShopProductSort({ selectedOption, setSelectedOption }) {
+  const { t } = useTranslation('product', { keyPrefix: 'sort' })
+
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -41,7 +44,7 @@ export default function ShopProductSort({ selectedOption, setSelectedOption }) {
         onClick={handleOpen}
         endIcon={<Iconify icon={open ? 'eva:chevron-up-fill' : 'eva:chevron-down-fill'} />}
       >
-        Sort By:&nbsp;
+        {t('text')}:&nbsp;
         <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
           {selectedOption.label}
         </Typography>

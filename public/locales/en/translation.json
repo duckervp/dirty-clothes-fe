@@ -1,0 +1,35 @@
+{
+  "lang": {
+    "en": "English",
+    "vi": "Vietnamese"
+  },
+  "header": {
+    "search": {
+      "placeholder": "Search for products…",
+      "button": "Search"
+    },
+    "menu": {
+      "shop": "SHOP",
+      "best-seller": "BEST SELLER",
+      "contact": "CONTACT"
+    },
+    "account": {
+      "home": "Home",
+      "profile": "Profile",
+      "order": "Order",
+      "address": "Address",
+      "admin-dashboard": "Admin Dashboard",
+      "login": "Login",
+      "logout": "Logout",
+      "register": "Register"
+    }
+  },
+  "footer": {
+    "store": "Store",
+    "social-media": "Social Media"
+  },
+  "home": {
+    "products": "ALL PRODUCTS"
+    
+  }
+}

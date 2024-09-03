@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -21,22 +22,22 @@ import { selectCurrentUser } from 'src/app/api/auth/authSlice';
 
 const MENU_OPTIONS = [
   {
-    label: 'Home',
+    option: 'home',
     icon: 'eva:home-fill',
     link: '/',
   },
   {
-    label: 'Profile',
+    option: 'profile',
     icon: 'eva:person-fill',
     link: '/profile',
   },
   {
-    label: 'Orders',
+    option: 'order',
     icon: 'eva:settings-2-fill',
     link: '/order',
   },
   {
-    label: 'Address',
+    option: 'address',
     icon: 'eva:settings-2-fill',
     link: '/address',
   },
@@ -45,6 +46,8 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const { t } = useTranslation('translation', { keyPrefix: 'header.account' })
+
   const [open, setOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -99,8 +102,8 @@ export default function AccountPopover() {
   const renderUserOptions = (
     <>
       {MENU_OPTIONS.map((option) => (
-        <MenuItem key={option.label} onClick={() => handleNavClick(option.link)}>
-          {option.label}
+        <MenuItem key={option.option} onClick={() => handleNavClick(option.link)}>
+          {t(option.option)}
         </MenuItem>
       ))}
 
@@ -167,7 +170,7 @@ export default function AccountPopover() {
         {
           user && user.role === Role.ADMIN &&
           <MenuItem onClick={() => handleNavClick('/admin')}>
-            Admin Dashboard
+            {t('admin-dashboard')}
           </MenuItem>
         }
 
@@ -183,7 +186,7 @@ export default function AccountPopover() {
               : { typography: 'body2', py: 1.5 }
           }
         >
-          {user ? 'Logout' : 'Login'}
+          {user ? t('logout') : t('login')}
         </MenuItem>
 
         <MenuItem
@@ -192,7 +195,7 @@ export default function AccountPopover() {
           onClick={handleRegisterClick}
           sx={{ typography: 'body2', py: 1.5 }}
         >
-          {!user && 'Register'}
+          {!user && t('register')}
         </MenuItem>
       </Popover>
     </>

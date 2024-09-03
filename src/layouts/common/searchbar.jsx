@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Slide from '@mui/material/Slide';
 import Input from '@mui/material/Input';
@@ -42,6 +43,8 @@ const StyledSearchbar = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Searchbar() {
+  const { t } = useTranslation('translation', { keyPrefix: 'header.search' });
+
   const [open, setOpen] = useState(false);
 
   const [searchValue, setSearchValue] = useState('');
@@ -88,7 +91,7 @@ export default function Searchbar() {
               autoFocus
               fullWidth
               disableUnderline
-              placeholder="Search for products…"
+              placeholder={t('placeholder')}
               startAdornment={
                 <InputAdornment position="start">
                   <Iconify
@@ -101,7 +104,7 @@ export default function Searchbar() {
               onKeyPress={handleKeyPress}
             />
             <Button variant="contained" onClick={handleSearch}>
-              Search
+              {t('button')}
             </Button>
           </StyledSearchbar>
         </Slide>

@@ -19,6 +19,7 @@ import Searchbar from '../common/searchbar';
 import ShopMenu from './cascading-dropdown';
 import { HEADER } from '../dashboard/config-layout';
 import AccountPopover from '../common/account-popover';
+import LanguagePopover from '../common/language-popover';
 
 // ----------------------------------------------------------------------
 
@@ -39,15 +40,15 @@ export default function Header({ onOpenNav }) {
 
       <Logo sx={{m: 2}}/>
 
-      <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+      <Box sx={{ display: { xs: 'none', md: 'block' } }}>
         <ShopMenu />
       </Box>
 
       <Box sx={{ flexGrow: 1 }} />
 
       <Stack direction="row" alignItems="center" spacing={1}>
-        {/* <LanguagePopover /> */}
         <CartWidget />
+        <LanguagePopover />
         <AccountPopover />
       </Stack>
     </>

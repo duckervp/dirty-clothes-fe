@@ -6,6 +6,7 @@ import ProfileLayout from 'src/layouts/profile';
 import HomepageLayout from 'src/layouts/homepage';
 import DashboardLayout from 'src/layouts/dashboard';
 
+import Loading from 'src/components/auth/Loading';
 import RequireAuth from 'src/components/auth/RequireAuth';
 
 import ScrollToAnchor from './scroll-to-anchor';
@@ -61,7 +62,7 @@ export default function Router() {
   const routes = useRoutes([
     {
       element: (
-        <Suspense>
+        <Suspense fallback={<Loading fullScreen/>}>
           <ScrollToAnchor />
           <Outlet />
         </Suspense>

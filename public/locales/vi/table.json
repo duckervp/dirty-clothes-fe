@@ -1,0 +1,21 @@
+{
+  "no-data": {
+    "title": "Not found",
+    "content": "No results found for \u00a0 <strong>\"{query}\"</strong>. <br /> Try checking for typos or using complete words."
+  },
+  "menu": {
+    "shop": "SHOP",
+    "best-seller": "BEST SELLER",
+    "contact": "CONTACT"
+  },
+  "account": {
+    "home": "Home",
+    "profile": "Profile",
+    "order": "Order",
+    "address": "Address",
+    "admin-dashboard": "Admin Dashboard",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register"
+  }
+}

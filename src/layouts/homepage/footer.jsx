@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
@@ -14,11 +16,12 @@ import store_branchs from './config-store-branches';
 // ----------------------------------------------------------------------
 
 export default function Footer() {
+  const { t } = useTranslation('translation', { keyPrefix: 'footer' })
   const renderContent = (
-    <Box sx={{ px: { lg: 5 }, pt: 3, pb: 5, background: (theme) => theme.palette.grey[200]}}>
+    <Box sx={{ px: { lg: 5 }, pt: 3, pb: 5, background: (theme) => theme.palette.grey[200] }}>
       <Stack direction="row" justifyContent="space-around" flexWrap="wrap">
         <Box>
-          <Box sx={{ color: 'black', fontWeight: 'bold' }}>VTT Store</Box>
+          <Box sx={{ color: 'black', fontWeight: 'bold' }}>{t('store')}</Box>
           <Box sx={{ ml: 2 }}>
             {store_branchs.map((branch) => (
               <Box key={branch.city} sx={{ color: '#000' }}>
@@ -38,7 +41,7 @@ export default function Footer() {
           </Box>
         </Box>
 
-        <Box sx={{ color: 'black', fontWeight: 'bold' }}>
+        {/* <Box sx={{ color: 'black', fontWeight: 'bold' }}>
           Store Policy
           <Stack>
             <Typography variant="subtitle2">Privacy Policy</Typography>
@@ -46,22 +49,22 @@ export default function Footer() {
             <Typography variant="subtitle2">Warranty & Return Policy</Typography>
             <Typography variant="subtitle2">Express Delivery Policy</Typography>
           </Stack>
-        </Box>
+        </Box> */}
 
         <Box sx={{ color: 'black', fontWeight: 'bold' }}>
-          Social Media
+          {t('social-media')}
           <Stack>
             <Stack direction="row">
               <FacebookIcon />
-              <Typography variant="subtitle2" sx={{ml: 1}}>fb.com/co-trang-viet-vtt</Typography>
+              <Typography variant="subtitle2" sx={{ ml: 1 }}>fb.com/co-trang-viet-vtt</Typography>
             </Stack>
             <Stack direction="row">
               <YouTubeIcon />
-              <Typography variant="subtitle2" sx={{ml: 1}}>youtube.com/co-trang-viet-vtt</Typography>
+              <Typography variant="subtitle2" sx={{ ml: 1 }}>youtube.com/co-trang-viet-vtt</Typography>
             </Stack>
             <Stack direction="row">
               <InstagramIcon />
-              <Typography variant="subtitle2" sx={{ml: 1}}>instagram.com/co-trang-viet-vtt</Typography>
+              <Typography variant="subtitle2" sx={{ ml: 1 }}>instagram.com/co-trang-viet-vtt</Typography>
             </Stack>
           </Stack>
         </Box>
