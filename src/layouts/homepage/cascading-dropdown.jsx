@@ -10,7 +10,7 @@ import ChevronRight from '@mui/icons-material/ChevronRight';
 
 import { useRouter } from 'src/routes/hooks';
 
-import { useGetAllCategoriesQuery } from 'src/app/api/category/categoryApiSlice';
+import { useGetCategoryTreeQuery } from 'src/app/api/category/categoryApiSlice';
 
 import HoverMenu from './hover-menu';
 import headerNavConfig from './header-nav-config';
@@ -96,7 +96,7 @@ const ShopMenu = () => {
 
   const [categories, setCategories] = React.useState();
 
-  const { data: categoryData } = useGetAllCategoriesQuery();
+  const { data: categoryData } = useGetCategoryTreeQuery();
 
   React.useEffect(() => {
     if (categoryData) {

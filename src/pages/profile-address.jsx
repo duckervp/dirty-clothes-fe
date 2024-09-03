@@ -1,10 +1,10 @@
 import HelmetPro from 'src/layouts/common/helmet';
 
-import { ProfileAddressView } from 'src/sections/profile-address/view';
+import { ProfileAddressView } from 'src/sections/profile/address/view';
 
 // ----------------------------------------------------------------------
 
-export default function ProfilePage() {
+export default function ProfileAddressPage() {
   return (
     <>
       <HelmetPro page="Profile" />

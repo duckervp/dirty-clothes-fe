@@ -18,7 +18,7 @@ export default function Footer() {
     <Box sx={{ px: { lg: 5 }, pt: 3, pb: 5, background: (theme) => theme.palette.grey[200]}}>
       <Stack direction="row" justifyContent="space-around" flexWrap="wrap">
         <Box>
-          <Box sx={{ color: 'black', fontWeight: 'bold' }}>Dirty Clothes Branches</Box>
+          <Box sx={{ color: 'black', fontWeight: 'bold' }}>VTT Store</Box>
           <Box sx={{ ml: 2 }}>
             {store_branchs.map((branch) => (
               <Box key={branch.city} sx={{ color: '#000' }}>
@@ -53,15 +53,15 @@ export default function Footer() {
           <Stack>
             <Stack direction="row">
               <FacebookIcon />
-              <Typography variant="subtitle2" sx={{ml: 1}}>fb.com/dirty-clothes</Typography>
+              <Typography variant="subtitle2" sx={{ml: 1}}>fb.com/co-trang-viet-vtt</Typography>
             </Stack>
             <Stack direction="row">
               <YouTubeIcon />
-              <Typography variant="subtitle2" sx={{ml: 1}}>youtube.com/dirty-clothes</Typography>
+              <Typography variant="subtitle2" sx={{ml: 1}}>youtube.com/co-trang-viet-vtt</Typography>
             </Stack>
             <Stack direction="row">
               <InstagramIcon />
-              <Typography variant="subtitle2" sx={{ml: 1}}>instagram.com/dirty-clothes</Typography>
+              <Typography variant="subtitle2" sx={{ml: 1}}>instagram.com/co-trang-viet-vtt</Typography>
             </Stack>
           </Stack>
         </Box>

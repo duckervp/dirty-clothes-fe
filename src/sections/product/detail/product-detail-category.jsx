@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import { useGetAllCategoriesQuery } from 'src/app/api/category/categoryApiSlice';
+import { useGetCategoryTreeQuery } from 'src/app/api/category/categoryApiSlice';
 
 import CategorySelector from './category-select';
 
@@ -14,7 +14,7 @@ const ProductDetailCategory = ({ categories, setSelectedCategories, disabled }) 
   const [allCategories, setAllCategories] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState();
 
-  const { data: categoryData } = useGetAllCategoriesQuery();
+  const { data: categoryData } = useGetCategoryTreeQuery();
 
   useEffect(() => {
     if (categories) {

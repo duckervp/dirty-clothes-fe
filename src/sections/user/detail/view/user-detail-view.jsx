@@ -65,6 +65,8 @@ export default function UserDetailView() {
 
   const [state, setState] = useState(defaultState);
 
+  const [auditData, setAuditData] = useState(defaultState);
+
   const [err, setErr] = useState(defaultErrState);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -96,7 +98,6 @@ export default function UserDetailView() {
         role: state.role,
         password: state.password,
       };
-      console.log(state);
 
       if (!isEditScreen) {
         const { data } = await createUser(payload).unwrap();
@@ -151,12 +152,15 @@ export default function UserDetailView() {
         status: data.data.status,
         role: data.data.role,
         password: '',
-        confirmPassword: '',
+        confirmPassword: ''
+      });
+
+      setAuditData({
         createdAt: data.data.createdAt,
         createdBy: data.data.createdBy,
         updatedAt: data.data.updatedAt,
         updatedBy: data.data.updatedBy,
-      });
+      })
     }
 
     if (id) {
@@ -343,8 +347,16 @@ export default function UserDetailView() {
       </Stack>
 
       <Stack sx={{ mt: 3 }}>
-        {!isCreateScreen && <Typography variant="body2"> Created by: <b>{state.createdBy}</b> in <b>{fDateTime(state.createdAt)}</b></Typography>}
-        {isDetailScreen && <Typography variant="body2"> Last modified by: <b>{state.updatedBy}</b> in <b>{fDateTime(state.updatedAt)}</b></Typography>}
+        {!isCreateScreen && auditData.createdBy && auditData.createdAt &&
+          <Typography variant="body2">
+            Created by: <b>{auditData.createdBy}</b> in <b>{fDateTime(auditData.createdAt)}</b>
+          </Typography>
+        }
+        {isDetailScreen && auditData.updatedAt && auditData.updatedBy &&
+          <Typography variant="body2">
+            Last modified by: <b>{auditData.updatedBy}</b> in <b>{fDateTime(auditData.updatedAt)}</b>
+          </Typography>
+        }
       </Stack>
 
       {
@@ -400,9 +412,9 @@ export default function UserDetailView() {
             width: "100%",
           }}
         >
-          {isDetailScreen && <TitleBar title="User Details" screen="detail" handleEdit={handleEdit} handleDelete={handleDelete} />}
-          {isEditScreen && <TitleBar title="Edit User" screen="edit" />}
-          {isCreateScreen && <TitleBar title="Create  User" screen="create" />}
+          {isDetailScreen && <TitleBar title="User Details" screen="detail" handleEdit={handleEdit} handleDelete={handleDelete} goBackUrl='/admin/user-management'/>}
+          {isEditScreen && <TitleBar title="Edit User" screen="edit" goBackUrl='/admin/user-management'/>}
+          {isCreateScreen && <TitleBar title="Create  User" screen="create" goBackUrl='/admin/user-management'/>}
 
           {renderForm}
         </Card>

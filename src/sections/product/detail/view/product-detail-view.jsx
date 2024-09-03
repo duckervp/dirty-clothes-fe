@@ -163,10 +163,6 @@ export default function ProductDetailView() {
         price: data.data.price,
         salePrice: data.data.salePrice,
         description: data.data.description,
-        createdAt: data.data.createdAt,
-        createdBy: data.data.createdBy,
-        updatedAt: data.data.updatedAt,
-        updatedBy: data.data.updatedBy,
         avatarUrl: data.data.avatarUrl,
       });
 
@@ -324,9 +320,16 @@ export default function ProductDetailView() {
           }}
         >
           <Box sx={{ px: 5, }}>
-            {isDetailScreen && <TitleBar title="Product Details" screen="detail" handleEdit={handleEdit} handleDelete={handleDelete} />}
-            {isEditScreen && <TitleBar title="Edit Product" screen="edit" />}
-            {isCreateScreen && <TitleBar title="Create  Product" screen="create" />}
+            {isDetailScreen &&
+              <TitleBar
+                title="Product Details"
+                screen="detail"
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+                goBackUrl='/admin/product-management' />
+            }
+            {isEditScreen && <TitleBar title="Edit Product" screen="edit" goBackUrl='/admin/product-management' />}
+            {isCreateScreen && <TitleBar title="Create  Product" screen="create" goBackUrl='/admin/product-management' />}
 
             {renderForm}
           </Box>
@@ -344,8 +347,16 @@ export default function ProductDetailView() {
             <Editor label='Description' data={state.description} setData={setDescription} disabled={isDetailScreen} />
 
             <Stack>
-              {!isCreateScreen && <Typography variant="body2"> Created by: <b>{state.createdBy}</b> in <b>{fDateTime(state.createdAt)}</b></Typography>}
-              {isDetailScreen && <Typography variant="body2"> Last modified by: <b>{state.updatedBy}</b> in <b>{fDateTime(state.updatedAt)}</b></Typography>}
+              {!isCreateScreen && productDetail.createdBy && productDetail.createdAt &&
+                <Typography variant="body2">
+                  Created by: <b>{productDetail.createdBy}</b> in <b>{fDateTime(productDetail.createdAt)}</b>
+                </Typography>
+              }
+              {isDetailScreen && productDetail.updatedAt && productDetail.updatedBy &&
+                <Typography variant="body2">
+                  Last modified by: <b>{productDetail.updatedBy}</b> in <b>{fDateTime(productDetail.updatedAt)}</b>
+                </Typography>
+              }
             </Stack>
 
             {

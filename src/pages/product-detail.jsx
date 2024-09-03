@@ -1,6 +1,6 @@
 import HelmetPro from 'src/layouts/common/helmet';
 
-import { ProductDetailView } from 'src/sections/product-detail/view';
+import { ProductDetailView } from 'src/sections/product/detail/view';
 
 // ----------------------------------------------------------------------
 

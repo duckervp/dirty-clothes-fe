@@ -17,17 +17,25 @@ import DeleteConfirmPopup from '../modal/delete-confirm-popup';
 
 //----------------------------------------------------------------------
 
-const TitleBar = ({ title, screen, object, handleEdit, handleDelete }) => {
+const TitleBar = ({ title, screen, object, handleEdit, handleDelete, goBackUrl, deleteMessage }) => {
   const router = useRouter();
-  
+
   const [popupOpen, setPopupOpen] = useState(false);
 
   const handleGoBack = () => {
-    setPopupOpen(true);
+    if (screen === "detail") {
+      handleConfirmGoBack();
+    } else {
+      setPopupOpen(true);
+    }
   }
 
   const handleConfirmGoBack = () => {
-    router.back();
+    if (goBackUrl) {
+      router.push(goBackUrl);
+    } else {
+      router.back();
+    }
     setPopupOpen(false);
   }
 
@@ -91,6 +99,7 @@ const TitleBar = ({ title, screen, object, handleEdit, handleDelete }) => {
         setPopupOpen={setDeleteCfOpen}
         handleCancel={handleCloseDeleteCfMenu}
         handleConfirm={handleConfirmDelete}
+        specialMessage={deleteMessage}
       />
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
@@ -138,6 +147,8 @@ TitleBar.propTypes = {
   object: PropTypes.string,
   handleEdit: PropTypes.func,
   handleDelete: PropTypes.func,
+  goBackUrl: PropTypes.string,
+  deleteMessage: PropTypes.string,
 }
 
 export default TitleBar;

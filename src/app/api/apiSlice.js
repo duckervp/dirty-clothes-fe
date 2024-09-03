@@ -61,11 +61,13 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   return result;
 };
 
+const tags = ['User', 'Product', 'Category', 'Color', 'Order', 'OrderDetail'];
+
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
   refetchOnMountOrArgChange: true,
-  tagTypes: ['User', 'Product'],
+  tagTypes: tags,
   endpoints: (builder) => ({}),
 });
 
@@ -73,6 +75,6 @@ export const noAuthApiSlice = createApi({
   reducerPath: 'noAuthApi',
   baseQuery: baseQueryWithNoAuth,
   refetchOnMountOrArgChange: true,
-  tagTypes: ['User', 'Product'],
+  tagTypes: tags,
   endpoints: (builder) => ({}),
 });

@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
@@ -11,11 +11,12 @@ export default function Copyright(props) {
           {'Copyright © '}
           {new Date().getFullYear()}
           {' '}
-          Dirty Clothes Studio. Powered by
+          Co Trang Viet VTT
+          {/* . Powered by
           {' '}
           <Link color="inherit" href="">
             Ghost
-          </Link>
+          </Link> */}
         </Typography>
       </Container>
     </Box>

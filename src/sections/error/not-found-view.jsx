@@ -1,8 +1,10 @@
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
+import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
 import Logo from 'src/components/logo';
@@ -10,6 +12,12 @@ import Logo from 'src/components/logo';
 // ----------------------------------------------------------------------
 
 export default function NotFoundView() {
+  const router = useRouter();
+
+  const handleGoBack = () => {
+    router.back();
+  }
+
   const renderHeader = (
     <Box
       component="header"
@@ -63,9 +71,14 @@ export default function NotFoundView() {
             }}
           />
 
-          <Button href="/" size="large" variant="contained" component={RouterLink}>
-            Go to Home
-          </Button>
+          <Stack direction="row" spacing={3}>
+            <Button size="large" variant="contained" color='inherit' sx={{width: 200}} onClick={handleGoBack}>
+              Go back
+            </Button>
+            <Button href="/" size="large" variant="contained" component={RouterLink}  sx={{width: 200}}>
+              Go to Home
+            </Button>
+          </Stack>
         </Box>
       </Container>
     </>

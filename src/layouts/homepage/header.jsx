@@ -13,7 +13,7 @@ import { bgBlur } from 'src/theme/css';
 
 import Iconify from 'src/components/iconify';
 
-import Logo from './logo';
+import Logo from '../common/logo';
 import CartWidget from './cart-widget';
 import Searchbar from '../common/searchbar';
 import ShopMenu from './cascading-dropdown';

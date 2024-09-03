@@ -1,7 +1,7 @@
 import { API } from '../endpoints';
 import { apiSlice } from '../apiSlice';
 
-export const authApiSlice = apiSlice.injectEndpoints({
+export const orderApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllOrders: builder.query({
       query: (params) => ({
@@ -9,12 +9,21 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
         params,
       }),
+      providesTags: ['Order'],
     }),
     getOrderDetail: builder.query({
       query: (code) => ({
         url: `${API.order}/${code}/detail`,
         method: 'GET',
       }),
+      providesTags: ['OrderDetail'],
+    }),
+    getOrderDetailById: builder.query({
+      query: (id) => ({
+        url: `${API.order}/${id}`,
+        method: 'GET',
+      }),
+      providesTags: ['OrderDetail'],
     }),
     createOrder: builder.mutation({
       query: (payload) => ({
@@ -22,8 +31,57 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: { ...payload },
       }),
+      invalidatesTags: ['Order'],
+    }),
+    deleteOrder: builder.mutation({
+      query: (id) => ({
+        url: `${API.order}/${id}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ['Order'],
+    }),
+    updateOrder: builder.mutation({
+      query: ({ id, payload }) => ({
+        url: `${API.order}/${id}`,
+        method: "PATCH",
+        body: { ...payload },
+      }),
+      invalidatesTags: ['Order'],
+    }),
+    deleteOrders: builder.mutation({
+      query: (ids) => ({
+        url: `${API.order}/${ids.join()}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ['Order'],
+    }),
+    updateOrderStatus: builder.mutation({
+      query: ({ id, payload }) => ({
+        url: `${API.order}/${id}/update-status`,
+        method: "PATCH",
+        body: { ...payload },
+      }),
+      invalidatesTags: ['Order', 'OrderDetail'],
+    }),
+    bulkAction: builder.mutation({
+      query: (payload) => ({
+        url: `${API.order}/bulk-action`,
+        method: "POST",
+        body: { ...payload },
+      }),
+      invalidatesTags: ['Order'],
     }),
   }),
 });
 
-export const { useCreateOrderMutation, useGetAllOrdersQuery, useGetOrderDetailQuery } = authApiSlice;
+export const {
+  useCreateOrderMutation,
+  useGetAllOrdersQuery,
+  useGetOrderDetailQuery,
+  useDeleteOrderMutation,
+  useDeleteOrdersMutation,
+  useUpdateOrderMutation,
+  useBulkActionMutation,
+  useUpdateOrderStatusMutation,
+  useGetOrderDetailByIdQuery
+} = orderApiSlice;

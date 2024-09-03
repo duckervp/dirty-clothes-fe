@@ -20,7 +20,8 @@ import { useRouter } from 'src/routes/hooks';
 import { fViCurrency } from 'src/utils/format-number';
 import { handleError, showErrorMessage } from 'src/utils/notify';
 
-import Logo from 'src/layouts/homepage/logo';
+import Logo from 'src/layouts/common/logo';
+import { FREE_SHIPPING_MODE } from 'src/config';
 import { useGetFeeMutation } from 'src/app/api/payment/ghnApiSlice';
 import { useCreateOrderMutation } from 'src/app/api/order/orderApiSlice';
 import { selectBuyNow, selectCartItems, removeAllCartItems } from 'src/app/api/cart/cartSlice';
@@ -194,17 +195,18 @@ export default function PaymentView() {
     setSelectedAddress(address);
     setChangeAddressModalOpen(false);
 
-    const { shippingInfo } = address;
+    if (!FREE_SHIPPING_MODE) {
+      const { shippingInfo } = address;
 
-    if (shippingInfo) {
-      fetchShippingFee(shippingInfo);
+      if (shippingInfo) {
+        fetchShippingFee(shippingInfo);
+      }
     }
   };
 
   const fetchShippingFee = async (shippingInfo) => {
     const payload = JSON.parse(shippingInfo);
     const { data } = await getFee(payload).unwrap();
-    console.log('ship', data);
     setShippingFee(data);
   };
 
@@ -213,8 +215,6 @@ export default function PaymentView() {
   };
 
   const handleAddAddressClick = () => {
-    console.log(shippingAddress, ward);
-
     const payload = {
       name: shippingAddress.name,
       phone: shippingAddress.phone,
@@ -228,11 +228,14 @@ export default function PaymentView() {
         .concat(shippingAddress.district)
         .concat(', ')
         .concat(shippingAddress.province),
-      shippingInfo: JSON.stringify({
+    };
+
+    if (!FREE_SHIPPING_MODE) {
+      payload.shippingInfo = JSON.stringify({
         to_district_id: ward?.DistrictID,
         to_ward_code: ward?.WardCode,
-      }),
-    };
+      });
+    }
 
     createNewAddress(payload);
     setCreateAddressModalOpen(false);
@@ -240,7 +243,6 @@ export default function PaymentView() {
 
   const createNewAddress = async (payload) => {
     const { data } = await createAddress(payload).unwrap();
-    console.log(data);
     const newAddresses = [...addresses];
     newAddresses.push(data);
     setAddresses(newAddresses);
@@ -331,7 +333,7 @@ export default function PaymentView() {
                     sx={{ '&:hover': { background: 'rgba(145, 158, 171, 0.2)' } }}
                   >
                     <Box sx={{ px: 2, py: 3 }}>
-                      <Typography variant="subtitle2">{selectedAddress?.name}</Typography>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>{selectedAddress?.name}</Typography>
                       <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>
                         {selectedAddress?.phone}
                       </Typography>
@@ -349,27 +351,40 @@ export default function PaymentView() {
                     Shipping Method
                   </Typography>
                   <Card sx={{ boxShadow: 3 }}>
-                    <Stack direction="row" justifyContent="space-between" sx={{ py: 3, px: 3 }}>
-                      <Stack direction="row" alignItems="center">
-                        <Box
-                          component="img"
-                          alt="GHN Logo"
-                          src="/assets/icons/ghn.webp"
-                          sx={{
-                            width: '30px',
-                            objectFit: 'cover',
-                            borderRadius: '5px',
-                            mr: 1,
-                          }}
-                        />
+                    {FREE_SHIPPING_MODE ?
+                      <Stack direction="row" justifyContent="space-between" sx={{ py: 3, px: 3 }}>
+                        <Stack direction="row" alignItems="center">
+                          <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>
+                            Standard shipping
+                          </Typography>
+                        </Stack>
                         <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>
-                          GHN
+                          Free
                         </Typography>
                       </Stack>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>
-                        {fViCurrency(shippingFee?.total)}
-                      </Typography>
-                    </Stack>
+                      :
+                      <Stack direction="row" justifyContent="space-between" sx={{ py: 3, px: 3 }}>
+                        <Stack direction="row" alignItems="center">
+                          <Box
+                            component="img"
+                            alt="GHN Logo"
+                            src="/assets/icons/ghn.webp"
+                            sx={{
+                              width: '30px',
+                              objectFit: 'cover',
+                              borderRadius: '5px',
+                              mr: 1,
+                            }}
+                          />
+                          <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>
+                            GHN
+                          </Typography>
+                        </Stack>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>
+                          {fViCurrency(shippingFee?.total)}
+                        </Typography>
+                      </Stack>
+                    }
                   </Card>
                 </Box>
                 <Box sx={{ mt: 5 }}>
@@ -406,7 +421,7 @@ export default function PaymentView() {
               <Divider sx={{ pt: 1, pb: 2 }} />
 
               <Stack direction="row" justifyContent="space-between" sx={{ mt: 1 }}>
-                <Typography variant="body2">Subtotal</Typography>
+                <Typography variant="body2">Subtotal</Typography> 
                 <Typography variant="body2">
                   {fViCurrency(calTotalPrice(buyNowMode ? [buyNow] : cartItems))}
                 </Typography>
@@ -414,7 +429,7 @@ export default function PaymentView() {
 
               <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
                 <Typography variant="body2">Shipping</Typography>
-                <Typography variant="body2">{fViCurrency(getServiceFee())}</Typography>
+                <Typography variant="body2">{ fViCurrency(FREE_SHIPPING_MODE ? 0 : getServiceFee())}</Typography>
               </Stack>
 
               <Divider />

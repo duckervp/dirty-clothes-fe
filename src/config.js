@@ -15,6 +15,8 @@ export const Role = {
   USER: "USER",
 }
 
+export const FREE_SHIPPING_MODE = true;
+
 export const GHN = {
   shopId: import.meta.env.VITE_GHN_SHOP_ID,
   token: import.meta.env.VITE_GHN_TOKEN,
@@ -70,4 +72,11 @@ export const PRICE_OPTIONS = [
     priceFrom: 2000000,
   },
 ];
-
+export const ORDER_STATUS = {
+  ORDER: "ORDER",
+  REFUSED: "REFUSED",
+  ACCEPTED: "ACCEPTED",
+  DELIVERY: "DELIVERY",
+  DONE: "DONE",
+  CANCELLED: "CANCELLED"
+}

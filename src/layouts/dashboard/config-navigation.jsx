@@ -1,3 +1,14 @@
+import {
+  // ADMIN,
+  absolutePath,
+  USER_MANAGEMENT,
+  COLOR_MANAGEMENT,
+  ORDER_MANAGEMENT,
+  PRODUCT_MANAGEMENT,
+  CATEGORY_MANAGEMENT,
+} from 'src/routes/route-config';
+
+import Iconify from 'src/components/iconify';
 import SvgColor from 'src/components/svg-color';
 
 // ----------------------------------------------------------------------
@@ -6,36 +17,40 @@ const icon = (name) => (
   <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
 );
 
+const iconify = (name) => (
+  <Iconify icon={name} sx={{ width: 1, height: 1 }}/>
+);
+
 const navConfig = [
-  {
-    title: 'dashboard',
-    path: '/admin',
-    icon: icon('ic_analytics'),
-  },
+  // {
+  //   title: 'dashboard',
+  //   path: absolutePath(ADMIN),
+  //   icon: icon('ic_analytics'),
+  // },
   {
     title: 'user',
-    path: '/admin/user-management',
+    path: absolutePath(USER_MANAGEMENT.INDEX),
     icon: icon('ic_user'),
   },
   {
     title: 'product',
-    path: '/admin/products',
-    icon: icon('ic_cart'),
+    path: absolutePath(PRODUCT_MANAGEMENT.INDEX),
+    icon: iconify("eva:cube-fill"),
   },
   {
-    title: 'blog',
-    path: '/admin/blog',
-    icon: icon('ic_blog'),
+    title: 'order',
+    path: absolutePath(ORDER_MANAGEMENT.INDEX),
+    icon: iconify("eva:shopping-cart-fill"),
   },
   {
-    title: 'login',
-    path: '/login',
-    icon: icon('ic_lock'),
+    title: 'color',
+    path: absolutePath(COLOR_MANAGEMENT.INDEX),
+    icon: iconify("eva:color-palette-fill"),
   },
   {
-    title: 'Not found',
-    path: '/404',
-    icon: icon('ic_disabled'),
+    title: 'category',
+    path: absolutePath(CATEGORY_MANAGEMENT.INDEX),
+    icon: iconify("eva:grid-fill"),
   },
 ];
 

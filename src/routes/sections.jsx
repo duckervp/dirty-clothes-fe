@@ -9,6 +9,26 @@ import DashboardLayout from 'src/layouts/dashboard';
 import RequireAuth from 'src/components/auth/RequireAuth';
 
 import ScrollToAnchor from './scroll-to-anchor';
+import {
+  AUTH,
+  CART,
+  SHOP,
+  ADMIN,
+  ORDER,
+  CONTACT,
+  ADDRESS,
+  PAYMENT,
+  PROFILE,
+  BEST_SELLER,
+  absolutePath,
+  SHOP_CATEGORY,
+  PRODUCT_DETAIL,
+  USER_MANAGEMENT,
+  ORDER_MANAGEMENT,
+  COLOR_MANAGEMENT,
+  PRODUCT_MANAGEMENT,
+  CATEGORY_MANAGEMENT,
+} from './route-config';
 
 export const HomePage = lazy(() => import('src/pages/home'));
 export const ShopPage = lazy(() => import('src/pages/shop'));
@@ -21,9 +41,14 @@ export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
 export const UserPage = lazy(() => import('src/pages/user'));
 export const UserDetailPage = lazy(() => import('src/pages/user-detail'));
+export const CategoryPage = lazy(() => import('src/pages/category'));
+export const CategoryDetailPage = lazy(() => import('src/pages/category-detail'));
+export const ColorPage = lazy(() => import('src/pages/color'));
+export const ColorDetailPage = lazy(() => import('src/pages/color-detail'));
+export const OrderManagementPage = lazy(() => import('src/pages/order-management'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const RegisterPage = lazy(() => import('src/pages/register'));
-export const ProductsPage = lazy(() => import('src/pages/products'));
+export const ProductPage = lazy(() => import('src/pages/product'));
 export const ProductDetailPage = lazy(() => import('src/pages/product-detail'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const UnauthorizedPage = lazy(() => import('src/pages/unauthorized'));
@@ -44,16 +69,16 @@ export default function Router() {
       children: [
         { element: <HomepageLayout><HomePage /></HomepageLayout>, index: true },
         {
-          path: 'shop',
+          path: SHOP,
           element: <HomepageLayout><ShopPage /></HomepageLayout>,
           children: [
-            { path: ":category", element: <HomepageLayout><ShopPage /></HomepageLayout> },
+            { path: SHOP_CATEGORY, element: <HomepageLayout><ShopPage /></HomepageLayout> },
           ]
         },
-        { path: 'best-seller', element: <HomepageLayout><BestSellerPage /></HomepageLayout> },
-        { path: 'contact', element: <HomepageLayout>Empty Page</HomepageLayout> },
-        { path: 'cart', element: <HomepageLayout><CartPage /></HomepageLayout> },
-        { path: ':slug', element: <HomepageLayout><ProductInfoPage /></HomepageLayout> },
+        { path: BEST_SELLER, element: <HomepageLayout><BestSellerPage /></HomepageLayout> },
+        { path: CONTACT, element: <HomepageLayout>Empty Page</HomepageLayout> },
+        { path: CART, element: <HomepageLayout><CartPage /></HomepageLayout> },
+        { path: PRODUCT_DETAIL, element: <HomepageLayout><ProductInfoPage /></HomepageLayout> },
       ],
     },
     {
@@ -63,10 +88,10 @@ export default function Router() {
         </Suspense>
       ),
       children: [
-        { path: 'order', element: <ProfileLayout><OrderPage /></ProfileLayout> },
-        { path: 'payment', element: <PaymentPage /> },
-        { path: 'profile', element: <ProfileLayout><ProfileInfoPage /></ProfileLayout> },
-        { path: 'address', element: <ProfileLayout><ProfileAddressPage /></ProfileLayout> },
+        { path: ORDER, element: <ProfileLayout><OrderPage /></ProfileLayout> },
+        { path: PAYMENT, element: <PaymentPage /> },
+        { path: PROFILE, element: <ProfileLayout><ProfileInfoPage /></ProfileLayout> },
+        { path: ADDRESS, element: <ProfileLayout><ProfileAddressPage /></ProfileLayout> },
       ],
     },
     {
@@ -76,29 +101,42 @@ export default function Router() {
         </Suspense>
       ),
       children: [
-        { path: 'admin', element: <DashboardLayout><IndexPage /></DashboardLayout> },
-        { path: 'admin/user-management', element: <DashboardLayout><UserPage /></DashboardLayout> },
-        { path: 'admin/user-management/user-details/:id', element: <DashboardLayout><UserDetailPage /></DashboardLayout> },
-        { path: 'admin/user-management/create-user', element: <DashboardLayout><UserDetailPage /></DashboardLayout> },
-        { path: 'admin/user-management/edit-user/:id', element: <DashboardLayout><UserDetailPage /></DashboardLayout> },
-        { path: 'admin/product-management', element: <DashboardLayout><ProductsPage /></DashboardLayout> },
-        { path: 'admin/product-management/product-details/:id', element: <DashboardLayout><ProductDetailPage /></DashboardLayout> },
-        { path: 'admin/product-management/create-product', element: <DashboardLayout><ProductDetailPage /></DashboardLayout> },
-        { path: 'admin/product-management/edit-product/:id', element: <DashboardLayout><ProductDetailPage /></DashboardLayout> },
-        { path: 'admin/products', element: <DashboardLayout><ProductsPage /></DashboardLayout> },
-        { path: 'admin/blog', element: <DashboardLayout><BlogPage /></DashboardLayout> },
+        // { path: ADMIN, element: <DashboardLayout><IndexPage /></DashboardLayout> },
+        { path: ADMIN, element: <Navigate to={absolutePath(USER_MANAGEMENT.INDEX)} /> },
+        // USER
+        { path: USER_MANAGEMENT.INDEX, element: <DashboardLayout><UserPage /></DashboardLayout> },
+        { path: USER_MANAGEMENT.DETAILS, element: <DashboardLayout><UserDetailPage /></DashboardLayout> },
+        { path: USER_MANAGEMENT.CREATE, element: <DashboardLayout><UserDetailPage /></DashboardLayout> },
+        { path: USER_MANAGEMENT.EDIT, element: <DashboardLayout><UserDetailPage /></DashboardLayout> },
+        // PRODUCT
+        { path: PRODUCT_MANAGEMENT.INDEX, element: <DashboardLayout><ProductPage /></DashboardLayout> },
+        { path: PRODUCT_MANAGEMENT.DETAILS, element: <DashboardLayout><ProductDetailPage /></DashboardLayout> },
+        { path: PRODUCT_MANAGEMENT.CREATE, element: <DashboardLayout><ProductDetailPage /></DashboardLayout> },
+        { path: PRODUCT_MANAGEMENT.EDIT, element: <DashboardLayout><ProductDetailPage /></DashboardLayout> },
+        // CATEGORY
+        { path: CATEGORY_MANAGEMENT.INDEX, element: <DashboardLayout><CategoryPage /></DashboardLayout> },
+        { path: CATEGORY_MANAGEMENT.DETAILS, element: <DashboardLayout><CategoryDetailPage /></DashboardLayout> },
+        { path: CATEGORY_MANAGEMENT.CREATE, element: <DashboardLayout><CategoryDetailPage /></DashboardLayout> },
+        { path: CATEGORY_MANAGEMENT.EDIT, element: <DashboardLayout><CategoryDetailPage /></DashboardLayout> },
+        // COLOR
+        { path: COLOR_MANAGEMENT.INDEX, element: <DashboardLayout><ColorPage /></DashboardLayout> },
+        { path: COLOR_MANAGEMENT.DETAILS, element: <DashboardLayout><ColorDetailPage /></DashboardLayout> },
+        { path: COLOR_MANAGEMENT.CREATE, element: <DashboardLayout><ColorDetailPage /></DashboardLayout> },
+        { path: COLOR_MANAGEMENT.EDIT, element: <DashboardLayout><ColorDetailPage /></DashboardLayout> },
+        // ORDER
+        { path: ORDER_MANAGEMENT.INDEX, element: <DashboardLayout><OrderManagementPage /></DashboardLayout> },
       ],
     },
     {
-      path: 'login',
+      path: AUTH.LOGIN,
       element: <LoginPage />,
     },
     {
-      path: 'register',
+      path: AUTH.REGISTER,
       element: <RegisterPage />,
     },
     {
-      path: 'unauthorized',
+      path: AUTH.UNAUTHORIZED,
       element: <UnauthorizedPage />,
     },
     {

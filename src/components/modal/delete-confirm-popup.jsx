@@ -2,11 +2,11 @@ import PropTypes from "prop-types"
 
 import ConfirmPopup from "./confirm-popup";
 
-const DeleteConfirmPopup = ({ object, plural, popupOpen, setPopupOpen, handleCancel, handleConfirm }) => (
+const DeleteConfirmPopup = ({ object, plural, popupOpen, setPopupOpen, handleCancel, handleConfirm, specialMessage }) => (
   <ConfirmPopup
     content={{
       title: "DELETE CONFIRMATION",
-      message: `Are you sure you want to permanently remove ${plural ? "these" : "this"} ${object || (plural ? "records" : "record")} from the system?`,
+      message: specialMessage || `Are you sure you want to permanently remove ${plural ? "these" : "this"} ${object || (plural ? "records" : "record")} from the system?`,
       cancelBtnText: "CANCEL",
       confirmBtnText: "CONFIRM"
     }}
@@ -24,6 +24,7 @@ DeleteConfirmPopup.propTypes = {
   setPopupOpen: PropTypes.func,
   handleCancel: PropTypes.func,
   handleConfirm: PropTypes.func,
+  specialMessage: PropTypes.string,
 }
 
 export default DeleteConfirmPopup;

@@ -41,5 +41,9 @@ export function numberWithCommas(x) {
 }
 
 export function fViCurrency(x) {
+  if (x === 0) {
+    return '0₫';
+  }
+  
   return x ? numberWithCommas(x).concat('₫') : null;
 }
