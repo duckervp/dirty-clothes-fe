@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-// import Avatar from '@mui/material/Avatar';
 import { alpha } from '@mui/material/styles';
+import Container from '@mui/material/Container';
 import LockIcon from '@mui/icons-material/Lock';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -26,6 +27,8 @@ import AvatarUpload from 'src/components/uploader/avatar-upload';
 // ----------------------------------------------------------------------
 
 export default function ProfileInfoView() {
+  const { t } = useTranslation('profile', { keyPrefix: 'profile' });
+
   const user = useSelector(selectCurrentUser);
 
   const dispatch = useDispatch();
@@ -131,7 +134,7 @@ export default function ProfileInfoView() {
         bgcolor: (th) => alpha(th.palette.grey[500], 0.12),
       }}
     >
-      <AvatarUpload imageUrl={user?.avatarUrl} setImageUrl={setImageUrl} />
+      <AvatarUpload imageUrl={user?.avatarUrl} setImageUrl={setImageUrl} name={user?.name?.toUpperCase()} />
 
       <Box sx={{ ml: 6 }}>
         <Typography variant="subtitle2">{user?.name}</Typography>
@@ -143,16 +146,11 @@ export default function ProfileInfoView() {
   );
 
   return (
-    <Box
-      sx={{
-        height: 1,
-        mx: 5,
-      }}
-    >
+    <Container>
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1, width: 1 }} spacing={2}>
         <Box width="100%">
           <Typography variant="h5" textAlign="left" width="100%" sx={{ mb: 0.5 }}>
-            MY PROFILE
+            {t('title')}
           </Typography>
           {renderAccount}
         </Box>
@@ -165,12 +163,12 @@ export default function ProfileInfoView() {
           }}
         >
           <Typography variant="h5" textAlign="left" width="100%" sx={{ mb: 1 }}>
-            CHANGE NAME
+            {t('change-name.title')}
           </Typography>
 
           <Box>
             <Typography variant="subtitle2">
-              <span style={{ color: 'red' }}>*</span> Name
+              <span style={{ color: 'red' }}>*</span> {t('change-name.name-input-label')}
             </Typography>
             <TextField
               name="name"
@@ -192,7 +190,7 @@ export default function ProfileInfoView() {
                 loading={isChangeNameLoading}
                 disabled={state.name === user.name}
               >
-                Update
+                {t('change-name.btn-update')}
               </LoadingButton>
             </Stack>
           </Box>
@@ -206,13 +204,13 @@ export default function ProfileInfoView() {
           }}
         >
           <Typography variant="h5" textAlign="left" width="100%" sx={{ mb: 1 }}>
-            CHANGE PASSWORD
+            {t('change-password.title')}
           </Typography>
 
           <Stack spacing={3}>
             <Box>
               <Typography variant="subtitle2">
-                Old Password <span style={{ color: 'red' }}>*</span>
+                {t('change-password.old-password-input.label')} <span style={{ color: 'red' }}>*</span>
               </Typography>
               <TextField
                 fullWidth
@@ -237,12 +235,12 @@ export default function ProfileInfoView() {
                 onChange={handleStateChange}
                 error={err.oldPassword !== ''}
                 helperText={err.oldPassword !== '' && err.oldPassword}
-                placeholder="Enter your old password"
+                placeholder={t('change-password.old-password-input.placeholder')}
               />
             </Box>
             <Box>
               <Typography variant="subtitle2">
-                New Password <span style={{ color: 'red' }}>*</span>
+                {t('change-password.new-password-input.label')} <span style={{ color: 'red' }}>*</span>
               </Typography>
               <TextField
                 fullWidth
@@ -267,7 +265,7 @@ export default function ProfileInfoView() {
                 onChange={handleStateChange}
                 error={err.newPassword !== ''}
                 helperText={err.newPassword !== '' && err.newPassword}
-                placeholder="Enter your new password"
+                placeholder={t('change-password.new-password-input.placeholder')}
               />
             </Box>
           </Stack>
@@ -287,11 +285,11 @@ export default function ProfileInfoView() {
                 state.oldPassword === state.newPassword
               }
             >
-              Submit
+              {t('change-password.btn-submit')}
             </LoadingButton>
           </Stack>
         </Card>
       </Stack>
-    </Box>
+    </Container>
   );
 }

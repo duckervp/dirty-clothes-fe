@@ -8,17 +8,17 @@ const icon = (name) => (
 
 const navConfig = [
   {
-    title: 'Basic Info',
+    key: 'basic-info',
     path: '/profile',
     icon: icon('ic_user'),
   },
   {
-    title: 'Order',
+    key: 'order',
     path: '/order',
     icon: icon('ic_cart'),
   },
   {
-    title: 'Address',
+    key: 'address',
     path: '/address',
     icon: icon('ic_blog'),
   },

@@ -14,7 +14,7 @@ i18next
   // .use(LanguageDetector)
   .use(Backend)
   .init({
-    debug: true,
+    // debug: true,
     fallbackLng: currentLng(),
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default

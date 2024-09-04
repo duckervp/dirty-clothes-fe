@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
-// import Button from '@mui/material/Button';
-
 import { alpha } from '@mui/material/styles';
 import ListItemButton from '@mui/material/ListItemButton';
 
@@ -18,6 +17,7 @@ import Scrollbar from 'src/components/scrollbar';
 
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
+import AccountDisplay from '../common/account-display';
 
 // ----------------------------------------------------------------------
 
@@ -36,7 +36,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
       {navConfig.map((item) => (
-        <NavItem key={item.title} item={item} />
+        <NavItem key={item.key} item={item} />
       ))}
     </Stack>
   );
@@ -52,6 +52,7 @@ export default function Nav({ openNav, onCloseNav }) {
         },
       }}
     >
+      <AccountDisplay />
       {renderMenu}
     </Scrollbar>
   );
@@ -69,9 +70,10 @@ export default function Nav({ openNav, onCloseNav }) {
             position: 'fixed',
             height: 1,
             width: NAV.WIDTH,
-            // borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
+            borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
           }}
         >
+          <Box sx={{pt: 10}}/>
           {renderContent}
         </Box>
       ) : (
@@ -99,6 +101,8 @@ Nav.propTypes = {
 // ----------------------------------------------------------------------
 
 function NavItem({ item }) {
+  const { t } = useTranslation('translation', { keyPrefix: 'profile-nav' });
+
   const pathname = usePathname();
 
   const active = item.path === pathname;
@@ -128,7 +132,7 @@ function NavItem({ item }) {
         {item.icon}
       </Box>
 
-      <Box component="span">{item.title} </Box>
+      <Box component="span">{t(item.key)} </Box>
     </ListItemButton>
   );
 }

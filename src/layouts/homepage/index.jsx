@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 
 import Header from './header';
 import Footer from './footer';
-import Main from '../dashboard/main';
+import Main from '../common/main';
 
 // ----------------------------------------------------------------------
 

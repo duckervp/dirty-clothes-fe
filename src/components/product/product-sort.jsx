@@ -46,7 +46,7 @@ export default function ShopProductSort({ selectedOption, setSelectedOption }) {
       >
         {t('text')}:&nbsp;
         <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-          {selectedOption.label}
+          {t(`option.${selectedOption.value}`)}
         </Typography>
       </Button>
 
@@ -72,7 +72,7 @@ export default function ShopProductSort({ selectedOption, setSelectedOption }) {
             selected={option.value === selectedOption.value}
             onClick={() => handleSort(option)}
           >
-            {option.label}
+            {t(`option.${option.value}`)}
           </MenuItem>
         ))}
       </Menu>

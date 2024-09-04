@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -12,6 +13,7 @@ import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
+import { AUTH, HOME_INDEX, absolutePath } from 'src/routes/route-config';
 
 import useLogin from 'src/hooks/use-login';
 
@@ -27,6 +29,8 @@ import { LOGO_FONT, LOGO_NAME, EMAIL_REGEX } from '../../config';
 // ----------------------------------------------------------------------
 
 export default function RegisterView() {
+  const { t } = useTranslation('auth');
+
   const theme = useTheme();
 
   const router = useRouter();
@@ -68,14 +72,14 @@ export default function RegisterView() {
     try {
       const response = await register(state).unwrap();
       handleLogin(response);
-      router.push('/');
+      router.push(HOME_INDEX);
     } catch (error) {
       handleError(error);
     }
   };
 
   const handleLoginClick = () => {
-    router.push('/login');
+    router.push(absolutePath(AUTH.LOGIN));
   };
 
   const isIncorrectConfirmPassword = () =>
@@ -90,13 +94,13 @@ export default function RegisterView() {
     const newErr = { ...err };
     Object.keys(state).forEach((key) => {
       if (state[key] === '') {
-        newErr[key] = 'Field value required!';
+        newErr[key] = t('form.error.field-required');
         isValid = false;
       }
     });
 
     if (isValid && !state.email.match(EMAIL_REGEX)) {
-      newErr.email = 'Invalid email address!';
+      newErr.email = t('form.error.invalid-email');
       isValid = false;
     }
 
@@ -116,7 +120,7 @@ export default function RegisterView() {
       <Stack spacing={3}>
         <TextField
           name="name"
-          label="Your name"
+          label={t('form.name')}
           autoComplete="false"
           value={state.name}
           onChange={handleStateChange}
@@ -126,19 +130,19 @@ export default function RegisterView() {
 
         <TextField
           name="email"
-          label="Email address"
+          label={t('form.email')}
           autoComplete="false"
           value={state.email}
           onChange={handleStateChange}
           error={!isValidEmail() || err.email !== ''}
           helperText={
-            (!isValidEmail() && 'Invalid email address!') || (err.email !== '' && err.email)
+            (!isValidEmail() && t('form.error.invalid-email')) || (err.email !== '' && err.email)
           }
         />
 
         <TextField
           name="password"
-          label="Password"
+          label={t('form.password')}
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -158,7 +162,7 @@ export default function RegisterView() {
 
         <TextField
           name="confirmPassword"
-          label="Confirm Password"
+          label={t('form.confirm-password')}
           type={showConfirmPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -174,7 +178,7 @@ export default function RegisterView() {
           onChange={handleStateChange}
           error={isIncorrectConfirmPassword() || err.confirmPassword !== ''}
           helperText={
-            (isIncorrectConfirmPassword() && 'Confirm password does not match!') ||
+            (isIncorrectConfirmPassword() && t('form.error.confirm-password')) ||
             (err.confirmPassword !== '' && err.confirmPassword)
           }
           onKeyPress={handleKeyPress}
@@ -191,7 +195,7 @@ export default function RegisterView() {
         sx={{ mt: 3 }}
         loading={isLoading}
       >
-        Register
+        {t('register.btn-register')}
       </LoadingButton>
     </>
   );
@@ -215,17 +219,19 @@ export default function RegisterView() {
           }}
         >
           <Stack direction="row" alignItems="center">
-            <Typography variant="h4">Register to </Typography>
+            <Typography variant="h4">{t('register.title')}</Typography>
             <Typography variant="h4" sx={{ ml: 1, fontFamily: LOGO_FONT, display: 'inline' }}>
               {LOGO_NAME}
             </Typography>
           </Stack>
 
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
-            Already have an account?
-            <Link variant="subtitle2" sx={{ ml: 0.5 }} onClick={handleLoginClick}>
-              Login
-            </Link>
+            <Trans i18nKey="register.caption" ns='auth'>
+              Already have an account?
+              <Link variant="subtitle2" sx={{ ml: 0.5 }} onClick={handleLoginClick}>
+                Login
+              </Link>
+            </Trans>
           </Typography>
 
           {renderForm}

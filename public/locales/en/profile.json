@@ -1,0 +1,72 @@
+{
+  "profile": {
+    "title": "MY PROFILE",
+    "change-name": {
+      "title": "CHANGE NAME",
+      "name-input-label": "Name",
+      "btn-update": "Update"
+    },
+    "change-password": {
+      "title": "CHANGE PASSWORD",
+      "old-password-input": {
+        "label": "Old Password",
+        "placeholder": "Enter your old password"
+      },
+      "new-password-input": {
+        "label": "New Password",
+        "placeholder": "Enter new password"
+      },
+      "btn-submit": "Submit"
+    }
+  },
+  "order": {
+    "order-no": "Order No",
+    "status": "Status",
+    "total": "Total",
+    "detail-summary": {
+      "title": "Order Info",
+      "no": "No",
+      "current-status": "Current Status",
+      "user-account": "User Account",
+      "shipping-address": "Shipping Address",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "payment-method": {
+        "label": "Payment Method",
+        "CASH_ON_DELIVERY": "Cash On Delivery"
+      },
+      "total": "Total",
+      "btn-cancel": "Cancel"
+    },
+    "status-option": {
+      "ORDER": "ORDER",
+      "REFUSED": "REFUSED",
+      "ACCEPTED": "ACCEPTED",
+      "DELIVERY": "DELIVERY",
+      "DONE": "DONE",
+      "CANCELLED": "CANCELLED"
+    }
+  },
+  "address": {
+    "title": "ADDRESS",
+    "btn-create-new-address": "Create new Address",
+    "table-column": {
+      "name": "Name",
+      "detail-address": "Detail Address",
+      "phone": "Phone",
+      "note": "Note",
+      "delete": "Delete"
+    },
+    "form": {
+      "title": "New Address",
+      "btn-submit": "Submit"
+    }
+  },
+  "avatar": {
+    "tooltip": {
+      "upload": "Upload new avatar",
+      "remove": "Remove avatar",
+      "save": "Save"
+    }
+  }
+}

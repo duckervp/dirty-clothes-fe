@@ -30,6 +30,29 @@
   },
   "home": {
     "products": "ALL PRODUCTS"
-    
+  },
+  "profile-nav": {
+    "basic-info": "Basic Info",
+    "order": "Order",
+    "address": "Address"
+  },
+  "page": {
+    "dasboard": "Dashboard",
+    "best-seller": "Best Seller",
+    "cart": "Cart",
+    "category-m": "Category",
+    "color-m": "Color",
+    "home": "Home",
+    "login": "Login",
+    "order-m": "Order",
+    "order": "Order",
+    "payment": "Payment",
+    "product": "Product",
+    "register": "Register",
+    "shop": "Shop",
+    "unauthorized": "Unauthorized",
+    "user": "User",
+    "address": "Address",
+    "profile": "Profile"
   }
 }

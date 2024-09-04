@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 import Radio from '@mui/material/Radio';
 import { styled } from '@mui/material/styles';
@@ -20,7 +21,7 @@ function MyFormControlLabel(props) {
   let checked = false;
 
   if (radioGroup) {
-    const {value} = props;
+    const { value } = props;
     checked = radioGroup.value === value;
   }
 
@@ -35,9 +36,10 @@ MyFormControlLabel.propTypes = {
 };
 
 export default function UseRadioGroup() {
+  const { t } = useTranslation('product', { keyPrefix: 'payment.payment-method' });
   return (
     <RadioGroup name="use-radio-group" defaultValue="cod">
-      <MyFormControlLabel value="cod" label="Cash On Delivery" control={<Radio />} />
+      <MyFormControlLabel value="cod" label={t('COD')} control={<Radio />} />
       {/* <MyFormControlLabel value="vnpay" label="VNPay" control={<Radio />} /> */}
     </RadioGroup>
   );

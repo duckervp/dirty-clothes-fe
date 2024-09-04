@@ -1,0 +1,15 @@
+{
+  "custom": {
+    "error": {
+      "no-server-response": "No Server Response",
+      "unauthorized": "Unauthorized",
+      "unexpected-error": "Unexpected Error"
+    },
+    "cart": {
+      "add-success": "Added product to cart successfully!124"
+    }
+  },
+  "code": {
+    "100": "Username or password is incorrect!"
+  }
+}

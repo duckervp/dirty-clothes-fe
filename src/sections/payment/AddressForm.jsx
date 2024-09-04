@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -12,6 +13,8 @@ import {
 } from 'src/app/api/payment/ghnApiSlice';
 
 export default function AddressForm({ ward, setWard, address, setAddress }) {
+  const { t } = useTranslation('product', { keyPrefix: 'address-form' });
+
   const [province, setProvince] = React.useState(null);
 
   const [districts, setDistricts] = React.useState([]);
@@ -54,7 +57,7 @@ export default function AddressForm({ ward, setWard, address, setAddress }) {
     setDistrict(null);
     setWards([]);
     setWard(null);
-    
+
     const newAddress = { ...address };
     newAddress.province = newValue.ProvinceName;
     setAddress(newAddress);
@@ -99,7 +102,7 @@ export default function AddressForm({ ward, setWard, address, setAddress }) {
       <TextField
         id="name"
         name="name"
-        label="Receiver Name"
+        label={t('input-label.receiver-name')}
         variant="outlined"
         fullWidth
         sx={{ mb: 1.5 }}
@@ -116,7 +119,7 @@ export default function AddressForm({ ward, setWard, address, setAddress }) {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Province"
+            label={t('input-label.province')}
             inputProps={{
               ...params.inputProps,
               autoComplete: 'nothing', // disable autocomplete and autofill
@@ -135,7 +138,7 @@ export default function AddressForm({ ward, setWard, address, setAddress }) {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="District"
+            label={t('input-label.district')}
             inputProps={{
               ...params.inputProps,
               autoComplete: 'nothing', // disable autocomplete and autofill
@@ -156,7 +159,7 @@ export default function AddressForm({ ward, setWard, address, setAddress }) {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Ward"
+            label={t('input-label.ward')}
             inputProps={{
               ...params.inputProps,
               autoComplete: 'nothing', // disable autocomplete and autofill
@@ -168,7 +171,7 @@ export default function AddressForm({ ward, setWard, address, setAddress }) {
       <TextField
         id="address"
         name="address"
-        label="Detail Address"
+        label={t('input-label.detail-address')}
         variant="outlined"
         fullWidth
         sx={{ mb: 1.5 }}
@@ -178,7 +181,7 @@ export default function AddressForm({ ward, setWard, address, setAddress }) {
       <TextField
         id="phone"
         name="phone"
-        label="Phone"
+        label={t('input-label.phone')}
         variant="outlined"
         fullWidth
         sx={{ mb: 1.5 }}
@@ -188,7 +191,7 @@ export default function AddressForm({ ward, setWard, address, setAddress }) {
       <TextField
         id="zip"
         name="zip"
-        label="Postal/Zip Code"
+        label={t('input-label.postal-code')}
         variant="outlined"
         fullWidth
         sx={{ mb: 1.5 }}
@@ -198,7 +201,7 @@ export default function AddressForm({ ward, setWard, address, setAddress }) {
       <TextField
         id="note"
         name="note"
-        label="Note"
+        label={t('input-label.note')}
         variant="outlined"
         fullWidth
         autoComplete="nothing"

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import { Link as RLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -48,6 +49,8 @@ const calCartTotalPrice = (cartItems) => {
 };
 
 function CartItemTable({ cartItems }) {
+  const { t } = useTranslation('product', { keyPrefix: "cart.cart-item-table" });
+
   const dispatch = useDispatch();
 
   const handleQuantityChange = (cartItem, newValue) => {
@@ -63,15 +66,15 @@ function CartItemTable({ cartItems }) {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell sx={{ color: 'black' }}>Product</TableCell>
+            <TableCell sx={{ color: 'black' }}>{t('product')}</TableCell>
             <TableCell sx={{ color: 'black' }} align="center">
-              Quantity
+              {t('quantity')}
             </TableCell>
             <TableCell sx={{ color: 'black' }} align="center">
-              Total
+              {t('total')}
             </TableCell>
             <TableCell sx={{ color: 'black' }} align="center">
-              Delete
+              {t('delete')}
             </TableCell>
           </TableRow>
         </TableHead>
@@ -139,6 +142,8 @@ CartItemTable.propTypes = {
 };
 
 export default function CartView() {
+  const { t } = useTranslation('product', { keyPrefix: 'cart' });
+
   const router = useRouter();
 
   const cartItems = useSelector(selectCartItems);
@@ -149,7 +154,7 @@ export default function CartView() {
 
   if (cartItems.length === 0) {
     return (
-      <EmptyContainer title="Empty cart" message="You have not added any products to your cart." />
+      <EmptyContainer title={t('empty.title')} message={t('empty.message')} />
     );
   }
 
@@ -162,13 +167,13 @@ export default function CartView() {
         <Grid xs={12} sm={12} md={4}>
           <Box sx={{ border: '1px solid rgba(145, 158, 171, 0.2)' }}>
             <Stack direction="row" justifyContent="space-between" sx={{ px: 3, py: 2 }}>
-              <Typography variant="body2">Total</Typography>
+              <Typography variant="body2">{t('total')}</Typography>
               <Typography variant="body2" fontWeight="600">
                 {fViCurrency(calCartTotalPrice(cartItems))}
               </Typography>
             </Stack>
             <Divider />
-            <Box sx={{ py: 4, textAlign: 'center', borderRadius: '3px' }}>
+            <Box sx={{ py: 9, textAlign: 'center', borderRadius: '3px' }}>
               <Button
                 variant="contained"
                 sx={{
@@ -180,7 +185,7 @@ export default function CartView() {
                 }}
                 onClick={handlePaymentClick}
               >
-                PAYMENT
+                {t('btn-payment')}
               </Button>
             </Box>
           </Box>

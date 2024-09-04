@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -12,10 +13,10 @@ import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
+import { AUTH, HOME_INDEX, absolutePath } from 'src/routes/route-config';
 
 import useLogin from 'src/hooks/use-login';
-
-import { handleError } from 'src/utils/notify';
+import useNotify from 'src/hooks/use-notify';
 
 import { bgGradient } from 'src/theme/css';
 import { useLoginMutation } from 'src/app/api/auth/authApiSlice';
@@ -28,11 +29,15 @@ import { LOGO_FONT, LOGO_NAME, EMAIL_REGEX } from '../../config';
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
+  const { t } = useTranslation('auth');
+
+  const {showErrorMsg} = useNotify();
+
   const theme = useTheme();
 
   const router = useRouter();
 
-  const [login, {isLoading}] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
 
   const defaultState = {
     email: '',
@@ -53,14 +58,14 @@ export default function LoginView() {
     try {
       const response = await login(state).unwrap();
       handleLogin(response);
-      router.push('/');
+      router.push(HOME_INDEX);
     } catch (error) {
-      handleError(error);
+      showErrorMsg(error);
     }
   };
 
   const handleRegisterClick = () => {
-    router.push('/register');
+    router.push(absolutePath(AUTH.REGISTER));
   };
 
   const handleStateChange = (e) => {
@@ -83,13 +88,13 @@ export default function LoginView() {
     const newErr = { ...err };
     Object.keys(state).forEach((key) => {
       if (state[key] === '') {
-        newErr[key] = 'Field value required!';
+        newErr[key] = t('form.error.field-required');
         isValid = false;
       }
     });
 
     if (isValid && !state.email.match('^[a-zA-Z0-9+_.\\-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]+$')) {
-      newErr.email = 'Invalid email address!';
+      newErr.email = t('form.error.invalid-email');
       isValid = false;
     }
 
@@ -109,19 +114,19 @@ export default function LoginView() {
       <Stack spacing={3}>
         <TextField
           name="email"
-          label="Email address"
+          label={t('form.email')}
           autoComplete="false"
           value={state.email}
           onChange={handleStateChange}
           error={!isValidEmail() || err.email !== ''}
           helperText={
-            (!isValidEmail() && 'Invalid email address!') || (err.email !== '' && err.email)
+            (!isValidEmail() && t('form.error.invalid-email')) || (err.email !== '' && err.email)
           }
         />
 
         <TextField
           name="password"
-          label="Password"
+          label={t('form.password')}
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -143,7 +148,7 @@ export default function LoginView() {
 
       <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
         <Link variant="subtitle2" underline="hover">
-          Forgot password?
+          {t('form.forgot-password')}
         </Link>
       </Stack>
 
@@ -156,7 +161,7 @@ export default function LoginView() {
         onClick={handleClick}
         loading={isLoading}
       >
-        Login
+        {t('login.btn-login')}
       </LoadingButton>
     </>
   );
@@ -180,17 +185,19 @@ export default function LoginView() {
           }}
         >
           <Stack direction="row" alignItems="center">
-            <Typography variant="h4">Sign in to </Typography>
-            <Typography variant="h4" sx={{ ml: 1, fontFamily: LOGO_FONT, display: 'inline'}}>
+            <Typography variant="h4">{t('login.title')}</Typography>
+            <Typography variant="h4" sx={{ ml: 1, fontFamily: LOGO_FONT, display: 'inline' }}>
               {LOGO_NAME}
             </Typography>
           </Stack>
 
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
-            Don&apos;t have an account?
-            <Link variant="subtitle2" sx={{ ml: 0.5 }} onClick={handleRegisterClick}>
-              Get started
-            </Link>
+            <Trans i18nKey="login.caption" ns="auth">
+              Don&apos;t have an account?
+              <Link variant="subtitle2" sx={{ ml: 0.5 }} onClick={handleRegisterClick}>
+                Get started
+              </Link>
+            </Trans>
           </Typography>
 
           {/* SocialLogin If Need */}

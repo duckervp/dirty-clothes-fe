@@ -1,17 +1,19 @@
-// import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
 
-import HomepageLayout from 'src/layouts/homepage';
-
-// import Button from '@mui/material/Button';
-// import Typography from '@mui/material/Typography';
 import Nav from './nav';
+import Main from '../common/main';
+import Header from '../homepage/header';
 
-const ProfileLayout = ({ children }) => (
-  <HomepageLayout>
-    <Box>
+const ProfileLayout = ({ children }) => {
+  const [openNav, setOpenNav] = useState(false);
+
+  return (
+    <>
+      <Header onOpenNav={() => setOpenNav(true)} />
+
       <Box
         sx={{
           minHeight: 1,
@@ -19,17 +21,16 @@ const ProfileLayout = ({ children }) => (
           flexDirection: { xs: 'column', lg: 'row' },
         }}
       >
-        <Nav openNav={false} onCloseNav={() => false} />
+        <Nav openNav={openNav} onCloseNav={() => setOpenNav(false)} />
 
-        <Box width="100%">{children}</Box>
+        <Main>{children}</Main>
       </Box>
-    </Box>
-  </HomepageLayout>
-);
+    </>
+  );
+}
 
 ProfileLayout.propTypes = {
-  children: PropTypes.node,
-  // sx: PropTypes.object,
+  children: PropTypes.node
 };
 
 export default ProfileLayout;

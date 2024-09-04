@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -22,9 +23,11 @@ import ModalPopup from 'src/components/modal/modal';
 import { ColorPreview } from 'src/components/color-utils';
 import EmptyContainer from 'src/components/empty-container/empty-container';
 
+import OrderStatus from '../order-status';
 import OrderSummary from '../order-summary';
 
 function OrderItemTable({ orderItems, handleOrderClick }) {
+  const { t } = useTranslation('profile', { keyPrefix: 'order' });
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -38,7 +41,7 @@ function OrderItemTable({ orderItems, handleOrderClick }) {
               <TableCell component="th" scope="row">
                 <Tooltip title={item?.code}>
                   <Stack alignItems="center">
-                    <Typography variant="subtitle2">Order No</Typography>
+                    <Typography variant="subtitle2">{t('order-no')}</Typography>
                     <Typography variant="caption">
                       {item?.code?.length > 10
                         ? item?.code?.slice(0, 10).concat('...')
@@ -87,12 +90,12 @@ function OrderItemTable({ orderItems, handleOrderClick }) {
                 </Stack>
               </TableCell>
               <TableCell align="center">
-                <Typography variant="subtitle2">Status</Typography>
-                <Typography variant="caption">{item?.status}</Typography>
+                <Typography variant="subtitle2">{t('status')}</Typography>
+                <OrderStatus sx={{ fontWeight: 300 }} status={item?.status} />
               </TableCell>
               <TableCell align="center" sx={{ width: '150px' }}>
-                <Typography variant="subtitle2">Total</Typography>
-                <Typography variant="caption">{fViCurrency(item?.total)}</Typography>
+                <Typography variant="subtitle2">{t('total')}</Typography>
+                <Typography variant="subtitle2">{fViCurrency(item?.total)}</Typography>
               </TableCell>
             </TableRow>
           ))}
@@ -135,7 +138,7 @@ export default function OrderView() {
 
   return (
     <Container>
-      <ModalPopup open={orderDetailModalOpen} setOpen={setOrderDetailModalOpen}>
+      <ModalPopup open={orderDetailModalOpen} setOpen={setOrderDetailModalOpen} sx={{ pt: 2, pb: 5 }}>
         <OrderSummary orderCode={selectedOrderCode} />
       </ModalPopup>
       <Box>

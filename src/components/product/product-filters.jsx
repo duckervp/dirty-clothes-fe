@@ -117,7 +117,7 @@ export default function ProductFilters({
 
   const renderTarget = (
     <Stack spacing={1}>
-      <Typography variant="subtitle2">{t('targets')}</Typography>
+      <Typography variant="subtitle2">{t('target.title')}</Typography>
       <FormGroup>
         <Grid container>
           {TARGET_OPTIONS.map((item) => (
@@ -132,7 +132,7 @@ export default function ProductFilters({
                 }
                 label={
                   <Typography variant="subtitle2" fontWeight={300}>
-                    {item.label}
+                    {t(`target.option.${item.value}`)}
                   </Typography>
                 }
               />
@@ -145,7 +145,7 @@ export default function ProductFilters({
 
   const renderSize = (
     <Stack spacing={1}>
-      <Typography variant="subtitle2">Sizes</Typography>
+      <Typography variant="subtitle2">{t('size.title')}</Typography>
       <FormGroup>
         <Grid container>
           {SIZE_OPTIONS.map((item) => (
@@ -193,7 +193,7 @@ export default function ProductFilters({
 
   const renderColors = (
     <Stack spacing={1}>
-      <Typography variant="subtitle2">Colors</Typography>
+      <Typography variant="subtitle2">{t('color.title')}</Typography>
       <ColorPicker
         name="colors"
         selected={selectedColors}
@@ -206,7 +206,7 @@ export default function ProductFilters({
 
   const renderPrice = (
     <Stack spacing={1}>
-      <Typography variant="subtitle2">Price</Typography>
+      <Typography variant="subtitle2">{t('price.title')}</Typography>
       <RadioGroup>
         {PRICE_OPTIONS.map((item) => (
           <FormControlLabel
@@ -223,7 +223,7 @@ export default function ProductFilters({
             }
             label={
               <Typography variant="subtitle2" fontWeight={300}>
-                {item.label}
+                {t(`price.option.${item.value}`)}
               </Typography>
             }
           />
@@ -324,7 +324,7 @@ export default function ProductFilters({
             startIcon={<Iconify icon="ic:round-clear-all" />}
             onClick={handleClearAll}
           >
-            Clear All
+            {t('clear-all')}
           </Button>
         </Box>
       </Drawer>

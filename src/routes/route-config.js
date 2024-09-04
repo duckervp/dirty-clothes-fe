@@ -1,4 +1,7 @@
-export const absolutePath = (path) => "/".concat(path);
+export const HOME_INDEX = '/';
+
+export const absolutePath = (path) => HOME_INDEX.concat(path);
+
 
 // AUTH ROUTES
 export const AUTH = {
@@ -16,6 +19,7 @@ export const CART = 'cart';
 export const PRODUCT_DETAIL = ':slug';
 export const ORDER = 'order';
 export const PAYMENT = 'payment';
+export const BUYNOW = 'payment?buyNow=true';
 export const PROFILE = 'profile';
 export const ADDRESS = 'address';
 

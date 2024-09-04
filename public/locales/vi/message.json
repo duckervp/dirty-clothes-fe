@@ -1,0 +1,15 @@
+{
+  "custom": {
+    "error": {
+      "no-server-response": "Máy chủ không phản hồi",
+      "unauthorized": "Lỗi xác thực",
+      "unexpected-error": "Lỗi không xác định"
+    },
+    "cart": {
+      "add-success": "Đã Thêm sản phẩm vào giỏ hàng!"
+    }
+  },
+  "code": {
+    "100": "Tài khoản hoặc mật khẩu không đúng!"
+  }
+}

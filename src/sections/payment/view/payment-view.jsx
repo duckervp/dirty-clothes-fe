@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RLink, useSearchParams } from 'react-router-dom';
 
@@ -94,6 +95,8 @@ const calTotalPrice = (items) => {
 };
 
 export default function PaymentView() {
+  const { t } = useTranslation('product', { keyPrefix: 'payment' });
+
   const defaultShippingAddress = {
     address: null,
     district: null,
@@ -129,7 +132,7 @@ export default function PaymentView() {
 
   const [addresses, setAddresses] = useState([]);
 
-  const [selectedAddress, setSelectedAddress] = useState({ name: 'Select shipping address' });
+  const [selectedAddress, setSelectedAddress] = useState({ name: t('shipping-info.placeholder') });
 
   const { data: addressData } = useGetAllAddressesQuery({ userOnly: true });
 
@@ -253,10 +256,10 @@ export default function PaymentView() {
       <ModalPopup open={changeAddressModalOpen} setOpen={setChangeAddressModalOpen}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
           <Typography variant="h5" textAlign="left" sx={{ mb: 1 }} style={{ margin: 0 }}>
-            SELECT ADDRESS
+            {t('address.title')}
           </Typography>
           <Button startIcon={<AddBoxIcon />} onClick={handleCreateAddressClick}>
-            NEW
+            {t('address.btn-new')}
           </Button>
         </Stack>
 
@@ -286,7 +289,7 @@ export default function PaymentView() {
 
       <ModalPopup open={createAddressModalOpen} setOpen={setCreateAddressModalOpen}>
         <Typography variant="h5" textAlign="left" width="100%" sx={{ mb: 1 }}>
-          NEW ADDRESS
+          {t('address.form.title')}
         </Typography>
         <AddressForm
           ward={ward}
@@ -303,7 +306,7 @@ export default function PaymentView() {
           onClick={handleAddAddressClick}
           sx={{ mt: 2 }}
         >
-          Submit
+          {t('address.form.btn-submit')}
         </LoadingButton>
       </ModalPopup>
       <Grid container spacing={5}>
@@ -319,7 +322,7 @@ export default function PaymentView() {
             >
               <Box sx={{ width: '100%', pr: { lg: 2, md: 2, sm: 0, xs: 0 } }}>
                 <Typography variant="body1" fontWeight={700} sx={{ mb: 1, mt: 5 }}>
-                  Shipping Information
+                  {t('shipping-info.label')}
                 </Typography>
 
                 <Card
@@ -348,18 +351,18 @@ export default function PaymentView() {
               <Box sx={{ mt: 5, width: '100%', pl: { lg: 2, md: 2, sm: 0, xs: 0 } }}>
                 <Box>
                   <Typography variant="body1" fontWeight={700} sx={{ mb: 1 }}>
-                    Shipping Method
+                  {t('shipping-method.label')}
                   </Typography>
                   <Card sx={{ boxShadow: 3 }}>
                     {FREE_SHIPPING_MODE ?
                       <Stack direction="row" justifyContent="space-between" sx={{ py: 3, px: 3 }}>
                         <Stack direction="row" alignItems="center">
                           <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>
-                            Standard shipping
+                          {t('shipping-method.standard')}
                           </Typography>
                         </Stack>
                         <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>
-                          Free
+                        {t('shipping-method.free')}
                         </Typography>
                       </Stack>
                       :
@@ -389,7 +392,7 @@ export default function PaymentView() {
                 </Box>
                 <Box sx={{ mt: 5 }}>
                   <Typography variant="body1" fontWeight={700} sx={{ mb: 1 }}>
-                    Payment Method
+                  {t('payment-method.label')}
                   </Typography>
                   <Card sx={{ p: 3, boxShadow: 3 }}>
                     <UseRadioGroup />
@@ -402,7 +405,7 @@ export default function PaymentView() {
         <Grid xs={12} sm={12} md={5}>
           <Card sx={{ px: 3, py: 5, boxShadow: 3 }}>
             <Typography variant="h3" sx={{ fontWeight: '600', mb: 2, textAlign: 'center' }}>
-              Order Summary
+            {t('order-summary.title')}
             </Typography>
             <Divider />
             <Box sx={{ pt: 2 }}>
@@ -421,21 +424,21 @@ export default function PaymentView() {
               <Divider sx={{ pt: 1, pb: 2 }} />
 
               <Stack direction="row" justifyContent="space-between" sx={{ mt: 1 }}>
-                <Typography variant="body2">Subtotal</Typography> 
+                <Typography variant="body2">{t('order-summary.subtotal')}</Typography>
                 <Typography variant="body2">
                   {fViCurrency(calTotalPrice(buyNowMode ? [buyNow] : cartItems))}
                 </Typography>
               </Stack>
 
               <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
-                <Typography variant="body2">Shipping</Typography>
-                <Typography variant="body2">{ fViCurrency(FREE_SHIPPING_MODE ? 0 : getServiceFee())}</Typography>
+                <Typography variant="body2">{t('order-summary.shipping')}</Typography>
+                <Typography variant="body2">{fViCurrency(FREE_SHIPPING_MODE ? 0 : getServiceFee())}</Typography>
               </Stack>
 
               <Divider />
 
               <Stack direction="row" justifyContent="space-between" sx={{ my: 2 }}>
-                <Typography variant="subtitle1">Total</Typography>
+                <Typography variant="subtitle1">{t('order-summary.total')}</Typography>
                 <Typography variant="subtitle1">{fViCurrency(getTotal())}</Typography>
               </Stack>
 
@@ -450,7 +453,7 @@ export default function PaymentView() {
                 fullWidth
                 onClick={handleCheckout}
               >
-                Complete Order
+                {t('order-summary.btn-complete-order')}
               </Button>
             </Box>
           </Card>

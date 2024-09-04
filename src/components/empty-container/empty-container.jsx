@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -8,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import { useRouter } from 'src/routes/hooks';
 
 export default function EmptyContainer({ title, message }) {
+  const { t } = useTranslation('product', { keyPrefix: 'cart.empty' });
   const router = useRouter();
 
   return (
@@ -18,10 +20,10 @@ export default function EmptyContainer({ title, message }) {
           <Typography variant="body1">{message}</Typography>
           <Box sx={{ mt: 3 }}>
             <Button onClick={() => router.push('/')} variant="contained">
-              Continue Shopping
+              {t('btn-continue-shopping')}
             </Button>
             <Button onClick={() => router.back()} sx={{ ml: 2 }} variant="outlined">
-              Go Back
+              {t('btn-go-back')}
             </Button>
           </Box>
         </Box>

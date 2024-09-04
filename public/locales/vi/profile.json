@@ -1,0 +1,72 @@
+{
+  "profile": {
+    "title": "HỒ SƠ",
+    "change-name": {
+      "title": "ĐỔI TÊN",
+      "name-input-label": "Tên",
+      "btn-update": "Cập Nhật"
+    },
+    "change-password": {
+      "title": "ĐỔI MẬT KHẨU",
+      "old-password-input": {
+        "label": "Mật khẩu cũ",
+        "placeholder": "Nhập mật khẩu cũ của bạn"
+      },
+      "new-password-input": {
+        "label": "Mật khẩu mới",
+        "placeholder": "Nhập mật khẩu mới"
+      },
+      "btn-submit": "Cập Nhật"
+    }
+  },
+  "order": {
+    "order-no": "Mã đơn hàng",
+    "status": "Trạng thái",
+    "total": "Tổng",
+    "detail-summary": {
+      "title": "Thông tin đơn hàng",
+      "no": "Mã",
+      "current-status": "Trạng thái hiện tại",
+      "user-account": "Người đặt hàng",
+      "shipping-address": "Địa chỉ nhận hàng",
+      "subtotal": "Tổng tiền hàng",
+      "shipping": "Tổng tiền phí vận chuyển",
+      "payment-method": {
+        "label": "Phương thức thanh toán",
+        "CASH_ON_DELIVERY": "Thanh toán khi nhận hàng"
+      },
+      "total": "Thành tiền",
+      "btn-cancel": "Huỷ đơn hàng"
+    },
+    "status-option": {
+      "ORDER": "Chờ xác nhận",
+      "REFUSED": "Ngươi bán từ chối",
+      "ACCEPTED": "Chờ lấy hàng",
+      "DELIVERY": "Đang giao hàng",
+      "DONE": "Đã hoàn thành",
+      "CANCELLED": "Đã huỷ"
+    }
+  },
+  "address": {
+    "title": "ĐỊA CHỈ",
+    "btn-create-new-address": "Tạo địa chỉ",
+    "table-column": {
+      "name": "Tên người nhận",
+      "detail-address": "Địa chỉ",
+      "phone": "Điện thoại",
+      "note": "Ghi chú",
+      "delete": "Xoá"
+    },
+    "form": {
+      "title": "Tạo Địa Chỉ Mới",
+      "btn-submit": "Cập Nhật"
+    }
+  },
+  "avatar": {
+    "tooltip": {
+      "upload": "Thay đổi ảnh đại diện",
+      "remove": "Loại bỏ ảnh đại diện",
+      "save": "Lưu thay đổi"
+    }
+  }
+}

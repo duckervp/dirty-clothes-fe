@@ -3,6 +3,7 @@ import parse from 'html-react-parser';
 import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import ImageGallery from 'react-image-gallery';
 
 import Box from '@mui/material/Box';
@@ -15,9 +16,12 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import { useRouter } from 'src/routes/hooks';
+import { BUYNOW, absolutePath } from 'src/routes/route-config';
+
+import useNotify from 'src/hooks/use-notify';
 
 import { toListObj } from 'src/utils/array';
-import { showSuccessMessage } from 'src/utils/notify';
+// import { showSuccessMessage } from 'src/utils/notify';
 
 import { useGetProductDetailQuery } from 'src/app/api/product/productApiSlice';
 import { addProductToCart, setBuyNowProduct } from 'src/app/api/cart/cartSlice';
@@ -79,13 +83,17 @@ const mapSliderImages = (productDetailImages) => {
 };
 
 export default function ProductInfoView() {
+  const { t } = useTranslation('product', { keyPrefix: 'product-info' });
+
+  const {showSuccessMsg} = useNotify();
+
   const { slug } = useParams();
 
   const dispatch = useDispatch();
 
   const router = useRouter();
 
-  const { data: detailedProductData, error: detailedProductError, isLoading} = useGetProductDetailQuery(slug);
+  const { data: detailedProductData, error: detailedProductError, isLoading } = useGetProductDetailQuery(slug);
 
   const [detailedProduct, setDetailedProduct] = useState({});
 
@@ -131,7 +139,6 @@ export default function ProductInfoView() {
   }, [detailedProduct, selectedColorId]);
 
   const hanleImageSlideChange = (index) => {
-    console.log('index', index);
     setImageDisplayIndex(index);
     if (detailedProduct) {
       const productImages = detailedProduct.images;
@@ -186,13 +193,14 @@ export default function ProductInfoView() {
     const selectedProduct = getSelectedProductInfo();
     dispatch(addProductToCart({ selectedProduct }));
 
-    showSuccessMessage('Added product to cart successfully!');
+    // showSuccessMessage('Added product to cart successfully!');
+    showSuccessMsg('custom.cart.add-success');
   };
 
   const hanleBuyNowClick = () => {
     const selectedProduct = getSelectedProductInfo();
     dispatch(setBuyNowProduct({ selectedProduct }));
-    router.push('/payment?buyNow=true');
+    router.push(absolutePath(BUYNOW));
   };
 
   if (isLoading) {
@@ -243,9 +251,9 @@ export default function ProductInfoView() {
 
           <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
             <Typography variant="body2">
-              Inventory: {getSelectedProductDetail()?.inventory}
+              {t('inventory')}: {getSelectedProductDetail()?.inventory}
             </Typography>
-            <Typography variant="body2">Sold: {getSelectedProductDetail()?.sold}</Typography>
+            <Typography variant="body2">{t('sold')}: {getSelectedProductDetail()?.sold}</Typography>
           </Stack>
 
           <Button
@@ -255,7 +263,7 @@ export default function ProductInfoView() {
             color="inherit"
             onClick={hanleAddToCartClick}
           >
-            ADD TO CART
+            {t('btn-add-to-cart')}
           </Button>
           <Button
             variant="contained"
@@ -267,7 +275,7 @@ export default function ProductInfoView() {
             }}
             onClick={hanleBuyNowClick}
           >
-            BUY NOW
+            {t('btn-buy-now')}
           </Button>
 
           <Box sx={{ mt: 2 }}>

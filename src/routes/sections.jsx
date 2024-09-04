@@ -84,7 +84,7 @@ export default function Router() {
     },
     {
       element: (
-        <Suspense>
+        <Suspense fallback={<Loading fullScreen/>}>
           <RequireAuth />
         </Suspense>
       ),
@@ -97,7 +97,7 @@ export default function Router() {
     },
     {
       element: (
-        <Suspense>
+        <Suspense fallback={<Loading fullScreen/>}>
           <RequireAuth allowedRole={Role.ADMIN} />
         </Suspense>
       ),

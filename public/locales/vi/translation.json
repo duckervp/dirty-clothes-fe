@@ -30,5 +30,30 @@
   },
   "home": {
     "products": "TẤT CẢ SẢN PHẨM"
+  },
+  "profile-nav": {
+    "basic-info": "Thông tin cơ bản",
+    "order": "Đơn hàng",
+    "address": "Địa chỉ"
+  },
+  "page": {
+    "dasboard": "Trang Quản Lý",
+    "best-seller": "Bán Chạy",
+    "cart": "Giỏ Hàng",
+    "category-m": "Quản Lý Danh Mục",
+    "color-m": "Quản Lý Màu Sắc",
+    "home": "Trang Chủ",
+    "login": "Trang Đăng Nhập",
+    "order-m": "Quản Lý Đơn Hàng",
+    "order": "Đơn Hàng",
+    "payment": "Thanh Toán",
+    "product-m": "Quản Lý Sản Phẩm",
+    "product": "Sản Phẩm",
+    "register": "Trang Đăng Ký",
+    "shop": "Sản Phẩm",
+    "unauthorized": "Unauthorized",
+    "user": "Quản Lý Người Dùng",
+    "address": "Địa Chỉ",
+    "profile":"Hồ Sơ"
   }
 }

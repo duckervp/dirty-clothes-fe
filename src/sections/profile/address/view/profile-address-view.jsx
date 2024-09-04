@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-// import { useNavigate } from "react-router-dom";
-// import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
-import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import TableRow from '@mui/material/TableRow';
+import Container from '@mui/material/Container';
 import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -31,6 +31,8 @@ import ModalPopup from 'src/components/modal/modal';
 import AddressForm from 'src/sections/payment/AddressForm';
 
 function AddressTable({ addresses, setAddresses }) {
+  const { t } = useTranslation('profile', { keyPrefix: 'address.table-column' });
+
   const [deleteAddress] = useDeleteAddressMutation();
 
   const handleDeleteAddress = async (address) => {
@@ -50,18 +52,18 @@ function AddressTable({ addresses, setAddresses }) {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell sx={{ color: 'black' }}>Name</TableCell>
+            <TableCell sx={{ color: 'black' }}>{t('name')}</TableCell>
             <TableCell sx={{ color: 'black' }} align="center">
-              Detail Address
+              {t('detail-address')}
             </TableCell>
             <TableCell sx={{ color: 'black' }} align="center">
-              Phone
+              {t('phone')}
             </TableCell>
             <TableCell sx={{ color: 'black' }} align="center">
-              Note
+              {t('note')}
             </TableCell>
             <TableCell sx={{ color: 'black' }} align="center">
-              Delete
+              {t('delete')}
             </TableCell>
           </TableRow>
         </TableHead>
@@ -97,7 +99,7 @@ AddressTable.propTypes = {
 };
 
 const ProfileAddressView = () => {
-  // const navigate = useNavigate();
+  const { t } = useTranslation('profile', { keyPrefix: 'address' })
 
   const [addresses, setAddresses] = useState([]);
 
@@ -153,10 +155,10 @@ const ProfileAddressView = () => {
   };
 
   return (
-    <Box>
+    <Container>
       <ModalPopup open={createFormOpen} setOpen={setCreateFromOpen}>
         <Typography variant="h5" textAlign="left" width="100%" sx={{ mb: 1 }}>
-          NEW ADDRESS
+          {t('form.title')}
         </Typography>
         <AddressForm
           ward={ward}
@@ -173,14 +175,22 @@ const ProfileAddressView = () => {
           onClick={handleAddAddressClick}
           sx={{ mt: 2 }}
         >
-          Submit
+          {t('form.btn-submit')}
         </LoadingButton>
       </ModalPopup>
-      <Button onClick={handleCreateAddressBtnClick} startIcon={<AddBoxIcon />}>
-        Create new Address
-      </Button>
+      <Stack justifyContent='space-between' direction="row" alignItems="center">
+        <Typography variant='h5'>{t('title')}</Typography>
+        <Button
+          variant='contained'
+          onClick={handleCreateAddressBtnClick}
+          startIcon={<AddBoxIcon />}
+          sx={{ mb: 1, }}
+        >
+          {t('btn-create-new-address')}
+        </Button>
+      </Stack>
       <AddressTable addresses={addresses} setAddresses={setAddresses} />
-    </Box>
+    </Container>
   );
 };
 

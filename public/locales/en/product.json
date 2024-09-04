@@ -5,9 +5,103 @@
   },
   "filter": {
     "text": "Filters",
-    "targets": "Targets"
+    "target": {
+      "title": "Targets",
+      "option": {
+        "MEN": "Men",
+        "WOMEN": "Women",
+        "KIDS": "Kids",
+        "UNISEX": "Unisex"
+      }
+    },
+    "size": {
+      "title": "Sizes"
+    },
+    "color": {
+      "title": "Colors"
+    },
+    "price": {
+      "title": "Price",
+      "option": {
+        "all": "All",
+        "below-500k": "Below 500.000₫",
+        "between-500k-1m": "500.000₫ - 1.000.000₫",
+        "between-1m-2m": "1.000.000₫ - 2.000.000₫",
+        "above-2m": "Above 2.000.000₫"
+      }
+    },
+    "clear-all": "Clear All"
   },
   "sort": {
-    "text": "Sort By"
+    "text": "Sort By",
+    "option": {
+      "newest": "Newest",
+      "priceDesc": "Price: High-Low",
+      "priceAsc": "Price: Low-High"
+    }
+  },
+  "product-info": {
+    "inventory": "Inventory",
+    "sold": "Sold",
+    "btn-add-to-cart": "ADD TO CART",
+    "btn-buy-now": "BUY NOW"
+  },
+  "cart": {
+    "empty": {
+      "title": "Empty cart",
+      "message": "You have not added any products to your cart.",
+      "btn-continue-shopping": "Continue Shopping",
+      "btn-go-back": "Go Back"
+    },
+    "cart-item-table": {
+      "product": "Product",
+      "quantity": "Quantity",
+      "total": "Total",
+      "delete": "Delete"
+    },
+    "total": "Total",
+    "btn-payment": "PAYMENT"
+  },
+  "payment": {
+    "shipping-info": {
+      "label": "Shipping Information",
+      "placeholder": "Select shipping address"
+    },
+    "shipping-method": {
+      "label": "Shipping Method",
+      "standard": "Standard shipping",
+      "free": "Free"
+    },
+    "payment-method": {
+      "label": "Payment Method",
+      "COD": "Cash On Delivery"
+    },
+    "address": {
+      "title": "Select Address",
+      "btn-new": "New",
+      "form": {
+        "title": "New Address",
+        "btn-submit": "Submit"
+      }
+    },
+    "order-summary": {
+      "title": "Order Summary",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "total": "Total",
+      "btn-complete-order": "Complete Order"
+    }
+  },
+  "address-form": {
+    "input-label": {
+      "receiver-name": "Receiver Name",
+      "province": "Province",
+      "district": "District",
+      "ward": "Ward",
+      "detail-address": "Detail Address",
+      "phone": "Phone",
+      "postal-code": "Postal/Zip Code",
+      "note": "Note"
+    }
   }
 }

@@ -5,9 +5,103 @@
   },
   "filter": {
     "text": "Lọc",
-    "targets": "Targets"
+    "target": {
+      "title": "Phù hợp",
+      "option": {
+        "MEN": "Nam",
+        "WOMEN": "Nữ",
+        "KIDS": "Trẻ em",
+        "UNISEX": "Unisex"
+      }
+    },
+    "size": {
+      "title": "Kích thước"
+    },
+    "color": {
+      "title": "Màu sắc"
+    },
+    "price": {
+      "title": "Giá",
+      "option": {
+        "all": "Tất cả",
+        "below-500k": "Dưới 500.000₫",
+        "between-500k-1m": "500.000₫ - 1.000.000₫",
+        "between-1m-2m": "1.000.000₫ - 2.000.000₫",
+        "above-2m": "Trên 2.000.000₫"
+      }
+    },
+    "clear-all": "Xoá bộ lọc"
   },
   "sort": {
-    "text": "Sắp Xếp"
+    "text": "Sắp xếp",
+    "option": {
+      "newest": "Mới nhất",
+      "priceDesc": "Giá: Cao-Thấp",
+      "priceAsc": "Giá: Thấp-Cao"
+    }
+  },
+  "product-info": {
+    "inventory": "Kho",
+    "sold": "Đã bán",
+    "btn-add-to-cart": "THÊM VÀO GIỎ HÀNG",
+    "btn-buy-now": "MUA NGAY"
+  },
+  "cart": {
+    "empty": {
+      "title": "Giỏ hàng trống",
+      "message": "Bạn chưa thêm sản phẩm nào vào giỏ hàng.",
+      "btn-continue-shopping": "Tiếp tục mua sắm",
+      "btn-go-back": "Quay lại"
+    },
+    "cart-item-table": {
+      "product": "Sản phẩm",
+      "quantity": "Số lượng",
+      "total": "Tổng",
+      "delete": "Xoá"
+    },
+    "total": "Tổng tiền hàng",
+    "btn-payment": "THANH TOÁN"
+  },
+  "payment": {
+    "shipping-info": {
+      "label": "Thông tin vận chuyển",
+      "placeholder": "Chọn địa chỉ nhận hàng"
+    },
+    "shipping-method": {
+      "label": "Phương thức vận chuyển",
+      "standard": "Tiêu chuẩn",
+      "free": "Miễn phí"
+    },
+    "payment-method": {
+      "label": "Phương thức thanh toán",
+      "COD": "Thanh toán khi nhận hàng"
+    },
+    "address": {
+      "title": "Chọn địa chỉ",
+      "btn-new": "Tạo mới",
+      "form": {
+        "title": "Địa chỉ mới",
+        "btn-submit": "Tạo"
+      }
+    },
+    "order-summary": {
+      "title": "Chi tiết đơn hàng",
+      "subtotal": "Tổng tiền hàng",
+      "shipping": "Tổng phí vận chuyển",
+      "total": "Thành tiền",
+      "btn-complete-order": "Đặt hàng"
+    }
+  },
+  "address-form": {
+    "input-label": {
+      "receiver-name": "Tên người nhận",
+      "province": "Tỉnh/Thành phố",
+      "district": "Huyện/Quận",
+      "ward": "Xã/Phường",
+      "detail-address": "Địa chỉ chi tiết",
+      "phone": "Điện thoại",
+      "postal-code": "Mã bưu điện",
+      "note": "Ghi chú"
+    }
   }
 }

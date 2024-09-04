@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import React, { useState, createRef, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
@@ -13,7 +14,8 @@ import { showErrorMessage } from 'src/utils/notify';
 
 import { useUploadFileMutation } from 'src/app/api/file/fileApiSlice';
 
-const AvatarUpload = ({ imageUrl, setImageUrl }) => {
+const AvatarUpload = ({ imageUrl, setImageUrl, name }) => {
+  const { t } = useTranslation('profile', { keyPrefix: 'avatar.tooltip' });
   const [image, _setImage] = useState(imageUrl);
   const [rawImage, setRawImage] = useState();
   const inputFileRef = createRef(null);
@@ -55,25 +57,30 @@ const AvatarUpload = ({ imageUrl, setImageUrl }) => {
   };
 
   const handleSaveClick = async () => {
-    try {
-      const formData = new FormData();
-      formData.append('file', rawImage);
-      const { data } = await uploadFile({ formData }).unwrap();
-      const { url } = data;
-      setImageUrl(url);
+    if (!rawImage) {
+      setImageUrl("");
       setCanPerformSave(false);
-    } catch (error) {
-      showErrorMessage(error);
+    } else {
+      try {
+        const formData = new FormData();
+        formData.append('file', rawImage);
+        const { data } = await uploadFile({ formData }).unwrap();
+        const { url } = data;
+        setImageUrl(url);
+        setCanPerformSave(false);
+      } catch (error) {
+        showErrorMessage(error);
+      }
     }
   };
 
-  useEffect(() => {}, [rawImage, uploadFile, setImageUrl]);
+  useEffect(() => { }, [rawImage, uploadFile, setImageUrl]);
 
   return (
     <Box sx={{ position: 'relative' }}>
       <Avatar
         src={image}
-        alt="photoURL"
+        alt={name}
         sx={{
           borderRadius: 50,
           width: 120,
@@ -82,7 +89,7 @@ const AvatarUpload = ({ imageUrl, setImageUrl }) => {
         }}
       />
       <Box>
-        <Tooltip title="Upload new avatar">
+        <Tooltip title={t('upload')}>
           <IconButton
             sx={{ position: 'absolute', top: -30, right: 20, background: 'white' }}
             onClick={handleUploadButtonClick}
@@ -101,7 +108,7 @@ const AvatarUpload = ({ imageUrl, setImageUrl }) => {
         onChange={handleOnChange}
       />
 
-      <Tooltip title="Remove avatar">
+      <Tooltip title={t('remove')}>
         <IconButton
           sx={{ position: 'absolute', top: -15, right: -8, background: 'white' }}
           onClick={handleRemoveClick}
@@ -110,7 +117,7 @@ const AvatarUpload = ({ imageUrl, setImageUrl }) => {
         </IconButton>
       </Tooltip>
 
-      <Tooltip title="Save">
+      <Tooltip title={t('save')}>
         <IconButton
           sx={
             canPerformSave
@@ -129,6 +136,7 @@ const AvatarUpload = ({ imageUrl, setImageUrl }) => {
 AvatarUpload.propTypes = {
   imageUrl: PropTypes.string,
   setImageUrl: PropTypes.func,
+  name: PropTypes.string
 };
 
 export default AvatarUpload;

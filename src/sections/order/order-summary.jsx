@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RLink } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -17,6 +18,8 @@ import { useGetOrderDetailQuery, useGetOrderDetailByIdQuery } from 'src/app/api/
 
 import Iconify from 'src/components/iconify';
 import { ColorPreview } from 'src/components/color-utils';
+
+import OrderStatus from './order-status';
 
 const calOrderTotalPrice = (orderItems) => {
   if (!orderItems) return 0;
@@ -81,6 +84,8 @@ export default function OrderSummary({
   handleDelivery,
   handleDone
 }) {
+  const { t } = useTranslation('profile', { keyPrefix: 'order.detail-summary' });
+
   const [orderDetail, setOrderDetail] = useState({});
 
   const { data: orderDetailData } = useGetOrderDetailQuery(orderCode, { skip: !orderCode });
@@ -111,33 +116,35 @@ export default function OrderSummary({
     handleDone(id);
   }
 
+  const handleCancelClick = (id) => {
+    // TODO
+  }
+
   return (
     <>
       <Typography variant="h3" sx={{ fontWeight: '600', textAlign: 'center' }}>
-        Order Info
+        {t('title')}
       </Typography>
       <Stack direction="row" justifyContent="center" sx={{ py: 2 }}>
         <Box textAlign="center">
           <Typography variant="body2">{fDateTime(orderDetail?.createdAt)}</Typography>
-          <Typography variant="body2">No: {orderDetail?.code}</Typography>
+          <Typography variant="body2">{t('no')}: {orderDetail?.code}</Typography>
         </Box>
       </Stack>
       <Divider />
-      <Box sx={{ px: 2, pt: 2, pb: 2 }}>
+      <Stack direction="row" sx={{ px: 2, pt: 2, pb: 2 }} spacing={2}>
         <Typography variant="subtitle1" sx={{ mb: 1 }}>
-          Current status
+          {t('current-status')}
         </Typography>
-        <Typography variant="subtitle1" sx={{ fontWeight: 300 }}>
-          {orderDetail?.status}
-        </Typography>
-      </Box>
+        <OrderStatus sx={{ fontWeight: 300 }} status={orderDetail?.status} />
+      </Stack>
 
       {orderId &&
         <>
           <Divider />
           <Box sx={{ px: 2, pt: 2, pb: 2 }}>
             <Typography variant="subtitle1" sx={{ mb: 1 }}>
-              User Account
+              {t('user-account')}
             </Typography>
             <Typography variant="subtitle1" sx={{ fontWeight: 300 }}>
               {orderDetail?.user?.name || "test"}
@@ -149,7 +156,7 @@ export default function OrderSummary({
       <Divider />
       <Box sx={{ px: 2, pt: 2, pb: 3 }}>
         <Typography variant="subtitle1" sx={{ mb: 1 }}>
-          Shipping Address
+          {t('shipping-address')}
         </Typography>
         <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>
           {orderDetail?.address?.name}
@@ -174,28 +181,28 @@ export default function OrderSummary({
         <Divider sx={{ pt: 1, pb: 2 }} />
 
         <Stack direction="row" justifyContent="space-between" sx={{ mt: 1 }}>
-          <Typography variant="body2">Subtotal</Typography>
+          <Typography variant="body2">{t('subtotal')}</Typography>
           <Typography variant="body2">
             {fViCurrency(calOrderTotalPrice(orderDetail?.orderItems))}
           </Typography>
         </Stack>
 
         <Stack direction="row" justifyContent="space-between" sx={{}}>
-          <Typography variant="body2">Shipping</Typography>
+          <Typography variant="body2">{t('shipping')}</Typography>
           <Typography variant="body2">{fViCurrency(orderDetail?.shippingFee)}</Typography>
         </Stack>
 
         <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
-          <Typography variant="body2">Payment Method</Typography>
+          <Typography variant="body2">{t('payment-method.label')}</Typography>
           <Typography variant="body2">
-            {orderDetail?.paymentMethod?.replaceAll('_', ' ')}
+            {t(`payment-method.${orderDetail?.paymentMethod}`)}
           </Typography>
         </Stack>
 
         <Divider />
 
         <Stack direction="row" justifyContent="space-between" sx={{ my: 2 }}>
-          <Typography variant="subtitle1">Total</Typography>
+          <Typography variant="subtitle1">{t('total')}</Typography>
           <Typography variant="subtitle1">{fViCurrency(orderDetail?.total)}</Typography>
         </Stack>
       </Box>
@@ -255,6 +262,21 @@ export default function OrderSummary({
             startIcon={<Iconify icon="eva:archive-fill" />}
           >
             Done
+          </Button>
+        }
+
+        {orderDetail.status === ORDER_STATUS.ORDER &&
+          <Button
+            variant="contained"
+            color='error'
+            sx={{
+              px: 4
+            }}
+            fullWidth
+            onClick={() => handleCancelClick(orderDetail.id)}
+            startIcon={<Iconify icon="eva:close-circle-outline" />}
+          >
+            {t('btn-cancel')}
           </Button>
         }
       </Stack>
