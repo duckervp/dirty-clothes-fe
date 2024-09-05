@@ -1,0 +1,112 @@
+{
+  "title": "Quản Lý Sản Phẩm",
+  "btn-new": "Tạo mới",
+  "delete-pu": {
+    "single-noun": "sản phẩm",
+    "plural-noun": "sản phẩm"
+  },
+  "table-column": {
+    "name": "Tên",
+    "price": "Giá",
+    "sale": "Giảm Giá",
+    "status": "Trạng Thái",
+    "created-at": "Ngày được tạo"
+  },
+  "status": {
+    "NEW": "Mới",
+    "SALE": "Giảm giá"
+  },
+  "product-detail": {
+    "title": {
+      "create": "Tạo Sản Phẩm Mới",
+      "edit": "Sửa Sản Phẩm",
+      "detail": "Chi Tiết Sản Phẩm"
+    },
+    "confirm-pu": {
+      "object": "sản phẩm",
+      "action-create-title": "HUỶ TẠO SẢN PHẨM MỚI",
+      "action-edit-title": "HUỶ SỬA SẢN PHẨM",
+      "cancel-btn-text": "Từ Chối",
+      "confirm-btn-text": "Đồng Ý",
+      "message": "Nếu bạn đồng ý huỷ, tất cả những thông tin chưa được lưu sẽ bị mất. Bạn có muốn tiếp tục không?"
+    },
+    "form": {
+      "error": {
+        "field-required": "Không được để trống!"
+      },
+      "name": "Tên",
+      "image": "Ảnh",
+      "status": "Trạng thái",
+      "target": "Đối tượng",
+      "price": "Giá",
+      "sale": "Giảm Giá",
+      "description": "Mô tả",
+      "created-by": "Được tạo bởi",
+      "in": "vào",
+      "updated-by": "Được sửa đổi bởi",
+      "btn-cancel": "Huỷ",
+      "btn-save": "Lưu"
+    },
+    "product-item": {
+      "title": "Tuỳ chọn sản phẩm",
+      "btn-new": "Tạo Mới",
+      "delete-pu": {
+        "single-noun": "tuỳ chọn",
+        "plural-noun": "tuỳ chọn"
+      },
+      "table-column": {
+        "color": "Màu",
+        "size": "Kích thước",
+        "inventory": "Kho",
+        "sold": "Đã bán",
+        "created-at": "Ngày được tạo"
+      },
+      "table-pagination": {
+        "label-row-per-page": "Tuỳ chọn trên 1 trang:",
+        "label-displayed-row": "của"
+      },
+      "form": {
+        "create-item-title": "TẠO TUỲ CHỌN MỚI",
+        "edit-item-title": "SỬA TUỲ CHỌN",
+        "error": {
+          "field-required": "Không được để trống!"
+        },
+        "color": "Màu",
+        "size": "Kích thước",
+        "inventory": "Kho",
+        "sold": "Đã bán",
+        "btn-cancel": "HUỶ",
+        "btn-save": "LƯU"
+      }
+    },
+    "product-image": {
+      "title": "Ảnh Sản Phẩm",
+      "btn-new": "Thêm Ảnh Mới",
+      "delete-pu": {
+        "single-noun": "ảnh",
+        "plural-noun": "ảnh"
+      },
+      "table-column": {
+        "color": "Màu",
+        "image": "Ảnh",
+        "created-at": "Ngày được tạo"
+      },
+      "table-pagination": {
+        "label-row-per-page": "Ảnh trên 1 trang:",
+        "label-displayed-row": "của"
+      },
+      "form": {
+        "create-image-title": "THÊM ẢNH MỚI",
+        "edit-image-title": "SỬA ẢNH SẢN PHẨM",
+        "error": {
+          "field-required": "Không được để trống!"
+        },
+        "color": "Màu",
+        "image": "Ảnh",
+        "btn-cancel": "HUỶ",
+        "btn-save": "LƯU"
+      }
+    },
+    "category": "Danh Mục"
+  }
+}

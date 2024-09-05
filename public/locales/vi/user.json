@@ -1,0 +1,53 @@
+{
+  "title": "Quản Lý Người Dùng",
+  "btn-new-user": "Tạo Mới",
+  "delete-pu": {
+    "single-noun": "người dùng",
+    "plural-noun": "những người dùng"
+  },
+  "table-column": {
+    "name": "Tên",
+    "email": "Địa chỉ Email",
+    "role": "Chức vụ",
+    "status": "Trạng thái",
+    "created-at": "Ngày được tạo"
+  },
+  "role": {
+    "USER": "Người dùng",
+    "ADMIN": "Quản lý"
+  },
+  "user-detail": {
+    "title": {
+      "create": "Tạo Người Dùng Mới",
+      "edit": "Sửa Thông Tin Người Dùng",
+      "detail": "Chi Tiết Người Dùng"
+    },
+    "confirm-pu": {
+      "action-create-title": "HUỶ TẠO NGƯỜI DÙNG MỚI",
+      "action-edit-title": "HUỶ SỬA THÔNG TIN NGƯỜI DÙNG",
+      "cancel-btn-text": "Từ Chối",
+      "confirm-btn-text": "Đồng Ý",
+      "message": "Nếu bạn đồng ý huỷ, tất cả những thông tin chưa được lưu sẽ bị mất. Bạn có muốn tiếp tục không?"
+    },
+    "form": {
+      "error": {
+        "field-required": "Không được để trống!",
+        "invalid-email": "Email không hợp lệ!",
+        "confirm-password": "Xác nhận mật khẩu không trùng khớp với mật khẩu!"
+      },
+      "email": "Địa chỉ Email",
+      "status": "Trạng thái",
+      "password": "Mật khẩu",
+      "new-password": "Mật khẩu mới",
+      "name": "Tên",
+      "confirm-password": "Xác nhận mật khẩu",
+      "is-admin": "Người dùng quản lý",
+      "change-password": "Đổi mật khẩu",
+      "created-by": "Được tạo bởi",
+      "in": "vào",
+      "updated-by": "Được sửa đổi bởi",
+      "btn-cancel": "Huỷ",
+      "btn-save": "Lưu"
+    }
+  }
+}

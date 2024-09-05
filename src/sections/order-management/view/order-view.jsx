@@ -13,7 +13,7 @@ import TableContainer from '@mui/material/TableContainer';
 import PaginationItem from '@mui/material/PaginationItem';
 
 import { useRouter } from 'src/routes/hooks';
-import { absolutePath, ORDER_MANAGEMENT } from 'src/routes/route-config';
+import { getUrl, ORDER_MANAGEMENT } from 'src/routes/route-config';
 
 import { fViCurrency } from 'src/utils/format-number';
 import { handleError, showSuccessMessage } from 'src/utils/notify';
@@ -169,7 +169,7 @@ export default function OrderView() {
   const handleBulkActionDone = () => handleBulkAction(ORDER_STATUS.DONE);
 
   const handleCreateNew = () => {
-    router.push(absolutePath(ORDER_MANAGEMENT.CREATE));
+    router.push(getUrl(ORDER_MANAGEMENT.CREATE));
   }
 
   const handleRowClick = (id) => {

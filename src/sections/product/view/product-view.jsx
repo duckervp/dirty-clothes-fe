@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
 
 import Card from '@mui/material/Card';
@@ -13,6 +14,7 @@ import TableContainer from '@mui/material/TableContainer';
 import PaginationItem from '@mui/material/PaginationItem';
 
 import { useRouter } from 'src/routes/hooks';
+import { getUrl, PRODUCT_MANAGEMENT } from 'src/routes/route-config';
 
 import { fViCurrency } from 'src/utils/format-number';
 import { handleError, showSuccessMessage } from 'src/utils/notify';
@@ -33,6 +35,8 @@ import DeleteConfirmPopup from 'src/components/modal/delete-confirm-popup';
 // ----------------------------------------------------------------------
 
 export default function ProductView() {
+  const { t } = useTranslation('product-m');
+
   const router = useRouter();
 
   const [params] = useSearchParams();
@@ -123,7 +127,7 @@ export default function ProductView() {
 
   //----------------------
   const handleEdit = (id) => {
-    router.push(`/admin/product-management/edit-product/${id}`);
+    router.push(getUrl(PRODUCT_MANAGEMENT.EDIT, { id }));
   }
 
   const handleDelete = async (id) => {
@@ -136,11 +140,11 @@ export default function ProductView() {
   }
 
   const handleCreateNew = () => {
-    router.push(`/admin/product-management/create-product`);
+    router.push(getUrl(PRODUCT_MANAGEMENT.CREATE));
   }
 
   const handleRowClick = (id) => {
-    router.push(`/admin/product-management/product-details/${id}`);
+    router.push(getUrl(PRODUCT_MANAGEMENT.DETAILS, { id }));
   }
 
   const [deleteCfOpen, setDeleteCfOpen] = useState(false);
@@ -185,15 +189,18 @@ export default function ProductView() {
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Products</Typography>
+        <Typography variant="h4">{t('title')}</Typography>
 
         <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleCreateNew}>
-          New Product
+          {t('btn-new')}
         </Button>
       </Stack>
 
       <DeleteConfirmPopup
-        object={deleteMultipleItems && selected.length > 1 ? "products" : "product"}
+        object={
+          deleteMultipleItems && selected.length > 1
+            ? t('delete-pu.plural-noun') : t('delete-pu.single-noun')
+        }
         plural={deleteMultipleItems && selected.length > 1}
         popupOpen={deleteCfOpen}
         setPopupOpen={setDeleteCfOpen}
@@ -221,11 +228,11 @@ export default function ProductView() {
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'name', label: 'Name' },
-                  { id: 'price', label: 'Price' },
-                  { id: 'sale', label: 'Sale Price' },
-                  { id: 'status', label: 'Status', align: "center" },
-                  { id: 'createdAt', label: 'Created Date', align: "center" },
+                  { id: 'name', label: t('table-column.name') },
+                  { id: 'price', label: t('table-column.price') },
+                  { id: 'sale', label: t('table-column.sale') },
+                  { id: 'status', label: t('table-column.status'), align: "center" },
+                  { id: 'createdAt', label: t('table-column.created-at'), align: "center" },
                   { id: '' },
                 ]}
               />

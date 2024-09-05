@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -7,12 +8,11 @@ import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
-import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
-import PaginationItem from '@mui/material/PaginationItem';
 
 import { useRouter } from 'src/routes/hooks';
+import { getUrl, USER_MANAGEMENT } from 'src/routes/route-config';
 
 import { handleError, showSuccessMessage } from 'src/utils/notify';
 
@@ -26,12 +26,15 @@ import CustomTableRow from 'src/components/table/table-row';
 import TableNoData from 'src/components/table/table-no-data';
 import CustomTableHead from 'src/components/table/table-head';
 import TableToolbar from 'src/components/table/table-toolbar';
+import PageDisplay from 'src/components/pagination/PageDisplay';
 import TableEmptyRows from 'src/components/table/table-empty-rows';
 import DeleteConfirmPopup from 'src/components/modal/delete-confirm-popup';
 
 // ----------------------------------------------------------------------
 
 export default function UserPage() {
+  const { t } = useTranslation('user');
+
   const router = useRouter();
 
   const [params] = useSearchParams();
@@ -118,11 +121,11 @@ export default function UserPage() {
     return () => clearTimeout(timer)
   }, [filterName])
 
-  const notFound = totalPage === 0;
+  const notFound = nameFilter !== '' && totalPage === 0;
 
   //----------------------
   const handleEdit = (id) => {
-    router.push(`/admin/user-management/edit-user/${id}`);
+    router.push(getUrl(USER_MANAGEMENT.EDIT, { id }));
   }
 
   const handleDelete = async (id) => {
@@ -135,11 +138,11 @@ export default function UserPage() {
   }
 
   const handleCreateNew = () => {
-    router.push(`/admin/user-management/create-user`);
+    router.push(getUrl(USER_MANAGEMENT.CREATE));
   }
 
   const handleRowClick = (id) => {
-    router.push(`/admin/user-management/user-details/${id}`);
+    router.push(getUrl(USER_MANAGEMENT.DETAILS, { id }));
   }
 
   const [deleteCfOpen, setDeleteCfOpen] = useState(false);
@@ -184,15 +187,22 @@ export default function UserPage() {
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Users</Typography>
+        <Typography variant="h4">{t('title')}</Typography>
 
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleCreateNew}>
-          New User
+        <Button
+          variant="contained"
+          color="inherit"
+          startIcon={<Iconify icon="eva:plus-fill" />}
+          onClick={handleCreateNew}>
+          {t('btn-new-user')}
         </Button>
       </Stack>
 
       <DeleteConfirmPopup
-        object={deleteMultipleItems && selected.length > 1 ? "users" : "user"}
+        object={
+          deleteMultipleItems && selected.length > 1
+            ? t('delete-pu.plural-noun') : t('delete-pu.single-noun')
+        }
         plural={deleteMultipleItems && selected.length > 1}
         popupOpen={deleteCfOpen}
         setPopupOpen={setDeleteCfOpen}
@@ -200,7 +210,7 @@ export default function UserPage() {
         handleConfirm={handleConfirmDelete}
       />
 
-      {isLoading && <Loading type='linear'/>}
+      {isLoading && <Loading type='linear' />}
       <Card>
         <TableToolbar
           numSelected={selected.length}
@@ -220,11 +230,11 @@ export default function UserPage() {
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'name', label: 'Name' },
-                  { id: 'email', label: 'Email' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'status', label: 'Status', align: "center" },
-                  { id: 'createdAt', label: 'Created Date', align: "center" },
+                  { id: 'name', label: t('table-column.name') },
+                  { id: 'email', label: t('table-column.email') },
+                  { id: 'role', label: t('table-column.role') },
+                  { id: 'status', label: t('table-column.status'), align: "center" },
+                  { id: 'createdAt', label: t('table-column.created-at'), align: "center" },
                   { id: '' },
                 ]}
               />
@@ -236,7 +246,7 @@ export default function UserPage() {
                       cells={[
                         { value: row.name, type: "composite", imgUrl: row.avatarUrl },
                         { value: row.email },
-                        { value: row.role },
+                        { value: t(`role.${row.role}`) },
                         { value: row.status, type: "status", align: "center" },
                         { value: row.createdAt, type: "datetime", align: "center" },
                       ]}
@@ -258,29 +268,7 @@ export default function UserPage() {
           </TableContainer>
         </Scrollbar>
 
-        {totalPage > 1 && (
-          <Stack
-            direction="row"
-            alignItems="center"
-            flexWrap="wrap-reverse"
-            justifyContent="flex-end"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            <Pagination
-              page={parseInt(page, 10)}
-              count={totalPage}
-              renderItem={(item) => (
-                <PaginationItem
-                  component={Link}
-                  to={`${item.page === 1 ? '' : `?page=${item.page}`}`}
-                  {...item}
-                />
-              )}
-              variant="outlined"
-              shape="rounded"
-            />
-          </Stack>
-        )}
+        <PageDisplay totalPage={totalPage} page={page} />
       </Card>
     </Container>
   );

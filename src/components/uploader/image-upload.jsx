@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import React, { useState, createRef, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
@@ -19,6 +20,7 @@ import Loading from '../auth/Loading';
 //------------------------------------------------------------
 
 const ImageUploader = ({ imageUrl, setImageUrl, removable, disabled }) => {
+  const { t } = useTranslation('profile', { keyPrefix: 'image.tooltip' });
   const [image, _setImage] = useState(null);
   const [rawImage, setRawImage] = useState();
   const inputFileRef = createRef(null);
@@ -129,7 +131,7 @@ const ImageUploader = ({ imageUrl, setImageUrl, removable, disabled }) => {
         <DoneIcon color='success' style={{ fontSize: "40px" }} />
       </Stack>}
       {!disabled && <Stack sx={{ ml: 1 }} spacing={1} justifyContent="center">
-        <Tooltip title="Upload new image">
+        <Tooltip title={t('upload')}>
           <IconButton
             sx={{ background: 'white', color: 'black', border: '1px solid black' }}
             onClick={handleUploadButtonClick}
@@ -137,7 +139,7 @@ const ImageUploader = ({ imageUrl, setImageUrl, removable, disabled }) => {
             <FileUploadIcon sx={{ cursor: 'pointer', fontSize: '13px' }} />
           </IconButton>
         </Tooltip>
-        {removable && image && <Tooltip title="Remove image">
+        {removable && image && <Tooltip title={t('remove')}>
           <IconButton
             sx={{ background: 'white', color: 'red', border: '1px solid red' }}
             onClick={handleRemoveClick}
@@ -146,7 +148,7 @@ const ImageUploader = ({ imageUrl, setImageUrl, removable, disabled }) => {
           </IconButton>
         </Tooltip>}
 
-        <Tooltip title="Save">
+        <Tooltip title={t('save')}>
           <IconButton
             sx={
               canPerformSave

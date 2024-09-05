@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -11,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 import { useRouter } from 'src/routes/hooks';
+import { getUrl, PRODUCT_MANAGEMENT } from 'src/routes/route-config';
 
 import { fDateTime } from 'src/utils/format-time';
 import { handleError, showSuccessMessage } from 'src/utils/notify';
@@ -31,6 +33,7 @@ import ProductDetailCategory from '../product-detail-category';
 // ----------------------------------------------------------------------
 
 export default function ProductDetailView() {
+  const { t } = useTranslation('product-m', { keyPrefix: 'product-detail' });
 
   const location = useLocation();
 
@@ -120,12 +123,11 @@ export default function ProductDetailView() {
         productDetails,
         images: productDetailImages
       };
-      console.log(payload);
 
       if (!isEditScreen) {
         const { data } = await createProduct(payload).unwrap();
         showSuccessMessage(data);
-        router.push('/admin/product-management');
+        router.push(getUrl(PRODUCT_MANAGEMENT.INDEX));
       } else {
         const { data } = await updateProduct({ id, payload }).unwrap();
         showSuccessMessage(data);
@@ -143,7 +145,7 @@ export default function ProductDetailView() {
         if ((key === 'description' && description !== '') || (key === 'salePrice' && state.status !== "SALE")) {
           // do nothing
         } else {
-          newErr[key] = 'Field value required!';
+          newErr[key] = t('form.error.field-required');
           isValid = false;
         }
       }
@@ -177,14 +179,14 @@ export default function ProductDetailView() {
   }, [id, getProductDetail]);
 
   const handleEdit = () => {
-    router.push(`/admin/product-management/edit-product/${id}`);
+    router.push(getUrl(PRODUCT_MANAGEMENT.EDIT, { id }));
   }
 
   const handleDelete = async () => {
     try {
       const { data } = await deleteProduct(id).unwrap();
       showSuccessMessage(data);
-      router.push('/admin/product-management/');
+      router.push(getUrl(PRODUCT_MANAGEMENT.INDEX));
     } catch (error) {
       handleError(error);
     }
@@ -197,7 +199,7 @@ export default function ProductDetailView() {
   }
 
   const handleConfirmCancel = () => {
-    router.push("/admin/product-management");
+    router.push(getUrl(PRODUCT_MANAGEMENT.INDEX));
     setPopupOpen(false);
   }
 
@@ -218,7 +220,7 @@ export default function ProductDetailView() {
     <Stack spacing={3}>
       <Box>
         <Typography variant="subtitle2">
-          <span style={{ color: 'red' }}>*</span> Name
+          <span style={{ color: 'red' }}>*</span> {t('form.name')}
         </Typography>
         <TextField
           name="name"
@@ -233,7 +235,7 @@ export default function ProductDetailView() {
       </Box>
       <Box>
         <Typography variant="subtitle2">
-          <span style={{ color: 'red' }}>*</span> Image
+          <span style={{ color: 'red' }}>*</span> {t('form.image')}
         </Typography>
         <ImageUploader imageUrl={state.avatarUrl} setImageUrl={setAvatarUrl} disabled={isDetailScreen} />
         {err.avatarUrl && <Typography variant="caption" color="red">
@@ -242,7 +244,7 @@ export default function ProductDetailView() {
       </Box>
       <Box>
         <Typography variant="subtitle2">
-          <span style={{ color: 'red' }}>*</span> Target
+          <span style={{ color: 'red' }}>*</span> {t('form.target')}
         </Typography>
         <Select id="select-target" value={state.target} onChange={handleStateChange} name='target' fullWidth disabled={isDetailScreen}>
           {TARGET_OPTIONS.map(item => <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>)}
@@ -250,7 +252,7 @@ export default function ProductDetailView() {
       </Box>
       <Box>
         <Typography variant="subtitle2">
-          <span style={{ color: 'red' }}>*</span> Status
+          <span style={{ color: 'red' }}>*</span> {t('form.status')}
         </Typography>
         <Select id="select-target" value={state.status} onChange={handleStateChange} name='status' fullWidth disabled={isDetailScreen}>
           {PRODUCT_STATUS_OPTIONS.map(item => <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>)}
@@ -258,7 +260,7 @@ export default function ProductDetailView() {
       </Box>
       <Box>
         <Typography variant="subtitle2">
-          <span style={{ color: 'red' }}>*</span> Price (₫)
+          <span style={{ color: 'red' }}>*</span> {t('form.price')} (₫)
         </Typography>
         <TextField
           name="price"
@@ -276,7 +278,7 @@ export default function ProductDetailView() {
         state.status === 'SALE' &&
         <Box>
           <Typography variant="subtitle2">
-            <span style={{ color: 'red' }}>*</span> Sale Price (₫)
+            <span style={{ color: 'red' }}>*</span> {t('form.sale')} (₫)
           </Typography>
           <TextField
             name="salePrice"
@@ -295,17 +297,16 @@ export default function ProductDetailView() {
     </Stack>
   );
 
-  const object = "product";
-  const action = isCreateScreen ? "creation" : "editing";
-
   return (
     <Box>
       <ConfirmPopup
         content={{
-          title: `CANCEL ${object.toUpperCase()} ${action.toUpperCase()}`,
-          message: `If you cancel, all unsaved data will be lost. Are you sure you want to cancel ${object} ${action}?`,
-          cancelBtnText: "NO",
-          confirmBtnText: "YES"
+          title: isCreateScreen
+            ? t("confirm-pu.action-create-title")
+            : t("confirm-pu.action-edit-title"),
+          message: t('confirm-pu.message'),
+          cancelBtnText: t('confirm-pu.cancel-btn-text'),
+          confirmBtnText: t('confirm-pu.confirm-btn-text')
         }}
         popupOpen={popupOpen}
         setPopupOpen={setPopupOpen}
@@ -322,14 +323,14 @@ export default function ProductDetailView() {
           <Box sx={{ px: 5, }}>
             {isDetailScreen &&
               <TitleBar
-                title="Product Details"
+                title={t('title.detail')}
                 screen="detail"
                 handleEdit={handleEdit}
                 handleDelete={handleDelete}
-                goBackUrl='/admin/product-management' />
+                goBackUrl={getUrl(PRODUCT_MANAGEMENT.INDEX)} />
             }
-            {isEditScreen && <TitleBar title="Edit Product" screen="edit" goBackUrl='/admin/product-management' />}
-            {isCreateScreen && <TitleBar title="Create  Product" screen="create" goBackUrl='/admin/product-management' />}
+            {isEditScreen && <TitleBar title={t('title.edit')} screen="edit" goBackUrl={getUrl(PRODUCT_MANAGEMENT.INDEX)} />}
+            {isCreateScreen && <TitleBar title={t('title.create')} screen="create" goBackUrl={getUrl(PRODUCT_MANAGEMENT.INDEX)} />}
 
             {renderForm}
           </Box>
@@ -344,17 +345,17 @@ export default function ProductDetailView() {
             <ProductDetailImage productDetailImages={productDetailImages} setProductDetailImages={setProductDetailImages} disabled={isDetailScreen} />
           </Stack>
           <Stack spacing={3} sx={{ mt: 3, px: 5, }}>
-            <Editor label='Description' data={state.description} setData={setDescription} disabled={isDetailScreen} />
+            <Editor label={t('form.description')} data={state.description} setData={setDescription} disabled={isDetailScreen} />
 
             <Stack>
               {!isCreateScreen && productDetail.createdBy && productDetail.createdAt &&
                 <Typography variant="body2">
-                  Created by: <b>{productDetail.createdBy}</b> in <b>{fDateTime(productDetail.createdAt)}</b>
+                  {t('form.created-by')}: <b>{productDetail.createdBy}</b> {t('form.in')} <b>{fDateTime(productDetail.createdAt)}</b>
                 </Typography>
               }
               {isDetailScreen && productDetail.updatedAt && productDetail.updatedBy &&
                 <Typography variant="body2">
-                  Last modified by: <b>{productDetail.updatedBy}</b> in <b>{fDateTime(productDetail.updatedAt)}</b>
+                  {t('form.updated-by')}: <b>{productDetail.updatedBy}</b> {t('form.in')} <b>{fDateTime(productDetail.updatedAt)}</b>
                 </Typography>
               }
             </Stack>
@@ -370,7 +371,7 @@ export default function ProductDetailView() {
                   onClick={handleCancel}
                   sx={{ mt: 3, width: "200px", mr: 3 }}
                 >
-                  Cancel
+                  {t('form.btn-cancel')}
                 </LoadingButton>
                 <LoadingButton
                   size="large"
@@ -381,7 +382,7 @@ export default function ProductDetailView() {
                   sx={{ mt: 3, width: "200px" }}
                   loading={isEditScreen ? isUpdating : isCreating}
                 >
-                  Save
+                  {t('form.btn-save')}
                 </LoadingButton>
               </Box>
             }

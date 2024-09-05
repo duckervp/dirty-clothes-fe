@@ -1,14 +1,12 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import Pagination from '@mui/material/Pagination';
-import PaginationItem from '@mui/material/PaginationItem';
 
 import { PAGE_SIZE } from 'src/config';
 import { useGetAllProductsQuery } from 'src/app/api/product/productApiSlice';
@@ -17,6 +15,7 @@ import Loading from 'src/components/auth/Loading';
 import LazyLoadBanner from 'src/components/product/banner';
 import ProductCard from 'src/components/product/product-card';
 import ProductSort from 'src/components/product/product-sort';
+import PageDisplay from 'src/components/pagination/PageDisplay';
 import ProductFilters from 'src/components/product/product-filters';
 import ProductNoData from 'src/components/product/product-not-found';
 
@@ -151,29 +150,7 @@ export default function HomeView({ type }) {
           </Grid>
       }
 
-      {totalPage > 1 && (
-        <Stack
-          direction="row"
-          alignItems="center"
-          flexWrap="wrap-reverse"
-          justifyContent="flex-end"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          <Pagination
-            page={parseInt(page, 10)}
-            count={totalPage}
-            renderItem={(item) => (
-              <PaginationItem
-                component={Link}
-                to={`${item.page === 1 ? '' : `?page=${item.page}`}`}
-                {...item}
-              />
-            )}
-            variant="outlined"
-            shape="rounded"
-          />
-        </Stack>
-      )}
+      <PageDisplay totalPage={totalPage} page={page} />
     </Container>
   );
 }

@@ -13,7 +13,7 @@ import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
-import { AUTH, HOME_INDEX, absolutePath } from 'src/routes/route-config';
+import { AUTH, getUrl, HOME_INDEX } from 'src/routes/route-config';
 
 import useLogin from 'src/hooks/use-login';
 import useNotify from 'src/hooks/use-notify';
@@ -65,7 +65,7 @@ export default function LoginView() {
   };
 
   const handleRegisterClick = () => {
-    router.push(absolutePath(AUTH.REGISTER));
+    router.push(getUrl(AUTH.REGISTER));
   };
 
   const handleStateChange = (e) => {

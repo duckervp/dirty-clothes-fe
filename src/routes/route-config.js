@@ -1,7 +1,14 @@
 export const HOME_INDEX = '/';
 
-export const absolutePath = (path) => HOME_INDEX.concat(path);
-
+export const getUrl = (path, params) => {
+  const url = HOME_INDEX.concat(path);
+  
+  if (params && params.id) {
+    return url.replace(':id', params.id);
+  }
+  
+  return url;
+};
 
 // AUTH ROUTES
 export const AUTH = {

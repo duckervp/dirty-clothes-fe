@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PropTypes from "prop-types"
+import { useTranslation } from 'react-i18next';
 
 import Stack from '@mui/material/Stack';
 import Popover from '@mui/material/Popover';
@@ -18,6 +19,8 @@ import DeleteConfirmPopup from '../modal/delete-confirm-popup';
 //----------------------------------------------------------------------
 
 const TitleBar = ({ title, screen, object, handleEdit, handleDelete, goBackUrl, deleteMessage }) => {
+  const { t } = useTranslation('table', { keyPrefix: 'title-bar' });
+
   const router = useRouter();
 
   const [popupOpen, setPopupOpen] = useState(false);
@@ -82,10 +85,10 @@ const TitleBar = ({ title, screen, object, handleEdit, handleDelete, goBackUrl, 
     <>
       <ConfirmPopup
         content={{
-          title: "LEAVE THIS SCREEN",
-          message: "You have unsaved changes that will be lost if you leave this screen. Are you sure you want to leave this screen?",
-          cancelBtnText: "NO",
-          confirmBtnText: "YES"
+          title: t('leave-pu.title'),
+          message: t('leave-pu.message'),
+          cancelBtnText: t('leave-pu.cancel-btn-text'),
+          confirmBtnText: t('leave-pu.confirm-btn-text')
         }}
         popupOpen={popupOpen}
         setPopupOpen={setPopupOpen}
@@ -129,12 +132,12 @@ const TitleBar = ({ title, screen, object, handleEdit, handleDelete, goBackUrl, 
       >
         <MenuItem onClick={handleEditClick}>
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-          Edit
+          {t('btn-edit')}
         </MenuItem>
 
         <MenuItem onClick={handleDeleteClick} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-          Delete
+          {t('btn-delete')}
         </MenuItem>
       </Popover>
     </>

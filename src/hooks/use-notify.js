@@ -24,5 +24,9 @@ export default function useNotify() {
     showSuccessMessage(t(customKey));
   }
 
-  return { showErrorMsg, showSuccessMsg };
+  const showCustomErrorMsg = (customKey) => {
+    showErrorMessage(t(customKey));
+  }
+
+  return { showErrorMsg, showSuccessMsg, showCustomErrorMsg };
 }

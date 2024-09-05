@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
@@ -13,12 +14,13 @@ import Iconify from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 export default function TableToolbar({ numSelected, filterName, onFilterName, placeholder, handleDeleteMultipleItems }) {
+  const { t } = useTranslation('table', { keyPrefix: 'table-toolbar' });
   const renderFilter = (
     filterName ?
       <OutlinedInput
         value={filterName}
         onChange={onFilterName}
-        placeholder={placeholder || "Search by name..."}
+        placeholder={placeholder || t('def-filter-placeholder')}
         startAdornment={
           <InputAdornment position="start">
             <Iconify
@@ -32,7 +34,7 @@ export default function TableToolbar({ numSelected, filterName, onFilterName, pl
   )
 
   if (numSelected === 0) {
-    return <Box/>;
+    return <Box />;
   }
 
   return (
@@ -50,7 +52,7 @@ export default function TableToolbar({ numSelected, filterName, onFilterName, pl
     >
       {numSelected > 0 ? (
         <Typography component="div" variant="subtitle1">
-          {numSelected} selected
+          {numSelected} {t('selected')}
         </Typography>
       ) : renderFilter}
 

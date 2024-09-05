@@ -6,7 +6,13 @@
       "unexpected-error": "Unexpected Error"
     },
     "cart": {
-      "add-success": "Added product to cart successfully!124"
+      "add-success": "Added product to cart successfully!"
+    },
+    "payment": {
+      "shipping-address-required": "Shipping address is required!"
+    },
+    "order": {
+      "create-success": "Created Order successfully!"
     }
   },
   "code": {

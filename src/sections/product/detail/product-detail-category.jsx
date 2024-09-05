@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -11,6 +12,7 @@ import CategorySelector from './category-select';
 //------------------------------------------------------------------
 
 const ProductDetailCategory = ({ categories, setSelectedCategories, disabled }) => {
+  const { t } = useTranslation('product-m', { keyPrefix: 'product-detail' });
   const [allCategories, setAllCategories] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState();
 
@@ -49,14 +51,14 @@ const ProductDetailCategory = ({ categories, setSelectedCategories, disabled }) 
         }
       })
     })
-    
+
     setSelectedCategories(categoryIds);
   }, [selectedOptions, categoryData, setSelectedCategories])
 
   return (
     <Box>
       <Typography variant="subtitle2">
-        <span style={{ color: 'red', display: "none" }}>*</span> Category
+        <span style={{ color: 'red', display: "none" }}>*</span> {t('category')}
       </Typography>
       {allCategories &&
         <CategorySelector

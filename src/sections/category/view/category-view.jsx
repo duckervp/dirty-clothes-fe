@@ -13,7 +13,7 @@ import TableContainer from '@mui/material/TableContainer';
 import PaginationItem from '@mui/material/PaginationItem';
 
 import { useRouter } from 'src/routes/hooks';
-import { absolutePath, CATEGORY_MANAGEMENT } from 'src/routes/route-config';
+import { getUrl, CATEGORY_MANAGEMENT } from 'src/routes/route-config';
 
 import { handleError, showSuccessMessage } from 'src/utils/notify';
 
@@ -123,7 +123,7 @@ export default function CategoryView() {
 
   //----------------------
   const handleEdit = (id) => {
-    const url = absolutePath(CATEGORY_MANAGEMENT.EDIT).replace(":id", id);
+    const url = getUrl(CATEGORY_MANAGEMENT.EDIT).replace(":id", id);
     console.log(url);
     router.push(url);
   }
@@ -138,11 +138,11 @@ export default function CategoryView() {
   }
 
   const handleCreateNew = () => {
-    router.push(absolutePath(CATEGORY_MANAGEMENT.CREATE));
+    router.push(getUrl(CATEGORY_MANAGEMENT.CREATE));
   }
 
   const handleRowClick = (id) => {
-    const url = absolutePath(CATEGORY_MANAGEMENT.DETAILS).replace(":id", id);
+    const url = getUrl(CATEGORY_MANAGEMENT.DETAILS).replace(":id", id);
     router.push(url);
   }
 

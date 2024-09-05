@@ -1,0 +1,112 @@
+{
+  "title": "Products",
+  "btn-new": "New Product",
+  "delete-pu": {
+    "single-noun": "product",
+    "plural-noun": "products"
+  },
+  "table-column": {
+    "name": "Name",
+    "price": "price",
+    "sale": "Sale Price",
+    "status": "Status",
+    "created-at": "Created Date"
+  },
+  "status": {
+    "NEW": "New",
+    "SALE": "Sale"
+  },
+  "product-detail": {
+    "title": {
+      "create": "Create Product",
+      "edit": "Edit Product",
+      "detail": "Product Details"
+    },
+    "confirm-pu": {
+      "object": "product",
+      "action-create-title": "CANCEL PRODUCT CREATION",
+      "action-edit-title": "CANCEL PRODUCT EDITING",
+      "cancel-btn-text": "NO",
+      "confirm-btn-text": "YES",
+      "message": "If you cancel, all unsaved data will be lost. Do you want to continue?"
+    },
+    "form": {
+      "error": {
+        "field-required": "Field value required!"
+      },
+      "name": "Name",
+      "image": "Image",
+      "status": "Status",
+      "target": "Target",
+      "price": "Price",
+      "sale": "Sale Price",
+      "description": "Description",
+      "created-by": "Created by",
+      "in": "in",
+      "updated-by": "Last Modified by",
+      "btn-cancel": "Cancel",
+      "btn-save": "Save"
+    },
+    "product-item": {
+      "title": "Product Detail Items",
+      "btn-new": "New Item",
+      "delete-pu": {
+        "single-noun": "item",
+        "plural-noun": "items"
+      },
+      "table-column": {
+        "color": "Color",
+        "size": "Size",
+        "inventory": "Inventory",
+        "sold": "Sold",
+        "created-at": "Created Date"
+      },
+      "table-pagination": {
+        "label-row-per-page": "Rows per page:",
+        "label-displayed-row": "of"
+      },
+      "form": {
+        "create-item-title": "CREATE PRODUCT DETAIL ITEM",
+        "edit-item-title": "EDIT PRODUCT DETAIL ITEM",
+        "error": {
+          "field-required": "Field value required!"
+        },
+        "color": "Color",
+        "size": "Size",
+        "inventory": "Inventory",
+        "sold": "Sold",
+        "btn-cancel": "CANCEL",
+        "btn-save": "SAVE"
+      }
+    },
+    "product-image": {
+      "title": "Product Detail Images",
+      "btn-new": "New Image",
+      "delete-pu": {
+        "single-noun": "image",
+        "plural-noun": "images"
+      },
+      "table-column": {
+        "color": "Color",
+        "image": "Image",
+        "created-at": "Created Date"
+      },
+      "table-pagination": {
+        "label-row-per-page": "Rows per page:",
+        "label-displayed-row": "of"
+      },
+      "form": {
+        "create-image-title": "CREATE PRODUCT DETAIL IMAGE",
+        "edit-image-title": "EDIT PRODUCT DETAIL IMAGE",
+        "error": {
+          "field-required": "Field value required!"
+        },
+        "color": "Color",
+        "image": "Image",
+        "btn-cancel": "CANCEL",
+        "btn-save": "SAVE"
+      }
+    },
+    "category": "Category"
+  }
+}

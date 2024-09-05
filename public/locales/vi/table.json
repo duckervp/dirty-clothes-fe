@@ -1,21 +1,35 @@
 {
   "no-data": {
-    "title": "Not found",
-    "content": "No results found for \u00a0 <strong>\"{query}\"</strong>. <br /> Try checking for typos or using complete words."
+    "title": "Không tìm thấy",
+    "content": "Không tìm thấy kết quả nào cho \u00a0 <strong>\"{query}\"</strong>. <br /> Hãy thử kiểm tra lỗi chính tả hoặc sử dụng các từ hoàn chỉnh."
   },
-  "menu": {
-    "shop": "SHOP",
-    "best-seller": "BEST SELLER",
-    "contact": "CONTACT"
+  "table-row": {
+    "btn-edit": "Sửa",
+    "btn-delete": "Xoá"
   },
-  "account": {
-    "home": "Home",
-    "profile": "Profile",
-    "order": "Order",
-    "address": "Address",
-    "admin-dashboard": "Admin Dashboard",
-    "login": "Login",
-    "logout": "Logout",
-    "register": "Register"
+  "table-toolbar": {
+    "def-filter-placeholder": "Tìm theo tên...",
+    "selected": "đã chọn"
+  },
+  "title-bar": {
+    "leave-pu": {
+      "title": "XÁC NHẬN RỜI KHỎI MÀN",
+      "message": "Tất cả những thay đổi chưa được lưu lại sẽ bị mất khi bạn rời khỏi màn này. Bạn có muốn tiếp tục không?",
+      "cancel-btn-text": "KHÔNG",
+      "confirm-btn-text": "CÓ"
+    },
+    "btn-edit": "Sửa",
+    "btn-delete": "Xoá"
+  },
+  "delete-confirm-pu": {
+    "title": "XÁC NHẬN XOÁ NGƯỜI DÙNG",
+    "plural-prep": "những",
+    "single-prep": "",
+    "record": "bản ghi",
+    "records": "bản ghi",
+    "pre-message": "Bạn có muốn xoá",
+    "post-message": "này khỏi hệ thống không?",
+    "cancel-btn-text": "HUỶ BỎ",
+    "confirm-btn-text": "XÁC NHẬN"
   }
 }

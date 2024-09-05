@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -12,6 +13,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
+import { getUrl, USER_MANAGEMENT } from 'src/routes/route-config';
 
 import { fDateTime } from 'src/utils/format-time';
 import { handleError, showSuccessMessage } from 'src/utils/notify';
@@ -26,6 +28,7 @@ import ConfirmPopup from 'src/components/modal/confirm-popup';
 // ----------------------------------------------------------------------
 
 export default function UserDetailView() {
+  const { t } = useTranslation('user', { keyPrefix: 'user-detail' });
 
   const location = useLocation();
 
@@ -106,7 +109,7 @@ export default function UserDetailView() {
         const { data } = await updateUser({ id, payload }).unwrap();
         showSuccessMessage(data);
       }
-      router.push('/admin/user-management');
+      router.push(getUrl(USER_MANAGEMENT.INDEX));
     } catch (error) {
       handleError(error);
     }
@@ -127,14 +130,14 @@ export default function UserDetailView() {
         if (isEditScreen && !updatePassword && ['password', 'confirmPassword'].includes(key)) {
           // do nothing
         } else {
-          newErr[key] = 'Field value required!';
+          newErr[key] = t('form.error.field-required');
           isValid = false;
         }
       }
     });
 
     if (isValid && !state.email.match(EMAIL_REGEX)) {
-      newErr.email = 'Invalid email address!';
+      newErr.email = t('form.error.invalid-email');
       isValid = false;
     }
 
@@ -178,14 +181,14 @@ export default function UserDetailView() {
   }
 
   const handleEdit = () => {
-    router.push(`/admin/user-management/edit-user/${id}`);
+    router.push(getUrl(USER_MANAGEMENT.EDIT, { id }));
   }
 
   const handleDelete = async () => {
     try {
       const { data } = await deleteUser(id).unwrap();
       showSuccessMessage(data);
-      router.push('/admin/user-management/');
+      router.push(getUrl(USER_MANAGEMENT.INDEX));
     } catch (error) {
       handleError(error);
     }
@@ -202,7 +205,7 @@ export default function UserDetailView() {
   }
 
   const handleConfirmCancel = () => {
-    router.push("/admin/user-management");
+    router.push(getUrl(USER_MANAGEMENT.INDEX));
     setPopupOpen(false);
   }
 
@@ -213,7 +216,7 @@ export default function UserDetailView() {
   const renderPasswordField = (
     <Box>
       <Typography variant="subtitle2">
-        <span style={{ color: 'red' }}>*</span> {isEditScreen ? 'New Password' : 'Password'}
+        <span style={{ color: 'red' }}>*</span> {isEditScreen ? t('form.new-password') : t('form.password')}
       </Typography>
       <TextField
         inputRef={input => input && updatePassword && input.focus()}
@@ -241,7 +244,7 @@ export default function UserDetailView() {
   const renderConfirmPasswordField = (
     <Box>
       <Typography variant="subtitle2">
-        <span style={{ color: 'red' }}>*</span> Confirm Password
+        <span style={{ color: 'red' }}>*</span> {t('form.confirm-password')}
       </Typography>
       <TextField
         fullWidth
@@ -261,7 +264,7 @@ export default function UserDetailView() {
         onChange={handleStateChange}
         error={isIncorrectConfirmPassword() || err.confirmPassword !== ''}
         helperText={
-          (isIncorrectConfirmPassword() && 'Confirm password does not match!') ||
+          (isIncorrectConfirmPassword() && t('form.error.confirm-password')) ||
           (err.confirmPassword !== '' && err.confirmPassword)
         }
       />
@@ -273,7 +276,7 @@ export default function UserDetailView() {
       <Stack spacing={3}>
         <Box>
           <Typography variant="subtitle2">
-            <span style={{ color: 'red' }}>*</span> Name
+            <span style={{ color: 'red' }}>*</span> {t('form.name')}
           </Typography>
           <TextField
             name="name"
@@ -289,7 +292,7 @@ export default function UserDetailView() {
 
         <Box>
           <Typography variant="subtitle2">
-            <span style={{ color: 'red' }}>*</span> Email
+            <span style={{ color: 'red' }}>*</span> {t('form.email')}
           </Typography>
           <TextField
             fullWidth
@@ -299,7 +302,7 @@ export default function UserDetailView() {
             onChange={handleStateChange}
             error={!isValidEmail() || err.email !== ''}
             helperText={
-              (!isValidEmail() && 'Invalid email address!') || (err.email !== '' && err.email)
+              (!isValidEmail() && t('form.error.invalid-email')) || (err.email !== '' && err.email)
             }
             disabled={isDetailScreen || isEditScreen}
           />
@@ -307,7 +310,7 @@ export default function UserDetailView() {
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: 200 }}>
           <Typography variant="subtitle2">
-            Status
+          {t('form.status')}
           </Typography>
           <Switch
             sx={{ inputProps: { ariaLabel: 'Status switch' } }}
@@ -319,7 +322,7 @@ export default function UserDetailView() {
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: 200 }}>
           <Typography variant="subtitle2">
-            Is Admin
+          {t('form.is-admin')}
           </Typography>
           <Switch
             sx={{ inputProps: { ariaLabel: 'Role switch' } }}
@@ -332,7 +335,7 @@ export default function UserDetailView() {
         {
           isEditScreen &&
           <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: 200 }}>
-            <Typography variant="subtitle2"> Change Password </Typography>
+            <Typography variant="subtitle2"> {t('form.change-password')} </Typography>
             <Switch
               sx={{ inputProps: { ariaLabel: 'Role switch' } }}
               checked={updatePassword}
@@ -349,12 +352,12 @@ export default function UserDetailView() {
       <Stack sx={{ mt: 3 }}>
         {!isCreateScreen && auditData.createdBy && auditData.createdAt &&
           <Typography variant="body2">
-            Created by: <b>{auditData.createdBy}</b> in <b>{fDateTime(auditData.createdAt)}</b>
+            {t('form.created-by')}: <b>{auditData.createdBy}</b> {t('form.in')} <b>{fDateTime(auditData.createdAt)}</b>
           </Typography>
         }
         {isDetailScreen && auditData.updatedAt && auditData.updatedBy &&
           <Typography variant="body2">
-            Last modified by: <b>{auditData.updatedBy}</b> in <b>{fDateTime(auditData.updatedAt)}</b>
+            {t('form.updated-by')}: <b>{auditData.updatedBy}</b> {t('form.in')} <b>{fDateTime(auditData.updatedAt)}</b>
           </Typography>
         }
       </Stack>
@@ -370,7 +373,7 @@ export default function UserDetailView() {
             onClick={handleCancel}
             sx={{ mt: 3, width: "200px", mr: 3 }}
           >
-            Cancel
+            {t('form.btn-cancel')}
           </LoadingButton>
           <LoadingButton
             size="large"
@@ -381,24 +384,23 @@ export default function UserDetailView() {
             sx={{ mt: 3, width: "200px" }}
             loading={isEditScreen ? isUpdating : isCreating}
           >
-            Save
+            {t('form.btn-save')}
           </LoadingButton>
         </Box>
       }
     </>
   );
 
-  const object = "user";
-  const action = isCreateScreen ? "creation" : "editing";
-
   return (
     <Box>
       <ConfirmPopup
         content={{
-          title: `CANCEL ${object.toUpperCase()} ${action.toUpperCase()}`,
-          message: `If you cancel, all unsaved data will be lost. Are you sure you want to cancel ${object} ${action}?`,
-          cancelBtnText: "NO",
-          confirmBtnText: "YES"
+          title: isCreateScreen
+            ? t("confirm-pu.action-create-title")
+            : t("confirm-pu.action-edit-title"),
+          message: t('confirm-pu.message'),
+          cancelBtnText: t('cancel-btn-text'),
+          confirmBtnText: t('confirm-btn-text')
         }}
         popupOpen={popupOpen}
         setPopupOpen={setPopupOpen}
@@ -412,9 +414,21 @@ export default function UserDetailView() {
             width: "100%",
           }}
         >
-          {isDetailScreen && <TitleBar title="User Details" screen="detail" handleEdit={handleEdit} handleDelete={handleDelete} goBackUrl='/admin/user-management'/>}
-          {isEditScreen && <TitleBar title="Edit User" screen="edit" goBackUrl='/admin/user-management'/>}
-          {isCreateScreen && <TitleBar title="Create  User" screen="create" goBackUrl='/admin/user-management'/>}
+          {isDetailScreen &&
+            <TitleBar
+              title={t('title.detail')}
+              screen="detail"
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+              goBackUrl={getUrl(USER_MANAGEMENT.INDEX)}
+            />
+          }
+
+          {isEditScreen &&
+            <TitleBar title={t('title.edit')} screen="edit" goBackUrl={getUrl(USER_MANAGEMENT.INDEX)} />}
+            
+          {isCreateScreen &&
+            <TitleBar title={t('title.create')} screen="create" goBackUrl={getUrl(USER_MANAGEMENT.INDEX)} />}
 
           {renderForm}
         </Card>

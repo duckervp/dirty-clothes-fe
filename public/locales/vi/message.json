@@ -7,6 +7,12 @@
     },
     "cart": {
       "add-success": "Đã Thêm sản phẩm vào giỏ hàng!"
+    },
+    "payment": {
+      "shipping-address-required": "Vui lòng chọn địa chỉ giao hàng!"
+    },
+    "order": {
+      "create-success": "Đặt hàng thành công!"
     }
   },
   "code": {

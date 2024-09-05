@@ -18,8 +18,9 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import { useRouter } from 'src/routes/hooks';
 
+import useNotify from 'src/hooks/use-notify';
+
 import { fViCurrency } from 'src/utils/format-number';
-import { handleError, showErrorMessage } from 'src/utils/notify';
 
 import Logo from 'src/layouts/common/logo';
 import { FREE_SHIPPING_MODE } from 'src/config';
@@ -95,7 +96,9 @@ const calTotalPrice = (items) => {
 };
 
 export default function PaymentView() {
-  const { t } = useTranslation('product', { keyPrefix: 'payment' });
+  const { t } = useTranslation('product', { keyPrefix: 'payment'});
+
+  const { showErrorMsg, showSuccessMsg, showCustomErrorMsg } = useNotify();
 
   const defaultShippingAddress = {
     address: null,
@@ -159,16 +162,17 @@ export default function PaymentView() {
 
   const handleCheckout = async () => {
     if (!selectedAddress || !selectedAddress.id) {
-      showErrorMessage('Please select shipping address info!');
+      showCustomErrorMsg('custom.payment.shipping-address-required');
       return;
     }
 
     try {
       await createOrder(produceOrder()).unwrap();
       dispatch(removeAllCartItems());
+      showSuccessMsg('custom.order.create-success');
       router.push('/order');
     } catch (error) {
-      handleError(error);
+      showErrorMsg(error);
     }
   };
 
@@ -351,18 +355,18 @@ export default function PaymentView() {
               <Box sx={{ mt: 5, width: '100%', pl: { lg: 2, md: 2, sm: 0, xs: 0 } }}>
                 <Box>
                   <Typography variant="body1" fontWeight={700} sx={{ mb: 1 }}>
-                  {t('shipping-method.label')}
+                    {t('shipping-method.label')}
                   </Typography>
                   <Card sx={{ boxShadow: 3 }}>
                     {FREE_SHIPPING_MODE ?
                       <Stack direction="row" justifyContent="space-between" sx={{ py: 3, px: 3 }}>
                         <Stack direction="row" alignItems="center">
                           <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>
-                          {t('shipping-method.standard')}
+                            {t('shipping-method.standard')}
                           </Typography>
                         </Stack>
                         <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>
-                        {t('shipping-method.free')}
+                          {t('shipping-method.free')}
                         </Typography>
                       </Stack>
                       :
@@ -392,7 +396,7 @@ export default function PaymentView() {
                 </Box>
                 <Box sx={{ mt: 5 }}>
                   <Typography variant="body1" fontWeight={700} sx={{ mb: 1 }}>
-                  {t('payment-method.label')}
+                    {t('payment-method.label')}
                   </Typography>
                   <Card sx={{ p: 3, boxShadow: 3 }}>
                     <UseRadioGroup />
@@ -405,7 +409,7 @@ export default function PaymentView() {
         <Grid xs={12} sm={12} md={5}>
           <Card sx={{ px: 3, py: 5, boxShadow: 3 }}>
             <Typography variant="h3" sx={{ fontWeight: '600', mb: 2, textAlign: 'center' }}>
-            {t('order-summary.title')}
+              {t('order-summary.title')}
             </Typography>
             <Divider />
             <Box sx={{ pt: 2 }}>

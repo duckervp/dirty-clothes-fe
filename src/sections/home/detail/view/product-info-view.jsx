@@ -16,7 +16,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import { useRouter } from 'src/routes/hooks';
-import { BUYNOW, absolutePath } from 'src/routes/route-config';
+import { BUYNOW, getUrl } from 'src/routes/route-config';
 
 import useNotify from 'src/hooks/use-notify';
 
@@ -200,7 +200,7 @@ export default function ProductInfoView() {
   const hanleBuyNowClick = () => {
     const selectedProduct = getSelectedProductInfo();
     dispatch(setBuyNowProduct({ selectedProduct }));
-    router.push(absolutePath(BUYNOW));
+    router.push(getUrl(BUYNOW));
   };
 
   if (isLoading) {

@@ -1,0 +1,54 @@
+{
+  "title": "Users",
+  "btn-new-user": "New User",
+  "delete-pu": {
+    "single-noun": "user",
+    "plural-noun": "users"
+  },
+  "table-column": {
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status",
+    "created-at": "Created Date"
+  },
+  "role": {
+    "USER": "User",
+    "ADMIN": "Admin"
+  },
+  "user-detail": {
+    "title": {
+      "create": "Create User",
+      "edit": "Edit User",
+      "detail": "User Details"
+    },
+    "confirm-pu": {
+      "object": "user",
+      "action-create-title": "CANCEL USER CREATION",
+      "action-edit-title": "CANCEL USER EDITING",
+      "cancel-btn-text": "NO",
+      "confirm-btn-text": "YES",
+      "message": "If you cancel, all unsaved data will be lost. Do you want to continue?"
+    },
+    "form": {
+      "error": {
+        "field-required": "Field value required!",
+        "invalid-email": "Invalid email address!",
+        "confirm-password": "Confirm password does not match!"
+      },
+      "email": "Email",
+      "status": "Status",
+      "password": "Pasword",
+      "new-password": "New Pasword",
+      "name": "Name",
+      "confirm-password": "Confirm Password",
+      "is-admin": "Is Admin",
+      "change-password": "Change Password",
+      "created-by": "Created by",
+      "in": "in",
+      "updated-by": "Last Modified by",
+      "btn-cancel": "Cancel",
+      "btn-save": "Save"
+    }
+  }
+}

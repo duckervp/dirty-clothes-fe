@@ -10,13 +10,16 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
+import useNotify from 'src/hooks/use-notify';
+
 import { fDateTime } from 'src/utils/format-time';
 import { fViCurrency } from 'src/utils/format-number';
 
 import { ORDER_STATUS } from 'src/config';
-import { useGetOrderDetailQuery, useGetOrderDetailByIdQuery } from 'src/app/api/order/orderApiSlice';
+import { useGetOrderDetailQuery, useCancelOrderMutation, useGetOrderDetailByIdQuery } from 'src/app/api/order/orderApiSlice';
 
 import Iconify from 'src/components/iconify';
+import Loading from 'src/components/auth/Loading';
 import { ColorPreview } from 'src/components/color-utils';
 
 import OrderStatus from './order-status';
@@ -86,11 +89,17 @@ export default function OrderSummary({
 }) {
   const { t } = useTranslation('profile', { keyPrefix: 'order.detail-summary' });
 
+  const { showErrorMsg } = useNotify();
+
   const [orderDetail, setOrderDetail] = useState({});
 
-  const { data: orderDetailData } = useGetOrderDetailQuery(orderCode, { skip: !orderCode });
+  const { data: orderDetailData, isLoading } = useGetOrderDetailQuery(orderCode, { skip: !orderCode });
 
-  const { data: orderDetailData2 } = useGetOrderDetailByIdQuery(orderId, { skip: !orderId });
+  const { data: orderDetailData2, isLoading: isLoading2 } = useGetOrderDetailByIdQuery(orderId, { skip: !orderId });
+
+  const [cancelOrder] = useCancelOrderMutation();
+
+  const [isCanceling, setIsCanceling] = useState(false);
 
   useEffect(() => {
     if (orderDetailData) {
@@ -116,8 +125,18 @@ export default function OrderSummary({
     handleDone(id);
   }
 
-  const handleCancelClick = (id) => {
-    // TODO
+  const handleCancelClick = async (id) => {
+    try {
+      setIsCanceling(true);
+      await cancelOrder(id)
+    } catch (error) {
+      showErrorMsg(error);
+    }
+    setIsCanceling(false);
+  }
+
+  if (isLoading || isLoading2 || isCanceling) {
+    return <Loading fullScreen/>;
   }
 
   return (

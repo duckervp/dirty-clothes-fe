@@ -16,12 +16,12 @@ import {
   SHOP,
   ADMIN,
   ORDER,
+  getUrl,
   CONTACT,
   ADDRESS,
   PAYMENT,
   PROFILE,
   BEST_SELLER,
-  absolutePath,
   SHOP_CATEGORY,
   PRODUCT_DETAIL,
   USER_MANAGEMENT,
@@ -103,7 +103,7 @@ export default function Router() {
       ),
       children: [
         // { path: ADMIN, element: <DashboardLayout><IndexPage /></DashboardLayout> },
-        { path: ADMIN, element: <Navigate to={absolutePath(USER_MANAGEMENT.INDEX)} /> },
+        { path: ADMIN, element: <Navigate to={getUrl(USER_MANAGEMENT.INDEX)} /> },
         // USER
         { path: USER_MANAGEMENT.INDEX, element: <DashboardLayout><UserPage /></DashboardLayout> },
         { path: USER_MANAGEMENT.DETAILS, element: <DashboardLayout><UserDetailPage /></DashboardLayout> },

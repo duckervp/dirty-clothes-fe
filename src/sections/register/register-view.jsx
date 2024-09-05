@@ -13,7 +13,7 @@ import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
-import { AUTH, HOME_INDEX, absolutePath } from 'src/routes/route-config';
+import { AUTH, getUrl, HOME_INDEX } from 'src/routes/route-config';
 
 import useLogin from 'src/hooks/use-login';
 
@@ -79,7 +79,7 @@ export default function RegisterView() {
   };
 
   const handleLoginClick = () => {
-    router.push(absolutePath(AUTH.LOGIN));
+    router.push(getUrl(AUTH.LOGIN));
   };
 
   const isIncorrectConfirmPassword = () =>

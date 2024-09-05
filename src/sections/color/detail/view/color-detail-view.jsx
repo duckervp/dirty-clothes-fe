@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 import { useRouter } from 'src/routes/hooks';
-import { absolutePath, COLOR_MANAGEMENT } from 'src/routes/route-config';
+import { getUrl, COLOR_MANAGEMENT } from 'src/routes/route-config';
 
 import { fDateTime } from 'src/utils/format-time';
 import { handleError, showSuccessMessage } from 'src/utils/notify';
@@ -92,7 +92,7 @@ export default function ColorDetailView() {
         const { data } = await updateColor({ id, payload }).unwrap();
         showSuccessMessage(data);
       }
-      router.push(absolutePath(COLOR_MANAGEMENT.INDEX));
+      router.push(getUrl(COLOR_MANAGEMENT.INDEX));
     } catch (error) {
       handleError(error);
     }
@@ -135,7 +135,7 @@ export default function ColorDetailView() {
   }, [id, getColorDetail]);
 
   const handleEdit = () => {
-    const url = absolutePath(COLOR_MANAGEMENT.EDIT).replace(":id", id);
+    const url = getUrl(COLOR_MANAGEMENT.EDIT).replace(":id", id);
     router.push(url);
   }
 
@@ -143,7 +143,7 @@ export default function ColorDetailView() {
     try {
       const { data } = await deleteColor(id).unwrap();
       showSuccessMessage(data);
-      router.push(absolutePath(COLOR_MANAGEMENT.INDEX));
+      router.push(getUrl(COLOR_MANAGEMENT.INDEX));
     } catch (error) {
       handleError(error);
     }
@@ -156,7 +156,7 @@ export default function ColorDetailView() {
   }
 
   const handleConfirmCancel = () => {
-    router.push(absolutePath(COLOR_MANAGEMENT.INDEX));
+    router.push(getUrl(COLOR_MANAGEMENT.INDEX));
     setPopupOpen(false);
   }
 
@@ -275,12 +275,12 @@ export default function ColorDetailView() {
               screen="detail"
               handleEdit={handleEdit}
               handleDelete={handleDelete}
-              goBackUrl={absolutePath(COLOR_MANAGEMENT.INDEX)}
+              goBackUrl={getUrl(COLOR_MANAGEMENT.INDEX)}
               object={object}
             />
           }
-          {isEditScreen && <TitleBar title="Edit Color" screen="edit" goBackUrl={absolutePath(COLOR_MANAGEMENT.INDEX)} />}
-          {isCreateScreen && <TitleBar title="Create  Color" screen="create" goBackUrl={absolutePath(COLOR_MANAGEMENT.INDEX)} />}
+          {isEditScreen && <TitleBar title="Edit Color" screen="edit" goBackUrl={getUrl(COLOR_MANAGEMENT.INDEX)} />}
+          {isCreateScreen && <TitleBar title="Create  Color" screen="create" goBackUrl={getUrl(COLOR_MANAGEMENT.INDEX)} />}
 
           {renderForm}
         </Card>

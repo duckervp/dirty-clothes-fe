@@ -20,6 +20,8 @@
     }
   },
   "order": {
+    "title": "ĐƠN HÀNG ĐÃ ĐẶT",
+    "no-order-message": "Bạn chưa đặt đơn hàng nào.",
     "order-no": "Mã đơn hàng",
     "status": "Trạng thái",
     "total": "Tổng",
@@ -67,6 +69,13 @@
       "upload": "Thay đổi ảnh đại diện",
       "remove": "Loại bỏ ảnh đại diện",
       "save": "Lưu thay đổi"
+    }
+  },
+  "image": {
+    "tooltip": {
+      "upload": "Tải hình ảnh mới",
+      "remove": "Loại bỏ hình ảnh",
+      "save": "Lưu"
     }
   }
 }

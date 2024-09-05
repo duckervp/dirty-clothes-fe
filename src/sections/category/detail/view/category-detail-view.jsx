@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 import { useRouter } from 'src/routes/hooks';
-import { absolutePath, CATEGORY_MANAGEMENT } from 'src/routes/route-config';
+import { getUrl, CATEGORY_MANAGEMENT } from 'src/routes/route-config';
 
 import { fDateTime } from 'src/utils/format-time';
 import { handleError, showSuccessMessage } from 'src/utils/notify';
@@ -103,7 +103,7 @@ export default function CategoryDetailView() {
         const { data } = await updateCategory({ id, payload }).unwrap();
         showSuccessMessage(data);
       }
-      router.push(absolutePath(CATEGORY_MANAGEMENT.INDEX));
+      router.push(getUrl(CATEGORY_MANAGEMENT.INDEX));
     } catch (error) {
       handleError(error);
     }
@@ -151,7 +151,7 @@ export default function CategoryDetailView() {
   }, [id, getCategoryDetail]);
 
   const handleEdit = () => {
-    const url = absolutePath(CATEGORY_MANAGEMENT.EDIT).replace(":id", id);
+    const url = getUrl(CATEGORY_MANAGEMENT.EDIT).replace(":id", id);
     router.push(url);
   }
 
@@ -159,7 +159,7 @@ export default function CategoryDetailView() {
     try {
       const { data } = await deleteCategory(id).unwrap();
       showSuccessMessage(data);
-      router.push(absolutePath(CATEGORY_MANAGEMENT.INDEX));
+      router.push(getUrl(CATEGORY_MANAGEMENT.INDEX));
     } catch (error) {
       handleError(error);
     }
@@ -172,7 +172,7 @@ export default function CategoryDetailView() {
   }
 
   const handleConfirmCancel = () => {
-    router.push(absolutePath(CATEGORY_MANAGEMENT.INDEX));
+    router.push(getUrl(CATEGORY_MANAGEMENT.INDEX));
     setPopupOpen(false);
   }
 
@@ -300,13 +300,13 @@ export default function CategoryDetailView() {
               screen="detail"
               handleEdit={handleEdit}
               handleDelete={handleDelete}
-              goBackUrl={absolutePath(CATEGORY_MANAGEMENT.INDEX)}
+              goBackUrl={getUrl(CATEGORY_MANAGEMENT.INDEX)}
               deleteMessage={state.parent ? "Are you sure you want to permanently remove this category from the system? Since this category is a parent category, all the children will also be deleted. Do you want to continue?" : null}
               object={object}
             />
           }
-          {isEditScreen && <TitleBar title="Edit Category" screen="edit" goBackUrl={absolutePath(CATEGORY_MANAGEMENT.INDEX)} />}
-          {isCreateScreen && <TitleBar title="Create  Category" screen="create" goBackUrl={absolutePath(CATEGORY_MANAGEMENT.INDEX)} />}
+          {isEditScreen && <TitleBar title="Edit Category" screen="edit" goBackUrl={getUrl(CATEGORY_MANAGEMENT.INDEX)} />}
+          {isCreateScreen && <TitleBar title="Create  Category" screen="create" goBackUrl={getUrl(CATEGORY_MANAGEMENT.INDEX)} />}
 
           {renderForm}
         </Card>

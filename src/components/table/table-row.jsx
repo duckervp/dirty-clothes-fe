@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
@@ -19,6 +20,8 @@ export default function CustomTableRow({
   handleRowClick,
   disabled
 }) {
+  const { t } = useTranslation('table', { keyPrefix: 'table-row' });
+
   const [open, setOpen] = useState(null);
 
   const handleOpenMenu = (event) => {
@@ -64,12 +67,12 @@ export default function CustomTableRow({
       >
         <MenuItem onClick={handleEditClick}>
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-          Edit
+          {t('btn-edit')}
         </MenuItem>
 
         <MenuItem onClick={handleDeleteClick} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-          Delete
+          {t('btn-delete')}
         </MenuItem>
       </Popover>
     </>

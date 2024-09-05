@@ -1,6 +1,6 @@
 import {
   // ADMIN,
-  absolutePath,
+  getUrl,
   USER_MANAGEMENT,
   COLOR_MANAGEMENT,
   ORDER_MANAGEMENT,
@@ -24,32 +24,32 @@ const iconify = (name) => (
 const navConfig = [
   // {
   //   title: 'dashboard',
-  //   path: absolutePath(ADMIN),
+  //   path: getUrl(ADMIN),
   //   icon: icon('ic_analytics'),
   // },
   {
     title: 'user',
-    path: absolutePath(USER_MANAGEMENT.INDEX),
+    path: getUrl(USER_MANAGEMENT.INDEX),
     icon: icon('ic_user'),
   },
   {
     title: 'product',
-    path: absolutePath(PRODUCT_MANAGEMENT.INDEX),
+    path: getUrl(PRODUCT_MANAGEMENT.INDEX),
     icon: iconify("eva:cube-fill"),
   },
   {
     title: 'order',
-    path: absolutePath(ORDER_MANAGEMENT.INDEX),
+    path: getUrl(ORDER_MANAGEMENT.INDEX),
     icon: iconify("eva:shopping-cart-fill"),
   },
   {
     title: 'color',
-    path: absolutePath(COLOR_MANAGEMENT.INDEX),
+    path: getUrl(COLOR_MANAGEMENT.INDEX),
     icon: iconify("eva:color-palette-fill"),
   },
   {
     title: 'category',
-    path: absolutePath(CATEGORY_MANAGEMENT.INDEX),
+    path: getUrl(CATEGORY_MANAGEMENT.INDEX),
     icon: iconify("eva:grid-fill"),
   },
 ];

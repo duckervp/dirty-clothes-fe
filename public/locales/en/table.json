@@ -3,19 +3,33 @@
     "title": "Not found",
     "content": "No results found for \u00a0 <strong>\"{query}\"</strong>. <br /> Try checking for typos or using complete words."
   },
-  "menu": {
-    "shop": "SHOP",
-    "best-seller": "BEST SELLER",
-    "contact": "CONTACT"
+  "table-row": {
+    "btn-edit": "Edit",
+    "btn-delete": "Delete"
   },
-  "account": {
-    "home": "Home",
-    "profile": "Profile",
-    "order": "Order",
-    "address": "Address",
-    "admin-dashboard": "Admin Dashboard",
-    "login": "Login",
-    "logout": "Logout",
-    "register": "Register"
+  "table-toolbar": {
+    "def-filter-placeholder": "Search by name...",
+    "selected": "selected"
+  },
+  "title-bar": {
+    "leave-pu": {
+      "title": "LEAVE THIS SCREEN",
+      "message": "You have unsaved changes that will be lost if you leave this screen. Are you sure you want to leave this screen?",
+      "cancel-btn-text": "NO",
+      "confirm-btn-text": "YES"
+    },
+    "btn-edit": "Edit",
+    "btn-delete": "Delete"
+  },
+  "delete-confirm-pu": {
+    "title": "DELETE CONFIRMATION",
+    "plural-prep": "these", 
+    "single-prep": "this", 
+    "record": "record",
+    "records": "records",
+    "pre-message": "Are you sure you want to permanently remove",
+    "post-message": "from the system?",
+    "cancel-btn-text": "CANCEL",
+    "confirm-btn-text": "CONFIRM"
   }
 }

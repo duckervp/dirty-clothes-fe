@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -32,6 +33,8 @@ import DeleteConfirmPopup from 'src/components/modal/delete-confirm-popup';
 // ----------------------------------------------------------------------
 
 function DetailForm({ data, colors, setData, isEdit, closePopup }) {
+  const { t } = useTranslation('product-m', { keyPrefix: 'product-detail.product-item.form' });
+
   const defaultState = {
     colorId: '',
     size: '',
@@ -80,7 +83,7 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
     const newErr = { ...err };
     Object.keys(state).forEach((key) => {
       if (state[key] === '') {
-        newErr[key] = 'Field value required!';
+        newErr[key] = t('error.field-required');
         isValid = false;
       }
     });
@@ -90,10 +93,12 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
 
   return (
     <Stack spacing={3}>
-      <Typography variant='subtitle1' textAlign="center">{isEdit ? "EDIT " : "CREATE "} PRODUCT DETAIL ITEM</Typography>
+      <Typography variant='subtitle1' textAlign="center">
+        {isEdit ? t('edit-item-title') : t('create-item-title')}
+      </Typography>
       <Box>
         <Typography variant="subtitle2">
-          <span style={{ color: 'red' }}>*</span> Color
+          <span style={{ color: 'red' }}>*</span> {t('color')}
         </Typography>
         <Select id="select-color" value={state?.colorId} onChange={handleStateChange} name='colorId' fullWidth >
           {colors?.map(item => <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>)}
@@ -104,7 +109,7 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
       </Box>
       <Box>
         <Typography variant="subtitle2">
-          <span style={{ color: 'red' }}>*</span> Size
+          <span style={{ color: 'red' }}>*</span> {t('size')}
         </Typography>
         <Select id="select-size" value={state?.size} onChange={handleStateChange} name='size' fullWidth >
           {SIZE_OPTIONS.map(item => <MenuItem key={item.label} value={item.label}>{item.label}</MenuItem>)}
@@ -115,7 +120,7 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
       </Box>
       <Box>
         <Typography variant="subtitle2">
-          <span style={{ color: 'red' }}>*</span> Inventory
+          <span style={{ color: 'red' }}>*</span> {t('inventory')}
         </Typography>
         <TextField
           name="inventory"
@@ -130,7 +135,7 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
       </Box>
       <Box>
         <Typography variant="subtitle2">
-          <span style={{ color: 'red' }}>*</span> Sold
+          <span style={{ color: 'red' }}>*</span> {t('sold')}
         </Typography>
         <TextField
           name="sold"
@@ -153,7 +158,7 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
           onClick={closePopup}
           sx={{ mt: 3, width: "200px" }}
         >
-          CANCEL
+          {t('btn-cancel')}
         </LoadingButton>
         <LoadingButton
           size="large"
@@ -163,11 +168,9 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
           onClick={handleClick}
           sx={{ mt: 3, width: "200px" }}
         >
-          SAVE
+          {t('btn-save')}
         </LoadingButton>
       </Stack>
-
-
     </Stack>
   );
 }
@@ -181,6 +184,8 @@ DetailForm.propTypes = {
 }
 
 export default function ProductDetailItem({ productDetailItems, setProductDetailItems, disabled }) {
+  const { t } = useTranslation('product-m', { keyPrefix: 'product-detail.product-item' });
+
   const [deleteMultipleItems, setDeleteMultipleItems] = useState(false);
 
   const [items, setItems] = useState([]);
@@ -370,7 +375,6 @@ export default function ProductDetailItem({ productDetailItems, setProductDetail
     setDetailPopupOpen(false);
   }
 
-
   return (
     <Box>
       <ModalPopup open={detailPopupOpen} setOpen={setDetailPopupOpen}>
@@ -383,18 +387,18 @@ export default function ProductDetailItem({ productDetailItems, setProductDetail
         />
       </ModalPopup>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1}>
-        <Typography variant="subtitle2">Product Detail Items</Typography>
+        <Typography variant="subtitle2">{t('title')}</Typography>
 
         {
           !disabled &&
           <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleCreateNew}>
-            New Item
+            {t('btn-new')}
           </Button>
         }
       </Stack>
 
       <DeleteConfirmPopup
-        object={deleteMultipleItems && selected.length > 1 ? "items" : "item"}
+        object={deleteMultipleItems && selected.length > 1 ? t('delete-pu.plural-noun') : t('delete-pu.single-noun')}
         plural={deleteMultipleItems && selected.length > 1}
         popupOpen={deleteCfOpen}
         setPopupOpen={setDeleteCfOpen}
@@ -423,18 +427,18 @@ export default function ProductDetailItem({ productDetailItems, setProductDetail
                 headLabel={
                   disabled ?
                     [
-                      { id: 'color', label: 'Color' },
-                      { id: 'size', label: 'Size' },
-                      { id: 'inventory', label: 'Inventory' },
-                      { id: 'sold', label: 'Sold' },
-                      { id: 'createdAt', label: 'Created Date', align: "center" },
+                      { id: 'color', label: t('table-column.color') },
+                      { id: 'size', label: t('table-column.size') },
+                      { id: 'inventory', label: t('table-column.inventory') },
+                      { id: 'sold', label: t('table-column.sold') },
+                      { id: 'createdAt', label: t('table-column.created-at'), align: "center" },
                     ] :
                     [
-                      { id: 'color', label: 'Color' },
-                      { id: 'size', label: 'Size' },
-                      { id: 'inventory', label: 'Inventory' },
-                      { id: 'sold', label: 'Sold' },
-                      { id: 'createdAt', label: 'Created Date', align: "center" },
+                      { id: 'color', label: t('table-column.color') },
+                      { id: 'size', label: t('table-column.size') },
+                      { id: 'inventory', label: t('table-column.inventory') },
+                      { id: 'sold', label: t('table-column.sold') },
+                      { id: 'createdAt', label: t('table-column.created-at'), align: "center" },
                       { id: '' },
                     ]
                 }
@@ -479,6 +483,11 @@ export default function ProductDetailItem({ productDetailItems, setProductDetail
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={t('table-pagination.label-row-per-page')}
+          labelDisplayedRows={
+            ({ from, to, count }) =>
+              `${from}–${to} ${t('table-pagination.label-displayed-row')} ${count}`
+          }
         />
       </Card>
     </Box>
