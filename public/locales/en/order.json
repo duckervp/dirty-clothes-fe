@@ -1,0 +1,39 @@
+{
+  "title": "Orders",
+  "btn-new": "New Order",
+  "delete-pu": {
+    "single-noun": "order",
+    "plural-noun": "orders"
+  },
+  "table-column": {
+    "code": "Order No",
+    "user": "User",
+    "total-items": "No Of Items",
+    "total": "Total",
+    "status": "Status",
+    "created-at": "Created Date"
+  },
+  "status-option": {
+    "ORDER": "ORDER",
+    "REFUSED": "REFUSED",
+    "ACCEPTED": "ACCEPTED",
+    "DELIVERY": "DELIVERY",
+    "DONE": "DONE",
+    "CANCELLED": "CANCELLED"
+  },
+  "table-toolbar": {
+    "def-filter-placeholder": "Search by name...",
+    "selected": "selected",
+    "tooltip-accept": "Accept",
+    "tooltip-delivery": "Delivery",
+    "tooltip-done": "Done",
+    "tooltip-refuse": "Refuse",
+    "tooltip-filter-list": "Filter list"
+  },
+  "table-row-option": {
+    "btn-accept": "Accept",
+    "btn-delivery": "Delivery",
+    "btn-done": "Done",
+    "btn-refuse": "Refuse"
+  }
+}

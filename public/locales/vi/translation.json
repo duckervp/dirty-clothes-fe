@@ -55,5 +55,13 @@
     "user": "Quản Lý Người Dùng",
     "address": "Địa Chỉ",
     "profile":"Hồ Sơ"
+  },
+  "admin-nav": {
+    "dashboard": "Trang Chủ Quản Lý",
+    "user": "Quản Lý Người Dùng",
+    "product": "Quản Lý Sản Phẩm",
+    "order": "Quản Lý Đơn Hàng",
+    "color": "Quản Lý Màu Sắc",
+    "category": "Quản Lý Danh Mục"
   }
 }

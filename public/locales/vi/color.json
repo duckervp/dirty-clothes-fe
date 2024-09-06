@@ -1,0 +1,40 @@
+{
+  "title": "Quản Lý Màu Sắc",
+  "btn-new": "Tạo Mới",
+  "delete-pu": {
+    "single-noun": "màu",
+    "plural-noun": "những màu"
+  },
+  "table-column": {
+    "name": "Tên",
+    "created-at": "Ngày được tạo",
+    "created-by": "Người tạo"
+  },
+  "color-detail": {
+    "object": "màu",
+    "title": {
+      "create": "Tạo Màu Mới",
+      "edit": "Sửa Thông Tin Màu",
+      "detail": "Chi Tiết Màu"
+    },
+    "confirm-pu": {
+      "action-create-title": "HUỶ TẠO MÀU MỚI",
+      "action-edit-title": "HUỶ SỬA THÔNG TIN MÀU",
+      "cancel-btn-text": "Từ Chối",
+      "confirm-btn-text": "Đồng Ý",
+      "message": "Nếu bạn đồng ý huỷ, tất cả những thông tin chưa được lưu sẽ bị mất. Bạn có muốn tiếp tục không?"
+    },
+    "form": {
+      "error": {
+        "field-required": "Không được để trống!"
+      },
+      "name": "Tên",
+      "value": "Giá trị",
+      "created-by": "Được tạo bởi",
+      "in": "vào",
+      "updated-by": "Được sửa đổi bởi",
+      "btn-cancel": "Huỷ",
+      "btn-save": "Lưu"
+    }
+  }
+}

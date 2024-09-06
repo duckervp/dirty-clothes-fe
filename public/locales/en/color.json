@@ -1,0 +1,40 @@
+{
+  "title": "Colors",
+  "btn-new": "New Color",
+  "delete-pu": {
+    "single-noun": "color",
+    "plural-noun": "colors"
+  },
+  "table-column": {
+    "name": "Name",
+    "created-at": "Created Date",
+    "created-by": "Created By"
+  },
+  "color-detail": {
+    "object": "color",
+    "title": {
+      "create": "Create Color",
+      "edit": "Edit Color",
+      "detail": "Color Details"
+    },
+    "confirm-pu": {
+      "action-create-title": "CANCEL COLOR CREATION",
+      "action-edit-title": "CANCEL COLOR EDITING",
+      "cancel-btn-text": "NO",
+      "confirm-btn-text": "YES",
+      "message": "If you cancel, all unsaved data will be lost. Do you want to continue?"
+    },
+    "form": {
+      "error": {
+        "field-required": "Field value required!"
+      },
+      "name": "Name",
+      "value": "Value",
+      "created-by": "Created by",
+      "in": "in",
+      "updated-by": "Last Modified by",
+      "btn-cancel": "Cancel",
+      "btn-save": "Save"
+    }
+  }
+}

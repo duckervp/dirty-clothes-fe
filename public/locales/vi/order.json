@@ -1,0 +1,39 @@
+{
+  "title": "Quản Lý Đơn Hàng",
+  "btn-new": "Đơn Hàng Mới",
+  "delete-pu": {
+    "single-noun": "đơn hàng",
+    "plural-noun": "đơn hàng"
+  },
+  "table-column": {
+    "code": "Mã đơn hàng",
+    "user": "Người đặt",
+    "total-items": "Số loại sản phẩm",
+    "total": "Tổng tiền",
+    "status": "Trạng thái",
+    "created-at": "Ngày đặt"
+  },
+  "status-option": {
+    "ORDER": "Đã đặt hàng",
+    "REFUSED": "Đã từ chối",
+    "ACCEPTED": "Đã xác nhận",
+    "DELIVERY": "Đang giao hàng",
+    "DONE": "Đã hoàn thành",
+    "CANCELLED": "Người mua huỷ"
+  },
+  "table-toolbar": {
+    "def-filter-placeholder": "Tìm theo tên...",
+    "selected": "đã chọn",
+    "tooltip-accept": "Xác Nhận",
+    "tooltip-delivery": "Giao Hàng",
+    "tooltip-done": "Hoàn Thành",
+    "tooltip-refuse": "Từ Chối",
+    "tooltip-filter-list": "Bộ lọc"
+  },
+  "table-row-option": {
+    "btn-accept": "Xác Nhận",
+    "btn-delivery": "Giao Hàng",
+    "btn-done": "Hoàn Thành",
+    "btn-refuse": "Từ Chối"
+  }
+}

@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 import { useRouter } from 'src/routes/hooks';
+import { AUTH, getUrl } from 'src/routes/route-config';
 
 import useLogout from 'src/hooks/use-logout';
 
@@ -59,8 +60,6 @@ export default function AccountPopover() {
   const hanleLogout = useLogout();
 
   const handleOpen = (event) => {
-    console.log(event.currentTarget);
-
     setAnchorEl(event.currentTarget);
     setOpen(true);
   };
@@ -80,7 +79,7 @@ export default function AccountPopover() {
 
   const handleRegisterClick = () => {
     handleClose();
-    router.push('/register');
+    router.push(getUrl(AUTH.REGISTER));
   };
 
   const handleNavClick = (link) => {
@@ -91,12 +90,12 @@ export default function AccountPopover() {
   const handleLogoutClick = () => {
     handleClose();
     hanleLogout();
-    router.push('/login');
+    router.push(getUrl(AUTH.LOGIN));
   };
 
   const handleLoginClick = () => {
     handleClose();
-    router.push('/login');
+    router.push(getUrl(AUTH.LOGIN));
   };
 
   const renderUserOptions = (

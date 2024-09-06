@@ -23,32 +23,32 @@ const iconify = (name) => (
 
 const navConfig = [
   // {
-  //   title: 'dashboard',
+  //   key: 'dashboard',
   //   path: getUrl(ADMIN),
   //   icon: icon('ic_analytics'),
   // },
   {
-    title: 'user',
+    key: 'user',
     path: getUrl(USER_MANAGEMENT.INDEX),
     icon: icon('ic_user'),
   },
   {
-    title: 'product',
+    key: 'product',
     path: getUrl(PRODUCT_MANAGEMENT.INDEX),
     icon: iconify("eva:cube-fill"),
   },
   {
-    title: 'order',
+    key: 'order',
     path: getUrl(ORDER_MANAGEMENT.INDEX),
     icon: iconify("eva:shopping-cart-fill"),
   },
   {
-    title: 'color',
+    key: 'color',
     path: getUrl(COLOR_MANAGEMENT.INDEX),
     icon: iconify("eva:color-palette-fill"),
   },
   {
-    title: 'category',
+    key: 'category',
     path: getUrl(CATEGORY_MANAGEMENT.INDEX),
     icon: iconify("eva:grid-fill"),
   },

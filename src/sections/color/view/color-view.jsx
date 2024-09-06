@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -7,10 +8,8 @@ import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
-import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
-import PaginationItem from '@mui/material/PaginationItem';
 
 import { useRouter } from 'src/routes/hooks';
 import { getUrl, COLOR_MANAGEMENT } from 'src/routes/route-config';
@@ -27,12 +26,15 @@ import CustomTableRow from 'src/components/table/table-row';
 import TableNoData from 'src/components/table/table-no-data';
 import CustomTableHead from 'src/components/table/table-head';
 import TableToolbar from 'src/components/table/table-toolbar';
+import PageDisplay from 'src/components/pagination/PageDisplay';
 import TableEmptyRows from 'src/components/table/table-empty-rows';
 import DeleteConfirmPopup from 'src/components/modal/delete-confirm-popup';
 
 // ----------------------------------------------------------------------
 
 export default function ColorView() {
+  const { t } = useTranslation('color');
+
   const router = useRouter();
 
   const [params] = useSearchParams();
@@ -123,9 +125,7 @@ export default function ColorView() {
 
   //----------------------
   const handleEdit = (id) => {
-    const url = getUrl(COLOR_MANAGEMENT.EDIT).replace(":id", id);
-    console.log(url);
-    router.push(url);
+    router.push(getUrl(COLOR_MANAGEMENT.EDIT, { id }));
   }
 
   const handleDelete = async (id) => {
@@ -142,8 +142,7 @@ export default function ColorView() {
   }
 
   const handleRowClick = (id) => {
-    const url = getUrl(COLOR_MANAGEMENT.DETAILS).replace(":id", id);
-    router.push(url);
+    router.push(getUrl(COLOR_MANAGEMENT.DETAILS, { id }));
   }
 
   const [deleteCfOpen, setDeleteCfOpen] = useState(false);
@@ -187,16 +186,19 @@ export default function ColorView() {
 
   return (
     <Container>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Colors</Typography>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+        <Typography variant="h4">{t('title')}</Typography>
 
         <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleCreateNew}>
-          New Color
+          {t('btn-new')}
         </Button>
       </Stack>
 
       <DeleteConfirmPopup
-        object={deleteMultipleItems && selected.length > 1 ? "colors" : "color"}
+        object={
+          deleteMultipleItems
+            && selected.length > 1 ? t('delete-pu.plural-noun') : t('delete-pu.single-noun')
+        }
         plural={deleteMultipleItems && selected.length > 1}
         popupOpen={deleteCfOpen}
         setPopupOpen={setDeleteCfOpen}
@@ -224,9 +226,9 @@ export default function ColorView() {
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'name', label: 'Name' },
-                  { id: 'createdAt', label: 'Created Date', align: "center" },
-                  { id: 'updatedAt', label: 'Last Modified Date', align: "center" },
+                  { id: 'name', label: t('table-column.name') },
+                  { id: 'createdAt', label: t('table-column.created-at'), align: "center" },
+                  { id: 'createdBy', label: t('table-column.created-by') },
                   { id: '' },
                 ]}
               />
@@ -236,9 +238,9 @@ export default function ColorView() {
                     <CustomTableRow
                       key={row.id}
                       cells={[
-                        { value: row.value, label: row.name, type: "color"},
+                        { value: row.value, label: row.name, type: "color" },
                         { value: row.createdAt, type: "datetime", align: "center" },
-                        { value: row.updatedAt, type: "datetime", align: "center" },
+                        { value: row.createdBy },
                       ]}
                       selected={selected.indexOf(row.id) !== -1}
                       handleClick={(event) => handleClick(event, row.id)}
@@ -258,29 +260,7 @@ export default function ColorView() {
           </TableContainer>
         </Scrollbar>
 
-        {totalPage > 1 && (
-          <Stack
-            direction="row"
-            alignItems="center"
-            flexWrap="wrap-reverse"
-            justifyContent="flex-end"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            <Pagination
-              page={parseInt(page, 10)}
-              count={totalPage}
-              renderItem={(item) => (
-                <PaginationItem
-                  component={Link}
-                  to={`${item.page === 1 ? '' : `?page=${item.page}`}`}
-                  {...item}
-                />
-              )}
-              variant="outlined"
-              shape="rounded"
-            />
-          </Stack>
-        )}
+        <PageDisplay totalPage={totalPage} page={page} />
       </Card>
     </Container>
   );

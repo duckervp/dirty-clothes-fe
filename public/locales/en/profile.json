@@ -38,7 +38,11 @@
         "CASH_ON_DELIVERY": "Cash On Delivery"
       },
       "total": "Total",
-      "btn-cancel": "Cancel"
+      "btn-cancel": "Cancel",
+      "btn-accept": "Accept",
+      "btn-refuse": "Refuse",
+      "btn-delivery": "Delivery",
+      "btn-done": "Done"
     },
     "status-option": {
       "ORDER": "ORDER",

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
 
 import Card from '@mui/material/Card';
@@ -37,6 +38,8 @@ import OrderTableToolbar from '../order-table-toolbar';
 // ----------------------------------------------------------------------
 
 export default function OrderView() {
+  const { t } = useTranslation('order');
+
   const router = useRouter();
 
   const [params] = useSearchParams();
@@ -192,8 +195,8 @@ export default function OrderView() {
           handleDone={handleDone}
         />
       </ModalPopup>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Orders</Typography>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+        <Typography variant="h4">{t('title')}</Typography>
 
         <Button
           variant="contained"
@@ -202,7 +205,7 @@ export default function OrderView() {
           onClick={handleCreateNew}
           sx={{ display: 'none' }}
         >
-          New Order
+          {t('btn-new')}
         </Button>
       </Stack>
 
@@ -229,12 +232,12 @@ export default function OrderView() {
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'code', label: 'Order No' },
-                  { id: 'user', label: 'User' },
-                  { id: 'totalItems', label: 'No Of Items', align: "center" },
-                  { id: 'total', label: 'Total' },
-                  { id: 'status', label: 'Status' },
-                  { id: 'createdAt', label: 'Created Date', align: "center" },
+                  { id: 'code', label: t('table-column.code') },
+                  { id: 'user', label: t('table-column.user') },
+                  { id: 'totalItems', label: t('table-column.total-items'), align: "center" },
+                  { id: 'total', label: t('table-column.total') },
+                  { id: 'status', label: t('table-column.status') },
+                  { id: 'createdAt', label: t('table-column.created-at'), align: "center" },
                   { id: '' },
                 ]}
               />
@@ -248,7 +251,7 @@ export default function OrderView() {
                         { value: row.user.name },
                         { value: row.totalItems, align: "center" },
                         { value: fViCurrency(row.total) },
-                        { value: row.status },
+                        { value: t(`status-option.${row.status}`) },
                         { value: row.createdAt, type: "datetime", align: "center" },
                       ]}
                       selected={selected.indexOf(row.id) !== -1}

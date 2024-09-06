@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -31,6 +32,7 @@ import ConfirmPopup from 'src/components/modal/confirm-popup';
 // ----------------------------------------------------------------------
 
 export default function CategoryDetailView() {
+  const { t } = useTranslation('category', { keyPrefix: 'category-detail' });
 
   const location = useLocation();
 
@@ -117,7 +119,7 @@ export default function CategoryDetailView() {
         if (key === 'parentId' && state.parent) {
           // pass
         } else {
-          newErr[key] = 'Field value required!';
+          newErr[key] = t('form.error.field-required');
           isValid = false;
         }
       }
@@ -151,8 +153,7 @@ export default function CategoryDetailView() {
   }, [id, getCategoryDetail]);
 
   const handleEdit = () => {
-    const url = getUrl(CATEGORY_MANAGEMENT.EDIT).replace(":id", id);
-    router.push(url);
+    router.push(getUrl(CATEGORY_MANAGEMENT.EDIT, { id }));
   }
 
   const handleDelete = async () => {
@@ -190,7 +191,7 @@ export default function CategoryDetailView() {
       <Stack spacing={3}>
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: 200 }}>
           <Typography variant="subtitle2">
-            Is Parent
+            {t('form.is-parent')}
           </Typography>
           <Switch
             sx={{ inputProps: { ariaLabel: 'Parent switch' } }}
@@ -201,9 +202,9 @@ export default function CategoryDetailView() {
         </Stack>
         {!state.parent && <Box>
           <Typography variant="subtitle2">
-            <span style={{ color: 'red' }}>*</span> Parent
+            <span style={{ color: 'red' }}>*</span> {t('form.parent')}
           </Typography>
-          <Select id="select-category" value={state?.parentId} onChange={handleStateChange} name='parentId' fullWidth >
+          <Select id="select-category" value={state?.parentId} onChange={handleStateChange} name='parentId' fullWidth disabled={isDetailScreen}>
             {categoryFilterData?.data?.map(item => <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>)}
           </Select>
           {err.parentId && <Typography variant="caption" color="red">
@@ -213,7 +214,7 @@ export default function CategoryDetailView() {
 
         <Box>
           <Typography variant="subtitle2">
-            <span style={{ color: 'red' }}>*</span> Name
+            <span style={{ color: 'red' }}>*</span> {t('form.name')}
           </Typography>
           <TextField
             name="name"
@@ -231,12 +232,12 @@ export default function CategoryDetailView() {
       <Stack sx={{ mt: 3 }}>
         {!isCreateScreen && auditData.createdBy && auditData.createdAt &&
           <Typography variant="body2">
-            Created by: <b>{auditData.createdBy}</b> in <b>{fDateTime(auditData.createdAt)}</b>
+            {t('form.created-by')}: <b>{auditData.createdBy}</b> {t('form.in')} <b>{fDateTime(auditData.createdAt)}</b>
           </Typography>
         }
         {isDetailScreen && auditData.updatedAt && auditData.updatedBy &&
           <Typography variant="body2">
-            Last modified by: <b>{auditData.updatedBy}</b> in <b>{fDateTime(auditData.updatedAt)}</b>
+            {t('form.updated-by')}: <b>{auditData.updatedBy}</b> {t('form.in')} <b>{fDateTime(auditData.updatedAt)}</b>
           </Typography>
         }
       </Stack>
@@ -252,7 +253,7 @@ export default function CategoryDetailView() {
             onClick={handleCancel}
             sx={{ mt: 3, width: "200px", mr: 3 }}
           >
-            Cancel
+            {t('form.btn-cancel')}
           </LoadingButton>
           <LoadingButton
             size="large"
@@ -263,24 +264,22 @@ export default function CategoryDetailView() {
             sx={{ mt: 3, width: "200px" }}
             loading={isEditScreen ? isUpdating : isCreating}
           >
-            Save
+            {t('form.btn-save')}
           </LoadingButton>
         </Box>
       }
     </>
   );
 
-  const object = "category";
-  const action = isCreateScreen ? "creation" : "editing";
-
   return (
     <Box>
       <ConfirmPopup
         content={{
-          title: `CANCEL ${object.toUpperCase()} ${action.toUpperCase()}`,
-          message: `If you cancel, all unsaved data will be lost. Are you sure you want to cancel ${object} ${action}?`,
-          cancelBtnText: "NO",
-          confirmBtnText: "YES"
+          title: isCreateScreen
+            ? t('confirm-pu.action-create-title') : t('confirm-pu.action-edit-title'),
+          message: t('confirm-pu.message'),
+          cancelBtnText: t('confirm-pu.cancel-btn-text'),
+          confirmBtnText: t('confirm-pu.confirm-btn-text')
         }}
         popupOpen={popupOpen}
         setPopupOpen={setPopupOpen}
@@ -296,17 +295,17 @@ export default function CategoryDetailView() {
         >
           {isDetailScreen &&
             <TitleBar
-              title="Category Details"
+              title={t('title.detail')}
               screen="detail"
               handleEdit={handleEdit}
               handleDelete={handleDelete}
               goBackUrl={getUrl(CATEGORY_MANAGEMENT.INDEX)}
-              deleteMessage={state.parent ? "Are you sure you want to permanently remove this category from the system? Since this category is a parent category, all the children will also be deleted. Do you want to continue?" : null}
-              object={object}
+              deleteMessage={state.parent ? t('delete-parent-message') : null}
+              object={t('object')}
             />
           }
-          {isEditScreen && <TitleBar title="Edit Category" screen="edit" goBackUrl={getUrl(CATEGORY_MANAGEMENT.INDEX)} />}
-          {isCreateScreen && <TitleBar title="Create  Category" screen="create" goBackUrl={getUrl(CATEGORY_MANAGEMENT.INDEX)} />}
+          {isEditScreen && <TitleBar title={t('title.edit')} screen="edit" goBackUrl={getUrl(CATEGORY_MANAGEMENT.INDEX)} />}
+          {isCreateScreen && <TitleBar title={t('title.create')} screen="create" goBackUrl={getUrl(CATEGORY_MANAGEMENT.INDEX)} />}
 
           {renderForm}
         </Card>

@@ -38,7 +38,11 @@
         "CASH_ON_DELIVERY": "Thanh toán khi nhận hàng"
       },
       "total": "Thành tiền",
-      "btn-cancel": "Huỷ đơn hàng"
+      "btn-cancel": "Huỷ Đơn Hàng",
+      "btn-accept": "Nhận Đơn",
+      "btn-refuse": "Từ Chối",
+      "btn-delivery": "Giao Hàng",
+      "btn-done": "Hoàn Thành"
     },
     "status-option": {
       "ORDER": "Chờ xác nhận",

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MuiColorInput } from 'mui-color-input';
 import { useParams, useLocation } from 'react-router-dom';
 
@@ -28,6 +29,7 @@ import ConfirmPopup from 'src/components/modal/confirm-popup';
 // ----------------------------------------------------------------------
 
 export default function ColorDetailView() {
+  const { t } = useTranslation('color', { keyPrefix: "color-detail" })
 
   const location = useLocation();
 
@@ -103,7 +105,7 @@ export default function ColorDetailView() {
     const newErr = { ...err };
     Object.keys(state).forEach((key) => {
       if (state[key] === '') {
-        newErr[key] = 'Field value required!';
+        newErr[key] = t('form.error.field-required');
         isValid = false;
       }
     });
@@ -135,8 +137,7 @@ export default function ColorDetailView() {
   }, [id, getColorDetail]);
 
   const handleEdit = () => {
-    const url = getUrl(COLOR_MANAGEMENT.EDIT).replace(":id", id);
-    router.push(url);
+    router.push(getUrl(COLOR_MANAGEMENT.EDIT, { id }));
   }
 
   const handleDelete = async () => {
@@ -173,7 +174,7 @@ export default function ColorDetailView() {
       <Stack spacing={3}>
         <Box>
           <Typography variant="subtitle2">
-            <span style={{ color: 'red' }}>*</span> Name
+            <span style={{ color: 'red' }}>*</span> {t('form.name')}
           </Typography>
           <TextField
             name="name"
@@ -189,7 +190,7 @@ export default function ColorDetailView() {
 
         <Stack>
           <Typography variant="subtitle2">
-            <span style={{ color: 'red' }}>*</span> Value
+            <span style={{ color: 'red' }}>*</span> {t('form.value')}
           </Typography>
           <MuiColorInput
             format='hex'
@@ -206,12 +207,12 @@ export default function ColorDetailView() {
       <Stack sx={{ mt: 3 }}>
         {!isCreateScreen && auditData.createdBy && auditData.createdAt &&
           <Typography variant="body2">
-            Created by: <b>{auditData.createdBy}</b> in <b>{fDateTime(auditData.createdAt)}</b>
+            {t('form.created-by')}: <b>{auditData.createdBy}</b> {t('form.in')} <b>{fDateTime(auditData.createdAt)}</b>
           </Typography>
         }
         {isDetailScreen && auditData.updatedAt && auditData.updatedBy &&
           <Typography variant="body2">
-            Last modified by: <b>{auditData.updatedBy}</b> in <b>{fDateTime(auditData.updatedAt)}</b>
+            {t('form.updated-by')}: <b>{auditData.updatedBy}</b> {t('form.in')} <b>{fDateTime(auditData.updatedAt)}</b>
           </Typography>
         }
       </Stack>
@@ -227,7 +228,7 @@ export default function ColorDetailView() {
             onClick={handleCancel}
             sx={{ mt: 3, width: "200px", mr: 3 }}
           >
-            Cancel
+            {t('form.btn-cancel')}
           </LoadingButton>
           <LoadingButton
             size="large"
@@ -238,24 +239,22 @@ export default function ColorDetailView() {
             sx={{ mt: 3, width: "200px" }}
             loading={isEditScreen ? isUpdating : isCreating}
           >
-            Save
+            {t('form.btn-save')}
           </LoadingButton>
         </Box>
       }
     </>
   );
 
-  const object = "color";
-  const action = isCreateScreen ? "creation" : "editing";
-
   return (
     <Box>
       <ConfirmPopup
         content={{
-          title: `CANCEL ${object.toUpperCase()} ${action.toUpperCase()}`,
-          message: `If you cancel, all unsaved data will be lost. Are you sure you want to cancel ${object} ${action}?`,
-          cancelBtnText: "NO",
-          confirmBtnText: "YES"
+          title: isCreateScreen
+            ? t('confirm-pu.action-create-title') : t('confirm-pu.action-edit-title'),
+          message: t('confirm-pu.message'),
+          cancelBtnText: t('confirm-pu.cancel-btn-text'),
+          confirmBtnText: t('confirm-pu.confirm-btn-text')
         }}
         popupOpen={popupOpen}
         setPopupOpen={setPopupOpen}
@@ -271,16 +270,16 @@ export default function ColorDetailView() {
         >
           {isDetailScreen &&
             <TitleBar
-              title="Color Details"
+              title={t('title.detail')}
               screen="detail"
               handleEdit={handleEdit}
               handleDelete={handleDelete}
               goBackUrl={getUrl(COLOR_MANAGEMENT.INDEX)}
-              object={object}
+              object={t('object')}
             />
           }
-          {isEditScreen && <TitleBar title="Edit Color" screen="edit" goBackUrl={getUrl(COLOR_MANAGEMENT.INDEX)} />}
-          {isCreateScreen && <TitleBar title="Create  Color" screen="create" goBackUrl={getUrl(COLOR_MANAGEMENT.INDEX)} />}
+          {isEditScreen && <TitleBar title={t('title.edit')} screen="edit" goBackUrl={getUrl(COLOR_MANAGEMENT.INDEX)} />}
+          {isCreateScreen && <TitleBar title={t('title.create')} screen="create" goBackUrl={getUrl(COLOR_MANAGEMENT.INDEX)} />}
 
           {renderForm}
         </Card>

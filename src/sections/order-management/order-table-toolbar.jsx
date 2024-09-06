@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -25,6 +26,8 @@ export default function OrderTableToolbar({
   handleBulkActionRefuse,
   handleBulkActionDelivery,
   handleBulkActionDone }) {
+  const { t } = useTranslation('order', { keyPrefix: 'table-toolbar' });
+
   const numSelected = selected.length;
 
   const [orderStatus, setOrderStatus] = useState(null);
@@ -52,7 +55,7 @@ export default function OrderTableToolbar({
       <OutlinedInput
         value={filterName}
         onChange={onFilterName}
-        placeholder={placeholder || "Search by name..."}
+        placeholder={placeholder || t('def-filter-placeholder')}
         startAdornment={
           <InputAdornment position="start">
             <Iconify
@@ -84,14 +87,14 @@ export default function OrderTableToolbar({
     >
       {numSelected > 0 ? (
         <Typography component="div" variant="subtitle1">
-          {numSelected} selected
+          {numSelected} {t('selected')}
         </Typography>
       ) : renderFilter}
 
       {numSelected > 0 ? (
         <Stack direction="row">
           {orderStatus === ORDER_STATUS.ORDER &&
-            <Tooltip title="Accept">
+            <Tooltip title={t('tooltip-accept')}>
               <IconButton onClick={handleBulkActionAccept} color='primary'>
                 <Iconify icon="eva:checkmark-circle-2-fill" />
               </IconButton>
@@ -99,7 +102,7 @@ export default function OrderTableToolbar({
           }
 
           {orderStatus === ORDER_STATUS.ACCEPTED &&
-            <Tooltip title="Delivery">
+            <Tooltip title={t('tooltip-delivery')}>
               <IconButton onClick={handleBulkActionDelivery} color='info'>
                 <Iconify icon="eva:car-fill" />
               </IconButton>
@@ -107,7 +110,7 @@ export default function OrderTableToolbar({
           }
 
           {orderStatus === ORDER_STATUS.DELIVERY &&
-            <Tooltip title="Done">
+            <Tooltip title={t('tooltip-done')}>
               <IconButton onClick={handleBulkActionDone} color='success'>
                 <Iconify icon="eva:archive-fill" />
               </IconButton>
@@ -115,7 +118,7 @@ export default function OrderTableToolbar({
           }
 
           {orderStatus === ORDER_STATUS.ORDER &&
-            <Tooltip title="Refuse">
+            <Tooltip title={t('tooltip-refuse')}>
               <IconButton onClick={handleBulkActionRefuse} color='error'>
                 <Iconify icon="eva:close-circle-outline" />
               </IconButton>
@@ -124,7 +127,7 @@ export default function OrderTableToolbar({
         </Stack>
 
       ) : (
-        <Tooltip title="Filter list" sx={{ display: "none" }}>
+        <Tooltip title={t('tooltip-filter-list')} sx={{ display: "none" }}>
           <IconButton>
             <Iconify icon="ic:round-filter-list" />
           </IconButton>

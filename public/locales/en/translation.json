@@ -54,5 +54,13 @@
     "user": "User",
     "address": "Address",
     "profile": "Profile"
+  },
+  "admin-nav": {
+    "dashboard": "Dashboard",
+    "user": "User",
+    "product": "Product",
+    "order": "Order",
+    "color": "Color",
+    "category": "Category"
   }
 }

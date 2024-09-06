@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
@@ -23,6 +24,8 @@ export default function OrderTableRow({
   disabled,
   orderStatus
 }) {
+  const { t } = useTranslation('order', { keyPrefix: 'table-row-option' })
+
   const [open, setOpen] = useState(null);
 
   const handleOpenMenu = (event) => {
@@ -64,7 +67,7 @@ export default function OrderTableRow({
         disabled={disabled}
       />
 
-      <Popover
+      {![ORDER_STATUS.CANCELLED, ORDER_STATUS.REFUSED, ORDER_STATUS.DONE].includes(orderStatus) && <Popover
         open={!!open}
         anchorEl={open}
         onClose={handleCloseMenu}
@@ -79,31 +82,31 @@ export default function OrderTableRow({
         {orderStatus === ORDER_STATUS.ORDER &&
           <MenuItem onClick={handleAcceptClick}>
             <Iconify icon="eva:checkmark-circle-2-fill" sx={{ mr: 2 }} />
-            Accept
+            {t('btn-accept')}
           </MenuItem>
         }
 
         {orderStatus === ORDER_STATUS.ACCEPTED &&
           <MenuItem onClick={handleDeliveryClick}>
             <Iconify icon="eva:car-fill" sx={{ mr: 2 }} />
-            Delivery
+            {t('btn-delivery')}
           </MenuItem>
         }
 
         {orderStatus === ORDER_STATUS.DELIVERY &&
           <MenuItem onClick={handleDoneClick}>
             <Iconify icon="eva:archive-fill" sx={{ mr: 2 }} />
-            Done
+            {t('btn-done')}
           </MenuItem>
         }
 
         {orderStatus === ORDER_STATUS.ORDER &&
           <MenuItem onClick={handleRefuseClick} sx={{ color: 'error.main' }}>
             <Iconify icon="eva:close-square-outline" sx={{ mr: 2 }} />
-            Refuse
+            {t('btn-refuse')}
           </MenuItem>
         }
-      </Popover>
+      </Popover>}
     </>
   );
 }

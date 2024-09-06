@@ -1,0 +1,42 @@
+{
+  "title": "Quản Lý Danh Mục",
+  "btn-new": "Tạo Mới",
+  "delete-pu": {
+    "single-noun": "danh mục",
+    "plural-noun": "những danh mục"
+  },
+  "table-column": {
+    "name": "Tên",
+    "created-at": "Ngày được tạo",
+    "created-by": "Người tạo"
+  },
+  "category-detail": {
+    "object": "danh mục",
+    "title": {
+      "create": "Tạo Danh Mục Mới",
+      "edit": "Sửa Thông Tin Danh Mục",
+      "detail": "Chi Tiết Danh Mục"
+    },
+    "delete-parent-message": "Bạn có chắc chắn muốn xóa vĩnh viễn danh mục này khỏi hệ thống không? Vì danh mục này là danh mục chính nên tất cả các danh mục con cũng sẽ bị xóa. Bạn có muốn tiếp tục không?",
+    "confirm-pu": {
+      "action-create-title": "HUỶ TẠO DANH MỤC MỚI",
+      "action-edit-title": "HUỶ SỬA THÔNG TIN DANH MỤC",
+      "cancel-btn-text": "Từ Chối",
+      "confirm-btn-text": "Đồng Ý",
+      "message": "Nếu bạn đồng ý huỷ, tất cả những thông tin chưa được lưu sẽ bị mất. Bạn có muốn tiếp tục không?"
+    },
+    "form": {
+      "error": {
+        "field-required": "Không được để trống!"
+      },
+      "is-parent": "Là danh mục chính",
+      "parent": "Danh mục chính",
+      "name": "Tên",
+      "created-by": "Được tạo bởi",
+      "in": "vào",
+      "updated-by": "Được sửa đổi bởi",
+      "btn-cancel": "Huỷ",
+      "btn-save": "Lưu"
+    }
+  }
+}

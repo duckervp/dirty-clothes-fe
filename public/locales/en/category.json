@@ -1,0 +1,42 @@
+{
+  "title": "Categories",
+  "btn-new": "New Category",
+  "delete-pu": {
+    "single-noun": "category",
+    "plural-noun": "categories"
+  },
+  "table-column": {
+    "name": "Name",
+    "created-at": "Created Date",
+    "created-by": "Created By"
+  },
+  "category-detail": {
+    "object": "category",
+    "title": {
+      "create": "Create Category",
+      "edit": "Edit Category",
+      "detail": "Category Details"
+    },
+    "delete-parent-message": "Are you sure you want to permanently remove this category from the system? Since this category is a parent category, all the children will also be deleted. Do you want to continue?",
+    "confirm-pu": {
+      "action-create-title": "CANCEL CATEGORY CREATION",
+      "action-edit-title": "CANCEL CATEGORY EDITING",
+      "cancel-btn-text": "NO",
+      "confirm-btn-text": "YES",
+      "message": "If you cancel, all unsaved data will be lost. Do you want to continue?"
+    },
+    "form": {
+      "error": {
+        "field-required": "Field value required!"
+      },
+      "is-parent": "Is Parent",
+      "parent": "Parent",
+      "name": "Name",
+      "created-by": "Created by",
+      "in": "in",
+      "updated-by": "Last Modified by",
+      "btn-cancel": "Cancel",
+      "btn-save": "Save"
+    }
+  }
+}

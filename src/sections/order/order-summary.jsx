@@ -238,7 +238,7 @@ export default function OrderSummary({
             onClick={() => handleRefuseClick(orderDetail.id)}
             startIcon={<Iconify icon="eva:close-circle-outline" />}
           >
-            Refuse
+            {t('btn-refuse')}
           </Button>
         }
         {orderDetail.status === ORDER_STATUS.ORDER && handleAccept &&
@@ -252,7 +252,7 @@ export default function OrderSummary({
             onClick={() => handleAcceptClick(orderDetail.id)}
             startIcon={<Iconify icon="eva:checkmark-circle-2-fill" />}
           >
-            Accept
+            {t('btn-accept')}
           </Button>
         }
         {orderDetail.status === ORDER_STATUS.ACCEPTED && handleDelivery &&
@@ -266,7 +266,7 @@ export default function OrderSummary({
             onClick={() => handleDeliveryClick(orderDetail.id)}
             startIcon={<Iconify icon="eva:car-fill" />}
           >
-            Delivery
+            {t('btn-delivery')}
           </Button>
         }
         {orderDetail.status === ORDER_STATUS.DELIVERY && handleDone &&
@@ -280,11 +280,11 @@ export default function OrderSummary({
             onClick={() => handleDoneClick(orderDetail.id)}
             startIcon={<Iconify icon="eva:archive-fill" />}
           >
-            Done
+            {t('btn-done')}
           </Button>
         }
 
-        {orderDetail.status === ORDER_STATUS.ORDER &&
+        {orderCode && orderDetail.status === ORDER_STATUS.ORDER &&
           <Button
             variant="contained"
             color='error'
