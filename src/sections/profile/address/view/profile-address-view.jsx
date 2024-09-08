@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useMemo, useState, useEffect } from 'react';
 
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
@@ -12,11 +14,12 @@ import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
-import DeleteIcon from '@mui/icons-material/Delete';
+// import DeleteIcon from '@mui/icons-material/Delete';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import TableContainer from '@mui/material/TableContainer';
+
+import { useResponsive } from 'src/hooks/use-responsive';
 
 import { showErrorMessage } from 'src/utils/notify';
 
@@ -24,68 +27,88 @@ import {
   useGetAllAddressesQuery,
   useCreateAddressMutation,
   useDeleteAddressMutation,
+  useUpdateAddressMutation,
 } from 'src/app/api/address/addressApiSlice';
 
 import ModalPopup from 'src/components/modal/modal';
+import CustomTableRow from 'src/components/table/table-row';
+import DeleteConfirmPopup from 'src/components/modal/delete-confirm-popup';
 
-import AddressForm from 'src/sections/payment/AddressForm';
+import AddressForm from 'src/sections/payment/address-form';
 
-function AddressTable({ addresses, setAddresses }) {
+import AddressItem from '../address-item';
+
+function AddressTable({ addresses, setAddresses, handleEdit }) {
   const { t } = useTranslation('profile', { keyPrefix: 'address.table-column' });
 
   const [deleteAddress] = useDeleteAddressMutation();
 
-  const handleDeleteAddress = async (address) => {
+  const [selectedAddress, setSelectedAddress] = useState(null);
+
+  const [deleteCfOpen, setDeleteCfOpen] = useState(false);
+
+  const handleDeleteCfOpenMenu = (address) => {
+    setSelectedAddress(address);
+    setDeleteCfOpen(true);
+  };
+
+  const handleCloseDeleteCfMenu = () => {
+    setDeleteCfOpen(false);
+  };
+
+  const handleConfirmDeleteAddress = async () => {
     try {
-      await deleteAddress(address?.id).unwrap();
-      const indexOfDeletedElement = addresses.indexOf(address);
+      await deleteAddress(selectedAddress?.id).unwrap();
+      const indexOfDeletedElement = addresses.indexOf(selectedAddress);
       const newAddresses = [...addresses];
       newAddresses.splice(indexOfDeletedElement, 1);
       setAddresses(newAddresses);
     } catch (error) {
       showErrorMessage(error);
     }
-  };
+    handleCloseDeleteCfMenu();
+  }
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <DeleteConfirmPopup
+        popupOpen={deleteCfOpen}
+        setPopupOpen={setDeleteCfOpen}
+        handleCancel={handleCloseDeleteCfMenu}
+        handleConfirm={handleConfirmDeleteAddress}
+      />
+      <Table sx={{ minWidth: 650 }} aria-label="address table">
         <TableHead>
           <TableRow>
             <TableCell sx={{ color: 'black' }}>{t('name')}</TableCell>
-            <TableCell sx={{ color: 'black' }} align="center">
+            <TableCell sx={{ color: 'black' }}>
               {t('detail-address')}
             </TableCell>
-            <TableCell sx={{ color: 'black' }} align="center">
+            <TableCell sx={{ color: 'black' }}>
               {t('phone')}
             </TableCell>
-            <TableCell sx={{ color: 'black' }} align="center">
+            <TableCell sx={{ color: 'black' }}>
               {t('note')}
             </TableCell>
             <TableCell sx={{ color: 'black' }} align="center">
-              {t('delete')}
+              { }
             </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {addresses?.map((item) => (
-            <TableRow key={item?.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell component="th" scope="row">
-                {item?.name}
-              </TableCell>
-              <TableCell align="center">{item?.detailAddress}</TableCell>
-              <TableCell align="center" sx={{ width: '150px' }}>
-                {item?.phone}
-              </TableCell>
-              <TableCell align="center" sx={{ lg: { width: '250px' } }}>
-                {item?.note}
-              </TableCell>
-              <TableCell align="center">
-                <IconButton aria-label="delete" onClick={() => handleDeleteAddress(item)}>
-                  <DeleteIcon />
-                </IconButton>
-              </TableCell>
-            </TableRow>
+          {addresses?.map((row) => (
+            <CustomTableRow
+              noSelect
+              key={row.id}
+              cells={[
+                { value: row.name },
+                { value: row.detailAddress },
+                { value: row.phone },
+                { value: row.note },
+              ]}
+              handleEdit={() => handleEdit(row)}
+              handleDelete={() => handleDeleteCfOpenMenu(row)}
+            />
           ))}
         </TableBody>
       </Table>
@@ -96,22 +119,102 @@ function AddressTable({ addresses, setAddresses }) {
 AddressTable.propTypes = {
   addresses: PropTypes.array,
   setAddresses: PropTypes.func,
+  handleEdit: PropTypes.func,
+};
+
+function AddressStack({ addresses, setAddresses, handleEdit }) {
+  // const { t } = useTranslation('profile', { keyPrefix: 'address.table-column' });
+
+  const [deleteAddress] = useDeleteAddressMutation();
+
+  const [selectedAddress, setSelectedAddress] = useState(null);
+
+  const [deleteCfOpen, setDeleteCfOpen] = useState(false);
+
+  const handleDeleteCfOpenMenu = (address) => {
+    setSelectedAddress(address);
+    setDeleteCfOpen(true);
+  };
+
+  const handleCloseDeleteCfMenu = () => {
+    setDeleteCfOpen(false);
+  };
+
+  const handleConfirmDeleteAddress = async () => {
+    try {
+      await deleteAddress(selectedAddress?.id).unwrap();
+      const indexOfDeletedElement = addresses.indexOf(selectedAddress);
+      const newAddresses = [...addresses];
+      newAddresses.splice(indexOfDeletedElement, 1);
+      setAddresses(newAddresses);
+    } catch (error) {
+      showErrorMessage(error);
+    }
+    handleCloseDeleteCfMenu();
+  }
+
+  return (
+    <Box>
+      <DeleteConfirmPopup
+        popupOpen={deleteCfOpen}
+        setPopupOpen={setDeleteCfOpen}
+        handleCancel={handleCloseDeleteCfMenu}
+        handleConfirm={handleConfirmDeleteAddress}
+      />
+      <Stack>
+        {addresses?.map((item) => (
+          <Card key={item?.id} sx={{ mb: 1 }}>
+            <AddressItem
+              address={item}
+              handleDelete={() => handleDeleteCfOpenMenu(item)}
+              handleEdit={() => handleEdit(item)}
+            />
+          </Card>
+        ))}
+      </Stack>
+    </Box>
+  );
+}
+
+AddressStack.propTypes = {
+  addresses: PropTypes.array,
+  setAddresses: PropTypes.func,
+  handleEdit: PropTypes.func,
 };
 
 const ProfileAddressView = () => {
-  const { t } = useTranslation('profile', { keyPrefix: 'address' })
+  const { t } = useTranslation('profile', { keyPrefix: 'address' });
+
+  const mdUp = useResponsive('up', 'md');
+
+  const defaultState = useMemo(() => ({
+    name: '',
+    province: '',
+    district: '',
+    ward: '',
+    address: '',
+    phone: '',
+    zip: '',
+    note: ''
+  }), []);
+
+  const [err, setErr] = useState(defaultState);
 
   const [addresses, setAddresses] = useState([]);
 
-  const [newAddress, setNewAddress] = useState({});
+  const [newAddress, setNewAddress] = useState(defaultState);
 
-  const [ward, setWard] = useState({});
+  const [ward, setWard] = useState(null);
 
   const { data: addressData } = useGetAllAddressesQuery({ userOnly: true });
 
   const [createAddress] = useCreateAddressMutation();
 
+  const [updateAddress] = useUpdateAddressMutation();
+
   const [createFormOpen, setCreateFromOpen] = useState(false);
+
+  const [editAddressId, setEditAddressId] = useState(false);
 
   useEffect(() => {
     if (addressData) {
@@ -119,11 +222,66 @@ const ProfileAddressView = () => {
     }
   }, [addressData]);
 
+  useEffect(() => {
+    if (!createFormOpen) {
+      setNewAddress(defaultState);
+      setErr(defaultState);
+    }
+  }, [createFormOpen, setNewAddress, setErr, defaultState]);
+
   const handleCreateAddressBtnClick = () => {
+    setNewAddress(defaultState);
+    setWard(null);
+    setEditAddressId(null);
     setCreateFromOpen(true);
   };
 
-  const handleAddAddressClick = () => {
+  const handleEditAddressBtnClick = (orgAddress) => {
+    const addressParts = orgAddress.detailAddress.split(',');
+
+    const detail = addressParts[0].trim();
+    const war = addressParts[1].trim();
+    const dis = addressParts[2].trim();
+    const pro = addressParts[3].trim();
+
+    const editAddress = {
+      name: orgAddress.name,
+      province: pro,
+      district: dis,
+      ward: war,
+      address: detail,
+      phone: orgAddress.phone,
+      zip: orgAddress.postalCode,
+      note: orgAddress.note
+    }
+
+    setNewAddress(editAddress);
+    setEditAddressId(orgAddress.id);
+    setCreateFromOpen(true);
+  };
+
+  const validate = () => {
+    let isValid = true;
+    const newErr = { ...err };
+    Object.keys(newAddress).forEach((key) => {
+      if (newAddress[key] === '') {
+        if (['zip', 'note'].includes(key)) {
+          // do nothing
+        } else {
+          newErr[key] = t('form.error.field-required');
+          isValid = false;
+        }
+      }
+    });
+
+    setErr(newErr);
+
+    return isValid;
+  };
+
+  const handleSaveAddressClick = async () => {
+    if (!validate()) return;
+
     const payload = {
       name: newAddress.name,
       phone: newAddress.phone,
@@ -143,28 +301,30 @@ const ProfileAddressView = () => {
       }),
     };
 
-    createNewAddress(payload);
-    setCreateFromOpen(false);
-  };
+    if (editAddressId) {
+      await updateAddress({ id: editAddressId, payload }).unwrap();
+    } else {
+      await createAddress(payload).unwrap();
+    }
 
-  const createNewAddress = async (payload) => {
-    const { data } = await createAddress(payload).unwrap();
-    const newAddresses = [...addresses];
-    newAddresses.push(data);
-    setAddresses(newAddresses);
+    setCreateFromOpen(false);
+    setNewAddress(defaultState);
+    setWard(null);
   };
 
   return (
     <Container>
       <ModalPopup open={createFormOpen} setOpen={setCreateFromOpen}>
-        <Typography variant="h5" textAlign="left" width="100%" sx={{ mb: 1 }}>
-          {t('form.title')}
+        <Typography variant="h5" textAlign="left" width="100%" sx={{ mb: 2 }}>
+          {editAddressId ? t('form.edit-title') : t('form.title')}
         </Typography>
         <AddressForm
           ward={ward}
           setWard={setWard}
           address={newAddress}
           setAddress={setNewAddress}
+          err={err}
+          setErr={setErr}
         />
         <LoadingButton
           fullWidth
@@ -172,7 +332,7 @@ const ProfileAddressView = () => {
           type="submit"
           variant="contained"
           color="inherit"
-          onClick={handleAddAddressClick}
+          onClick={handleSaveAddressClick}
           sx={{ mt: 2 }}
         >
           {t('form.btn-submit')}
@@ -189,7 +349,9 @@ const ProfileAddressView = () => {
           {t('btn-create-new-address')}
         </Button>
       </Stack>
-      <AddressTable addresses={addresses} setAddresses={setAddresses} />
+      {mdUp ?
+        <AddressTable addresses={addresses} setAddresses={setAddresses} handleEdit={handleEditAddressBtnClick} /> :
+        <AddressStack addresses={addresses} setAddresses={setAddresses} handleEdit={handleEditAddressBtnClick} />}
     </Container>
   );
 };

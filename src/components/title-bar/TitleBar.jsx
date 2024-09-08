@@ -7,7 +7,6 @@ import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { useRouter } from 'src/routes/hooks';
 
@@ -107,7 +106,9 @@ const TitleBar = ({ title, screen, object, handleEdit, handleDelete, goBackUrl, 
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
         <Stack direction="row" alignItems="center">
-          <IconButton onClick={handleGoBack}><ArrowBackIcon /></IconButton>
+          <IconButton onClick={handleGoBack}>
+            <Iconify icon="eva:arrow-circle-left-fill" sx={{ width: 1, height: 1, color: 'black' }} />
+          </IconButton>
           <Typography variant="h5" sx={{ ml: 1 }}>{title}</Typography>
 
         </Stack>

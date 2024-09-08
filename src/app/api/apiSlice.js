@@ -61,7 +61,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   return result;
 };
 
-const tags = ['User', 'Product', 'Category', 'Color', 'Order', 'OrderDetail'];
+const tags = ['User', 'Product', 'Category', 'Color', 'Order', 'OrderDetail', 'Address'];
 
 export const apiSlice = createApi({
   reducerPath: 'api',

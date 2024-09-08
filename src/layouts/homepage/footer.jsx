@@ -18,11 +18,11 @@ import store_branchs from './config-store-branches';
 export default function Footer() {
   const { t } = useTranslation('translation', { keyPrefix: 'footer' })
   const renderContent = (
-    <Box sx={{ px: { lg: 5 }, pt: 3, pb: 5, background: (theme) => theme.palette.grey[200] }}>
-      <Stack direction="row" justifyContent="space-around" flexWrap="wrap">
+    <Box sx={{ px: { xs: 3, lg: 5 }, pt: 3, pb: 5, background: (theme) => theme.palette.grey[200] }}>
+      <Stack justifyContent="space-around" flexWrap="wrap" spacing={2} sx={{flexDirection: {xs: "column", sm: "row"}}}>
         <Box>
           <Box sx={{ color: 'black', fontWeight: 'bold' }}>{t('store')}</Box>
-          <Box sx={{ ml: 2 }}>
+          <Box>
             {store_branchs.map((branch) => (
               <Box key={branch.city} sx={{ color: '#000' }}>
                 <Stack direction="row" alignItems="center">
@@ -51,7 +51,7 @@ export default function Footer() {
           </Stack>
         </Box> */}
 
-        <Box sx={{ color: 'black', fontWeight: 'bold' }}>
+        <Box sx={{ color: 'black', fontWeight: 'bold', mt: {xs: 2, sm: 0} }}>
           {t('social-media')}
           <Stack>
             <Stack direction="row">

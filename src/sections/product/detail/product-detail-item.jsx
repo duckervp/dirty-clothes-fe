@@ -53,8 +53,6 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
   const [err, setErr] = useState(defaultErrState);
 
   useEffect(() => {
-    console.log(isEdit);
-
     if (isEdit) {
       setState(data);
     }
@@ -343,7 +341,6 @@ export default function ProductDetailItem({ productDetailItems, setProductDetail
   }
 
   const handleItemSave = (item) => {
-    console.log(item);
     const { size } = item;
     const sizeValues = SIZE_OPTIONS.filter(s => s.label === size);
     let sizeValue = '';

@@ -16,12 +16,11 @@ import { useResponsive } from 'src/hooks/use-responsive';
 import Scrollbar from 'src/components/scrollbar';
 
 import { NAV } from './config-layout';
-import navConfig from './config-navigation';
-import AccountDisplay from '../common/account-display';
+import AccountDisplay from './account-display';
 
 // ----------------------------------------------------------------------
 
-export default function Nav({ openNav, onCloseNav }) {
+export default function Nav({ openNav, onCloseNav, navConfig, namespace, keyPrefix, dspNone }) {
   const pathname = usePathname();
 
   const upLg = useResponsive('up', 'lg');
@@ -36,7 +35,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
       {navConfig.map((item) => (
-        <NavItem key={item.key} item={item} />
+        <NavItem key={item.key} item={item} namespace={namespace} keyPrefix={keyPrefix} />
       ))}
     </Stack>
   );
@@ -57,7 +56,8 @@ export default function Nav({ openNav, onCloseNav }) {
     </Scrollbar>
   );
 
-  return (
+  return upLg && dspNone ? <Box />
+    :
     <Box
       sx={{
         flexShrink: { lg: 0 },
@@ -73,7 +73,7 @@ export default function Nav({ openNav, onCloseNav }) {
             borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
           }}
         >
-          <Box sx={{pt: 10}}/>
+          <Box sx={{ pt: 10 }} />
           {renderContent}
         </Box>
       ) : (
@@ -90,18 +90,22 @@ export default function Nav({ openNav, onCloseNav }) {
         </Drawer>
       )}
     </Box>
-  );
+    ;
 }
 
 Nav.propTypes = {
   openNav: PropTypes.bool,
   onCloseNav: PropTypes.func,
+  navConfig: PropTypes.array,
+  namespace: PropTypes.string,
+  keyPrefix: PropTypes.string,
+  dspNone: PropTypes.bool
 };
 
 // ----------------------------------------------------------------------
 
-function NavItem({ item }) {
-  const { t } = useTranslation('translation', { keyPrefix: 'profile-nav' });
+function NavItem({ item, namespace, keyPrefix }) {
+  const { t } = useTranslation(namespace, { keyPrefix });
 
   const pathname = usePathname();
 
@@ -139,4 +143,6 @@ function NavItem({ item }) {
 
 NavItem.propTypes = {
   item: PropTypes.object,
+  namespace: PropTypes.string,
+  keyPrefix: PropTypes.string,
 };

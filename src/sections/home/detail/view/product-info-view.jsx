@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import parse from 'html-react-parser';
 import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
@@ -12,8 +11,6 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import { useRouter } from 'src/routes/hooks';
 import { BUYNOW, getUrl } from 'src/routes/route-config';
@@ -28,51 +25,8 @@ import { addProductToCart, setBuyNowProduct } from 'src/app/api/cart/cartSlice';
 
 import Loading from 'src/components/auth/Loading';
 import ProductPrice from 'src/components/product/product-price';
+import { ButtonList } from 'src/components/button-list/button-list';
 import QuantityButtonGroup from 'src/components/product/quantity-button-group';
-
-function ToggleButtons({ data, itemId, setItemId }) {
-  const [id, setId] = useState(itemId);
-
-  useEffect(() => {
-    setId(itemId);
-  }, [itemId]);
-
-  const handleChange = (event, nextId) => {
-    if (nextId !== null) {
-      setId(nextId);
-      setItemId(nextId);
-    }
-  };
-
-  return (
-    <ToggleButtonGroup orientation="horizontal" value={id} exclusive onChange={handleChange}>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-        {data.map((item) => (
-          <ToggleButton
-            key={item.id}
-            value={item.id}
-            aria-label={item.name}
-            style={{
-              border: '1px solid rgba(145, 158, 171, 0.2)',
-              borderRadius: 0,
-              width: 80,
-              padding: '5px 8px',
-            }}
-            sx={{ m: 0.5, fontWeight: 100 }}
-          >
-            {item.name}
-          </ToggleButton>
-        ))}
-      </Box>
-    </ToggleButtonGroup>
-  );
-}
-
-ToggleButtons.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object),
-  itemId: PropTypes.any,
-  setItemId: PropTypes.func,
-};
 
 const mapSliderImages = (productDetailImages) => {
   if (!productDetailImages) return [];
@@ -85,7 +39,7 @@ const mapSliderImages = (productDetailImages) => {
 export default function ProductInfoView() {
   const { t } = useTranslation('product', { keyPrefix: 'product-info' });
 
-  const {showSuccessMsg} = useNotify();
+  const { showSuccessMsg } = useNotify();
 
   const { slug } = useParams();
 
@@ -116,7 +70,6 @@ export default function ProductInfoView() {
   useEffect(() => {
     if (detailedProductData) {
       const { data } = detailedProductData;
-      console.log(data);
       setDetailedProduct(data);
       if (data.images && data.images.length > 0) {
         setSelectedColorId(data.images[0]?.colorId);
@@ -208,8 +161,8 @@ export default function ProductInfoView() {
   }
 
   return (
-    <Container sx={{ py: 5 }}>
-      <Grid container spacing={5}>
+    <Container>
+      <Grid container spacing={5} >
         <Grid xs={12} sm={12} md={8}>
           <ImageGallery
             items={mapSliderImages(detailedProduct?.images)}
@@ -221,67 +174,67 @@ export default function ProductInfoView() {
           />
         </Grid>
         <Grid xs={12} sm={12} md={4}>
-          <Typography variant="h4" textAlign="center" fontWeight={500} marginBottom={0.5}>
-            {detailedProduct?.name}
-          </Typography>
-
-          <ProductPrice
-            product={detailedProduct}
-            sx={{ textAlign: 'center', fontWeight: 300, mb: 1 }}
-          />
-
-          <Box marginBottom={1}>
-            <ToggleButtons
-              data={toListObj(detailedProduct?.images, 'colorId', 'colorName')}
-              itemId={selectedColorId}
-              setItemId={setSelectedColorId}
-            />
-          </Box>
-          <Box marginBottom={1}>
-            <ToggleButtons
-              data={toListObj(detailedProduct?.productDetails, 'size', 'size')}
-              itemId={selectedSize}
-              setItemId={setSelectedSize}
-            />
-          </Box>
-
-          <Stack direction="row" justifyContent="center" sx={{ py: 2 }}>
-            <QuantityButtonGroup value={selectedQuantity} setValue={setSelectedQuantity} />
-          </Stack>
-
-          <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
-            <Typography variant="body2">
-              {t('inventory')}: {getSelectedProductDetail()?.inventory}
+            <Typography variant="h5" textAlign="center" fontWeight={500} marginBottom={0.5}>
+              {detailedProduct?.name}
             </Typography>
-            <Typography variant="body2">{t('sold')}: {getSelectedProductDetail()?.sold}</Typography>
-          </Stack>
 
-          <Button
-            variant="outlined"
-            fullWidth
-            sx={{ borderRadius: '5px', mb: 1.5 }}
-            color="inherit"
-            onClick={hanleAddToCartClick}
-          >
-            {t('btn-add-to-cart')}
-          </Button>
-          <Button
-            variant="contained"
-            fullWidth
-            sx={{
-              borderRadius: '5px',
-              background: 'black',
-              '&:hover': { backgroundColor: '#31363F' },
-            }}
-            onClick={hanleBuyNowClick}
-          >
-            {t('btn-buy-now')}
-          </Button>
+            <ProductPrice
+              product={detailedProduct}
+              sx={{ textAlign: 'center', fontWeight: 300, mb: 2 }}
+            />
 
-          <Box sx={{ mt: 2 }}>
-            {/* <Typography sx={{ fontWeight: 'bold' }}>Description</Typography> */}
-            {parse(detailedProduct?.description || '')}
-          </Box>
+            <Box marginBottom={2}>
+              <ButtonList
+                items={toListObj(detailedProduct?.images, 'colorId', 'colorName')}
+                itemId={selectedColorId}
+                setItemId={setSelectedColorId}
+              />
+            </Box>
+            <Box marginBottom={1}>
+              <ButtonList
+                items={toListObj(detailedProduct?.productDetails, 'size', 'size')}
+                itemId={selectedSize}
+                setItemId={setSelectedSize}
+              />
+            </Box>
+
+            <Stack direction="row" justifyContent="center" sx={{ py: 2 }}>
+              <QuantityButtonGroup value={selectedQuantity} setValue={setSelectedQuantity} sx={{ height: 40 }} />
+            </Stack>
+
+            <Stack direction="row" justifyContent="space-between" sx={{ mb: 2 }}>
+              <Typography variant="body2">
+                {t('inventory')}: {getSelectedProductDetail()?.inventory}
+              </Typography>
+              <Typography variant="body2">{t('sold')}: {getSelectedProductDetail()?.sold}</Typography>
+            </Stack>
+
+            <Button
+              variant="outlined"
+              fullWidth
+              sx={{ borderRadius: 0, mb: 1.5 }}
+              color="inherit"
+              onClick={hanleAddToCartClick}
+            >
+              {t('btn-add-to-cart')}
+            </Button>
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{
+                borderRadius: 0,
+                background: 'black',
+                '&:hover': { backgroundColor: '#31363F' },
+              }}
+              onClick={hanleBuyNowClick}
+            >
+              {t('btn-buy-now')}
+            </Button>
+            <Box sx={{ mt: 2 }}>
+              {/* <Typography sx={{ fontWeight: 'bold' }}>Description</Typography> */}
+              {parse(detailedProduct?.description || '')}
+            </Box>
+
         </Grid>
       </Grid>
       {otherProducts.length > 0 && (

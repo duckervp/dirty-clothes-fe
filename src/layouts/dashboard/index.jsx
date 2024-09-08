@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
 
-import Nav from './nav';
 import Header from './header';
+import Nav from '../common/nav';
 import Main from '../common/main';
+import navConfig from './config-navigation';
 
 // ----------------------------------------------------------------------
 
@@ -23,7 +24,12 @@ export default function DashboardLayout({ children }) {
           flexDirection: { xs: 'column', lg: 'row' },
         }}
       >
-        <Nav openNav={openNav} onCloseNav={() => setOpenNav(false)} />
+        <Nav 
+        openNav={openNav} 
+        onCloseNav={() => setOpenNav(false)} 
+        namespace='translation' 
+        keyPrefix='admin-nav'
+        navConfig={navConfig}/>
 
         <Main>{children}</Main>
       </Box>

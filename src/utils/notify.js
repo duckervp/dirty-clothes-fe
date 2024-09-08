@@ -20,12 +20,13 @@ export const handleError = (err, defaultMessage) => {
 export const showSuccessMessage = (message) => {
   toast.success(message, {
     position: "top-right",
-    autoClose: 1000
+    autoClose: 500
   });
 }
 
 export const showErrorMessage = (message) => {
   toast.error(message, {
-    position: "top-right"
+    position: "top-right",
+    autoClose: 500
   });
 }

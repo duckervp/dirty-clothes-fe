@@ -1,12 +1,10 @@
-import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link as RLink, useSearchParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
@@ -33,56 +31,12 @@ import {
 } from 'src/app/api/address/addressApiSlice';
 
 import ModalPopup from 'src/components/modal/modal';
-import { ColorPreview } from 'src/components/color-utils';
 
-import AddressForm from '../AddressForm';
-import UseRadioGroup from '../RadioGroup';
+import AddressForm from '../address-form';
+import UseRadioGroup from '../radio-group';
+import CheckoutItem from '../../cart/checkout-item';
 
-// import { LOGO_NAME } from '../../../../config';
-
-function CheckoutItem({ item, divider }) {
-  return (
-    <Box>
-      <Stack direction="row" alignItems="center">
-        <Box
-          component="img"
-          alt={item?.name}
-          src={item?.image}
-          sx={{
-            width: '100px',
-            objectFit: 'cover',
-            borderRadius: '5px',
-          }}
-        />
-        <Stack spacing={2} sx={{ p: 1 }}>
-          <Link
-            component={RLink}
-            color="inherit"
-            underline="hover"
-            variant="subtitle2"
-            to={`/${item?.slug}`}
-          >
-            {item?.name}
-          </Link>
-          <Stack direction="row" sx={{ mb: 1 }}>
-            <ColorPreview colors={[item?.color]} sx={{ mx: 0.75 }} />
-            <Typography variant="caption">{item?.size}</Typography>
-            <Typography variant="caption" sx={{ ml: 0.75, fontWeight: 700 }}>
-              x{item?.quantity}
-            </Typography>
-          </Stack>
-          <Typography variant="caption">{fViCurrency(item?.price)}</Typography>
-        </Stack>
-      </Stack>
-      {divider && <Divider />}
-    </Box>
-  );
-}
-
-CheckoutItem.propTypes = {
-  item: PropTypes.object,
-  divider: PropTypes.bool,
-};
+// --------------------------------------------------------
 
 const calTotalPrice = (items) => {
   if (!items) return 0;
@@ -96,7 +50,7 @@ const calTotalPrice = (items) => {
 };
 
 export default function PaymentView() {
-  const { t } = useTranslation('product', { keyPrefix: 'payment'});
+  const { t } = useTranslation('product', { keyPrefix: 'payment' });
 
   const { showErrorMsg, showSuccessMsg, showCustomErrorMsg } = useNotify();
 
@@ -316,7 +270,7 @@ export default function PaymentView() {
       <Grid container spacing={5}>
         <Grid container xs={12} sm={12} md={7}>
           <Stack sx={{ p: 2, width: 1 }}>
-            <Logo sx={{ fontSize: '40px', m: 0 }} />
+            <Logo sx={{ fontSize: '40px', m: 0, textAlign: {xs: "center", md: "left"} }} />
 
             <Box
               sx={{
@@ -326,7 +280,7 @@ export default function PaymentView() {
             >
               <Box sx={{ width: '100%', pr: { lg: 2, md: 2, sm: 0, xs: 0 } }}>
                 <Typography variant="body1" fontWeight={700} sx={{ mb: 1, mt: 5 }}>
-                  {t('shipping-info.label')}
+                  {t('shipping-info.label')} <span style={{ color: 'red' }}>*</span>
                 </Typography>
 
                 <Card

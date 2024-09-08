@@ -40,7 +40,7 @@ const navConfig = [
   {
     key: 'order',
     path: getUrl(ORDER_MANAGEMENT.INDEX),
-    icon: iconify("eva:shopping-cart-fill"),
+    icon: iconify("eva:shopping-bag-fill"),
   },
   {
     key: 'color',

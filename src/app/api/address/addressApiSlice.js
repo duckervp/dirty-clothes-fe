@@ -9,6 +9,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: { ...payload },
       }),
+      invalidatesTags: ['Address'],
     }),
     getAllAddresses: builder.query({
       query: (params) => ({
@@ -16,6 +17,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
         params,
       }),
+      providesTags: ['Address'],
     }),
     getAddressDetail: builder.query({
       query: (id) => ({
@@ -28,8 +30,23 @@ export const authApiSlice = apiSlice.injectEndpoints({
         url: `${API.address}/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Address'],
+    }),
+    updateAddress: builder.mutation({
+      query: ({ id, payload }) => ({
+        url: `${API.address}/${id}`,
+        method: "PATCH",
+        body: { ...payload },
+      }),
+      invalidatesTags: ['Address'],
     }),
   }),
 });
 
-export const { useGetAllAddressesQuery, useGetAddressDetailQuery, useCreateAddressMutation, useDeleteAddressMutation } = authApiSlice;
+export const {
+  useGetAllAddressesQuery,
+  useGetAddressDetailQuery,
+  useCreateAddressMutation,
+  useDeleteAddressMutation,
+  useUpdateAddressMutation,
+} = authApiSlice;

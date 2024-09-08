@@ -46,7 +46,13 @@
     "btn-add-to-cart": "THÊM VÀO GIỎ HÀNG",
     "btn-buy-now": "MUA NGAY"
   },
+  "checkout-item": {
+    "view-more": "Xem thêm",
+    "items": "sản phẩm",
+    "item": "sản phẩm"
+  },
   "cart": {
+    "title": "Giỏ Hàng",
     "empty": {
       "title": "Giỏ hàng trống",
       "message": "Bạn chưa thêm sản phẩm nào vào giỏ hàng.",

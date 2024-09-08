@@ -17,7 +17,6 @@ import {
   ADMIN,
   ORDER,
   getUrl,
-  CONTACT,
   ADDRESS,
   PAYMENT,
   PROFILE,
@@ -77,7 +76,6 @@ export default function Router() {
           ]
         },
         { path: BEST_SELLER, element: <HomepageLayout><BestSellerPage /></HomepageLayout> },
-        { path: CONTACT, element: <HomepageLayout>Empty Page</HomepageLayout> },
         { path: CART, element: <HomepageLayout><CartPage /></HomepageLayout> },
         { path: PRODUCT_DETAIL, element: <HomepageLayout><ProductInfoPage /></HomepageLayout> },
       ],

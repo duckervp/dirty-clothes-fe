@@ -3,10 +3,9 @@ import Slider from 'react-slick';
 
 import Box from '@mui/material/Box';
 
-function LazyLoadBanner() {
+function HomeBanner() {
   const settings = {
     dots: true,
-    lazyLoad: true,
     infinite: true,
     speed: 500,
     fade: true,
@@ -16,34 +15,34 @@ function LazyLoadBanner() {
     autoplay: true,
   };
   return (
-    <Box className="slider-container" sx={{boxShadow: 2}}>
+    <Box className="slider-container" sx={{ boxShadow: 2}}>
       <Slider {...settings}>
         <Box>
           <img
             src="https://bizweb.dktcdn.net/100/369/010/themes/914385/assets/slide-img1.jpg?1720758661032"
             alt=""
-            style={{height: '500px', width: "100%", objectFit: "cover", borderRadius: "5px"}}
+            style={{objectFit: "cover", borderRadius: "5px" }}
           />
         </Box>
         <Box>
           <img
             src="https://bizweb.dktcdn.net/100/369/010/themes/914385/assets/slide-img5.jpg?1720758661032"
             alt=""
-            style={{height: '500px', width: "100%", objectFit: "cover", borderRadius: "5px"}}
+            style={{objectFit: "cover", borderRadius: "5px" }}
           />
         </Box>
         <Box>
           <img
             src="https://bizweb.dktcdn.net/100/369/010/themes/914385/assets/slide-img1.jpg?1720758661032"
             alt=""
-            style={{height: '500px', width: "100%", objectFit: "cover", borderRadius: "5px"}}
+            style={{objectFit: "cover", borderRadius: "5px" }}
           />
         </Box>
         <Box>
           <img
             src="https://bizweb.dktcdn.net/100/369/010/themes/914385/assets/slide-img3.jpg?1720758661032"
             alt=""
-            style={{height: '500px', width: "100%", objectFit: "cover", borderRadius: "5px"}}
+            style={{objectFit: "cover", borderRadius: "5px" }}
           />
         </Box>
       </Slider>
@@ -51,4 +50,4 @@ function LazyLoadBanner() {
   );
 }
 
-export default LazyLoadBanner;
+export default HomeBanner;

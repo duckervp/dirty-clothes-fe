@@ -12,7 +12,7 @@ import { PAGE_SIZE } from 'src/config';
 import { useGetAllProductsQuery } from 'src/app/api/product/productApiSlice';
 
 import Loading from 'src/components/auth/Loading';
-import LazyLoadBanner from 'src/components/product/banner';
+import HomeBanner from 'src/components/product/banner';
 import ProductCard from 'src/components/product/product-card';
 import ProductSort from 'src/components/product/product-sort';
 import PageDisplay from 'src/components/pagination/PageDisplay';
@@ -98,7 +98,9 @@ export default function HomeView({ type }) {
 
   return (
     <Container>
-      {type === 'home' && <LazyLoadBanner />}
+      <Stack>
+        {type === 'home' && <HomeBanner />}
+      </Stack>
 
       <Stack
         direction="row"
@@ -109,7 +111,7 @@ export default function HomeView({ type }) {
             ? 'space-between'
             : 'flex-end'
         }
-        sx={{ mt: 3, mb: 2 }}
+        sx={{ mt: type === 'home' ? 3 : 0, mb: 2 }}
       >
         {type === 'home' && <Typography variant="subtitle1" fontWeight="bold">{t('products')}</Typography>}
 

@@ -46,7 +46,13 @@
     "btn-add-to-cart": "ADD TO CART",
     "btn-buy-now": "BUY NOW"
   },
+  "checkout-item": {
+    "view-more": "View more",
+    "items": "items",
+    "item": "item"
+  },
   "cart": {
+    "title": "Cart",
     "empty": {
       "title": "Empty cart",
       "message": "You have not added any products to your cart.",

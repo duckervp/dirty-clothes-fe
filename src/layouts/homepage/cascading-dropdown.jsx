@@ -140,7 +140,7 @@ const ShopMenu = () => {
             transformOrigin={{ vertical: 'top', horizontal: 'left' }}
           >
             {categories?.map((item) => {
-              if (item.children.length === 0) {
+              if (!item.children || item.children?.length === 0) {
                 return (
                   <CascadingMenuItem key={item.parent.id} onClick={() => handleRoute(item.parent)}>
                     {item.parent.name}
@@ -154,7 +154,7 @@ const ShopMenu = () => {
                   key={item.parent.id}
                   onClick={() => handleRoute(item.parent)}
                 >
-                  {item.children.map((child) => (
+                  {item.children?.map((child) => (
                     <CascadingMenuItem key={child.id} onClick={() => handleRoute(child)}>
                       {child.name}
                     </CascadingMenuItem>

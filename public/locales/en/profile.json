@@ -25,6 +25,8 @@
     "order-no": "Order No",
     "status": "Status",
     "total": "Total",
+    "items": "items",
+    "item": "item",
     "detail-summary": {
       "title": "Order Info",
       "no": "No",
@@ -64,7 +66,11 @@
       "delete": "Delete"
     },
     "form": {
+      "error": {
+        "field-required": "Field value required!"
+      },
       "title": "New Address",
+      "edit-title": "Edit Address",
       "btn-submit": "Submit"
     }
   },

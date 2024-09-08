@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
 
-import Popover from '@mui/material/Popover';
-import MenuItem from '@mui/material/MenuItem';
-
-import Iconify from 'src/components/iconify';
-
+import TableRowOption from './table-row-option';
 import CustomTableRowCell from './table-row-cell';
 
 // ----------------------------------------------------------------------
@@ -18,10 +13,9 @@ export default function CustomTableRow({
   handleEdit,
   handleDelete,
   handleRowClick,
-  disabled
+  disabled,
+  noSelect
 }) {
-  const { t } = useTranslation('table', { keyPrefix: 'table-row' });
-
   const [open, setOpen] = useState(null);
 
   const handleOpenMenu = (event) => {
@@ -51,30 +45,15 @@ export default function CustomTableRow({
         handleOpenMenu={handleOpenMenu}
         handleRowClick={handleRowClick}
         disabled={disabled}
+        noSelect={noSelect}
       />
 
-      <Popover
-        open={!!open}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        slotProps={{
-          paper: {
-            sx: { width: 140 },
-          }
-        }}
-      >
-        <MenuItem onClick={handleEditClick}>
-          <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-          {t('btn-edit')}
-        </MenuItem>
-
-        <MenuItem onClick={handleDeleteClick} sx={{ color: 'error.main' }}>
-          <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-          {t('btn-delete')}
-        </MenuItem>
-      </Popover>
+      <TableRowOption 
+        open={open}
+        handleEditClick={handleEditClick}
+        handleDeleteClick={handleDeleteClick}
+        handleCloseMenu={handleCloseMenu}
+      />
     </>
   );
 }
@@ -87,4 +66,5 @@ CustomTableRow.propTypes = {
   handleDelete: PropTypes.func,
   handleRowClick: PropTypes.func,
   disabled: PropTypes.bool,
+  noSelect: PropTypes.bool,
 };

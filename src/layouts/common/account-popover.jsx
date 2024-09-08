@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
@@ -12,7 +13,15 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 import { useRouter } from 'src/routes/hooks';
-import { AUTH, getUrl } from 'src/routes/route-config';
+import {
+  AUTH,
+  ADMIN,
+  ORDER,
+  getUrl,
+  PROFILE,
+  ADDRESS,
+  HOME_INDEX,
+} from 'src/routes/route-config';
 
 import useLogout from 'src/hooks/use-logout';
 
@@ -23,24 +32,19 @@ import { selectCurrentUser } from 'src/app/api/auth/authSlice';
 
 const MENU_OPTIONS = [
   {
-    option: 'home',
-    icon: 'eva:home-fill',
-    link: '/',
-  },
-  {
     option: 'profile',
     icon: 'eva:person-fill',
-    link: '/profile',
+    link: getUrl(PROFILE),
   },
   {
     option: 'order',
     icon: 'eva:settings-2-fill',
-    link: '/order',
+    link: getUrl(ORDER),
   },
   {
     option: 'address',
     icon: 'eva:settings-2-fill',
-    link: '/address',
+    link: getUrl(ADDRESS),
   },
 ];
 
@@ -48,6 +52,8 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const { t } = useTranslation('translation', { keyPrefix: 'header.account' })
+
+  const { pathname } = useLocation();
 
   const [open, setOpen] = useState(false);
 
@@ -98,22 +104,44 @@ export default function AccountPopover() {
     router.push(getUrl(AUTH.LOGIN));
   };
 
+  const displayHomeOption = (user && user.role === Role.ADMIN && pathname?.includes(ADMIN))
+    || pathname?.endsWith(PROFILE) || pathname?.endsWith(ORDER) || pathname?.endsWith(ADDRESS);
+
   const renderUserOptions = (
     <>
+      {
+        displayHomeOption &&
+        <MenuItem onClick={() => handleNavClick(HOME_INDEX)}>
+          {t('home')}
+        </MenuItem>
+      }
+
       {MENU_OPTIONS.map((option) => (
-        <MenuItem key={option.option} onClick={() => handleNavClick(option.link)}>
+        <MenuItem key={option.option} sx={{
+          ...(option.link === pathname && {
+            color: 'primary.main',
+            fontWeight: 'fontWeightSemiBold',
+            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
+            '&:hover': {
+              bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
+            },
+          })
+        }} onClick={() => handleNavClick(option.link)}>
           {t(option.option)}
         </MenuItem>
       ))}
-
-      <Divider sx={{ borderStyle: 'dashed', m: 0 }} />
     </>
   );
+
+  const displayAdminOption = user && user.role === Role.ADMIN && !pathname?.includes(ADMIN);
+
+  const displayUserOption = user;
 
   return (
     <>
       <IconButton
         onClick={handleOpen}
+        style={{ position: "relative", }}
         sx={{
           width: 40,
           height: 40,
@@ -137,7 +165,7 @@ export default function AccountPopover() {
         </Avatar>
       </IconButton>
 
-      <Popover
+      {open && <Popover
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
@@ -153,7 +181,7 @@ export default function AccountPopover() {
             },
           },
         }}
-        sx={{ position: 'fixed', top: 0 }}
+        style={{ position: 'fixed', top: 0 }}
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
@@ -167,13 +195,15 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         {
-          user && user.role === Role.ADMIN &&
-          <MenuItem onClick={() => handleNavClick('/admin')}>
+          displayAdminOption &&
+          <MenuItem onClick={() => handleNavClick(getUrl(ADMIN))}>
             {t('admin-dashboard')}
           </MenuItem>
         }
 
-        {user && renderUserOptions}
+        {displayUserOption && renderUserOptions}
+
+        {(displayAdminOption || displayUserOption) && <Divider sx={{ borderStyle: 'dashed', m: 0 }} />}
 
         <MenuItem
           disableRipple
@@ -188,15 +218,15 @@ export default function AccountPopover() {
           {user ? t('logout') : t('login')}
         </MenuItem>
 
-        <MenuItem
+        {!user && <MenuItem
           disableRipple
           disableTouchRipple
           onClick={handleRegisterClick}
           sx={{ typography: 'body2', py: 1.5 }}
         >
           {!user && t('register')}
-        </MenuItem>
-      </Popover>
+        </MenuItem>}
+      </Popover>}
     </>
   );
 }

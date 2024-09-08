@@ -73,8 +73,6 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
   };
 
   const validate = () => {
-    console.log(state);
-
     let isValid = true;
     const newErr = { ...err };
     Object.keys(state).forEach((key) => {
@@ -319,7 +317,6 @@ export default function ProductDetailImage({ productDetailImages, setProductDeta
   }
 
   const handleItemSave = (item) => {
-    console.log(item);
     const { size } = item;
     const sizeValues = SIZE_OPTIONS.filter(s => s.label === size);
     let sizeValue = '';

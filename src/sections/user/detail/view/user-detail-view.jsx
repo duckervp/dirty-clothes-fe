@@ -399,8 +399,8 @@ export default function UserDetailView() {
             ? t("confirm-pu.action-create-title")
             : t("confirm-pu.action-edit-title"),
           message: t('confirm-pu.message'),
-          cancelBtnText: t('cancel-btn-text'),
-          confirmBtnText: t('confirm-btn-text')
+          cancelBtnText: t('confirm-pu.cancel-btn-text'),
+          confirmBtnText: t('confirm-pu.confirm-btn-text')
         }}
         popupOpen={popupOpen}
         setPopupOpen={setPopupOpen}

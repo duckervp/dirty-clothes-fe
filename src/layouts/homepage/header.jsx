@@ -5,16 +5,19 @@ import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
 import { bgBlur } from 'src/theme/css';
 
+import Iconify from 'src/components/iconify';
+
 import Logo from '../common/logo';
 import CartWidget from './cart-widget';
 import Searchbar from '../common/searchbar';
 import ShopMenu from './cascading-dropdown';
-import { HEADER } from '../dashboard/config-layout';
+import { HEADER } from '../common/config-layout';
 import AccountPopover from '../common/account-popover';
 import LanguagePopover from '../common/language-popover';
 
@@ -27,11 +30,17 @@ export default function Header({ onOpenNav }) {
 
   const renderContent = (
     <>
+      {!lgUp && (
+        <IconButton onClick={onOpenNav} sx={{ mr: 1 }}>
+          <Iconify icon="eva:menu-2-fill" />
+        </IconButton>
+      )}
+
       <Searchbar />
 
-      <Logo sx={{m: 2}}/>
+      <Logo sx={{ m: {xs: 1, sm: 2}, fontSize: { md: "20px", sm: "16px", xs: "10px"} }} />
 
-      <Box >
+      <Box sx={{ display: { xs: 'none', md: 'block' } }}>
         <ShopMenu />
       </Box>
 

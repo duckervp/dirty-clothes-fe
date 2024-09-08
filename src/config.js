@@ -1,6 +1,6 @@
 import { fViCurrency } from 'src/utils/format-number';
 
-export const LOGO_NAME = "Cổ Trang Việt VTT";
+export const LOGO_NAME = "Cổ\u00a0Trang Việt\u00a0VTT";
 
 export const LOGO_FONT = "Pacifico";
 

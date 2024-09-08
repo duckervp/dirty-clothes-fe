@@ -32,9 +32,17 @@
     "products": "ALL PRODUCTS"
   },
   "profile-nav": {
+    "home": "Home",
     "basic-info": "Basic Info",
     "order": "Order",
     "address": "Address"
+  },
+  "home-nav": {
+    "home": "Home",
+    "cart": "Cart",
+    "shop": "Shop",
+    "best-seller": "Best Seller",
+    "contact": "Contact"
   },
   "page": {
     "dasboard": "Dashboard",

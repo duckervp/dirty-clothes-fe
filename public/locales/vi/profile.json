@@ -25,6 +25,8 @@
     "order-no": "Mã đơn hàng",
     "status": "Trạng thái",
     "total": "Tổng",
+    "items": "sản phẩm",
+    "item": "sản phẩm",
     "detail-summary": {
       "title": "Thông tin đơn hàng",
       "no": "Mã",
@@ -64,8 +66,12 @@
       "delete": "Xoá"
     },
     "form": {
+      "error": {
+        "field-required": "Không được để trống!"
+      },
       "title": "Tạo Địa Chỉ Mới",
-      "btn-submit": "Cập Nhật"
+      "edit-title": "Sửa Địa Chỉ",
+      "btn-submit": "Lưu"
     }
   },
   "avatar": {

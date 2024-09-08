@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
 
-import Nav from './nav';
+import Nav from '../common/nav';
 import Main from '../common/main';
 import Header from '../homepage/header';
+import Footer from '../homepage/footer';
+import navConfig from './config-navigation';
 
 const ProfileLayout = ({ children }) => {
   const [openNav, setOpenNav] = useState(false);
@@ -21,10 +23,17 @@ const ProfileLayout = ({ children }) => {
           flexDirection: { xs: 'column', lg: 'row' },
         }}
       >
-        <Nav openNav={openNav} onCloseNav={() => setOpenNav(false)} />
+        <Nav
+        openNav={openNav} 
+        onCloseNav={() => setOpenNav(false)} 
+        namespace='translation' 
+        keyPrefix='profile-nav'
+        navConfig={navConfig}/>
 
         <Main>{children}</Main>
       </Box>
+
+      <Footer />
     </>
   );
 }

@@ -4,6 +4,7 @@ import { Link as RLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
@@ -23,6 +24,8 @@ import TableContainer from '@mui/material/TableContainer';
 
 import { useRouter } from 'src/routes/hooks';
 
+import { useResponsive } from 'src/hooks/use-responsive';
+
 import { fViCurrency } from 'src/utils/format-number';
 
 import {
@@ -34,6 +37,10 @@ import {
 import { ColorPreview } from 'src/components/color-utils';
 import EmptyContainer from 'src/components/empty-container/empty-container';
 import QuantityButtonGroup from 'src/components/product/quantity-button-group';
+
+import CheckoutItem from '../checkout-item';
+
+// -------------------------------------------------------------------
 
 const calTotalPrice = (price, quantity) => price * quantity;
 
@@ -63,10 +70,11 @@ function CartItemTable({ cartItems }) {
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell sx={{ color: 'black' }}>{t('product')}</TableCell>
+            <TableCell sx={{ color: 'black' }} />
             <TableCell sx={{ color: 'black' }} align="center">
               {t('quantity')}
             </TableCell>
@@ -84,34 +92,38 @@ function CartItemTable({ cartItems }) {
               key={item?.productDetailId}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                <Stack direction="row">
-                  <Box
-                    component="img"
-                    alt={item?.name}
-                    src={item?.image}
-                    sx={{
-                      height: '150px',
-                      objectFit: 'cover',
-                      borderRadius: '5px',
-                    }}
-                  />
-                  <Stack spacing={2} sx={{ p: 2 }}>
-                    <Link
-                      component={RLink}
-                      color="inherit"
-                      underline="hover"
-                      variant="subtitle2"
-                      to={`/${item?.slug}`}
-                    >
-                      {item?.name}
-                    </Link>
-                    <Stack direction="row" sx={{ mb: 2 }}>
-                      <ColorPreview colors={[item?.color]} sx={{ mx: 0.75 }} />
-                      <Typography variant="caption">{item?.size}</Typography>
-                    </Stack>
-                    <Typography variant="caption">{fViCurrency(item?.price)}</Typography>
+              <TableCell component="th" sx={{
+                minHeight: '150px',
+                minWidth: '150px'
+              }}>
+                <Box
+                  component="img"
+                  alt={item?.name}
+                  src={item?.image}
+                  sx={{
+                    height: '150px',
+                    width: '150px',
+                    objectFit: 'cover',
+                    borderRadius: '5px',
+                  }}
+                />
+              </TableCell>
+              <TableCell>
+                <Stack spacing={2} sx={{ p: 2 }}>
+                  <Link
+                    component={RLink}
+                    color="inherit"
+                    underline="hover"
+                    variant="subtitle2"
+                    to={`/${item?.slug}`}
+                  >
+                    {item?.name}
+                  </Link>
+                  <Stack direction="row" sx={{ mb: 2 }}>
+                    <ColorPreview colors={[item?.color]} sx={{ mx: 0.75 }} />
+                    <Typography variant="caption">{item?.size}</Typography>
                   </Stack>
+                  <Typography variant="caption">{fViCurrency(item?.price)}</Typography>
                 </Stack>
               </TableCell>
               <TableCell align="center">
@@ -119,6 +131,9 @@ function CartItemTable({ cartItems }) {
                   value={item?.quantity}
                   setValue={handleQuantityChange}
                   cartItem={item}
+                  lbsx={{ width: "10px", height: "10px" }}
+                  mbsx={{ width: "10px", height: "10px" }}
+                  rbsx={{ width: "10px", height: "10px" }}
                 />
               </TableCell>
               <TableCell align="center" sx={{ width: '150px' }}>
@@ -141,8 +156,42 @@ CartItemTable.propTypes = {
   cartItems: PropTypes.array,
 };
 
+function CartItemStack({ cartItems }) {
+
+  const dispatch = useDispatch();
+
+  const handleQuantityChange = (cartItem, newValue) => {
+    dispatch(updateCartItemQuantity({ selectedProduct: cartItem, newQuantity: newValue }));
+  };
+
+  const handleDeleteCartItem = (cartItem) => {
+    dispatch(removeCartItem({ selectedProduct: cartItem }));
+  };
+
+  return (
+    <Card>
+      {cartItems?.map((item, index) => (
+        <CheckoutItem
+          key={item?.productDetailId}
+          item={item}
+          divider={index < cartItems.length - 1}
+          cart
+          handleQuantityChange={handleQuantityChange}
+          handleDeleteCartItem={handleDeleteCartItem}
+        />
+      ))}
+    </Card>
+  );
+}
+
+CartItemStack.propTypes = {
+  cartItems: PropTypes.array,
+};
+
 export default function CartView() {
   const { t } = useTranslation('product', { keyPrefix: 'cart' });
+
+  const mdUp = useResponsive('up', 'md');
 
   const router = useRouter();
 
@@ -160,12 +209,16 @@ export default function CartView() {
 
   return (
     <Container>
+      <Typography variant="h5">{t('title')}</Typography>
       <Grid container spacing={5}>
-        <Grid xs={12} sm={12} md={8}>
-          <CartItemTable cartItems={cartItems} />
+        <Grid xs={12} sm={6} md={8}>
+          {mdUp ?
+            <CartItemTable cartItems={cartItems} /> :
+            <CartItemStack cartItems={cartItems} />
+          }
         </Grid>
-        <Grid xs={12} sm={12} md={4}>
-          <Box sx={{ border: '1px solid rgba(145, 158, 171, 0.2)' }}>
+        <Grid xs={12} sm={6} md={4}>
+          <Card sx={{ border: '1px solid rgba(145, 158, 171, 0.2)' }}>
             <Stack direction="row" justifyContent="space-between" sx={{ px: 3, py: 2 }}>
               <Typography variant="body2">{t('total')}</Typography>
               <Typography variant="body2" fontWeight="600">
@@ -188,7 +241,7 @@ export default function CartView() {
                 {t('btn-payment')}
               </Button>
             </Box>
-          </Box>
+          </Card>
         </Grid>
       </Grid>
     </Container>

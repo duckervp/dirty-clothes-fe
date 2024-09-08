@@ -32,9 +32,17 @@
     "products": "TẤT CẢ SẢN PHẨM"
   },
   "profile-nav": {
-    "basic-info": "Thông tin cơ bản",
+    "home": "Trang Chủ",
+    "basic-info": "Hồ sơ",
     "order": "Đơn hàng",
     "address": "Địa chỉ"
+  },
+  "home-nav": {
+    "home": "Trang Chủ",
+    "cart": "Giỏ Hàng",
+    "shop": "Sản Phẩm",
+    "best-seller": "Bán Chạy",
+    "contact": "Liên Hệ"
   },
   "page": {
     "dasboard": "Trang Quản Lý",

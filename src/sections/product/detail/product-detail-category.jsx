@@ -30,7 +30,7 @@ const ProductDetailCategory = ({ categories, setSelectedCategories, disabled }) 
       const names = [];
       categoryData?.data?.forEach(item => {
         names.push(item.parent.name);
-        item.children.forEach(child => names.push(child.name));
+        item.children?.forEach(child => names.push(child.name));
       })
       setAllCategories(names);
     }
@@ -43,7 +43,7 @@ const ProductDetailCategory = ({ categories, setSelectedCategories, disabled }) 
         if (category === item.parent.name) {
           categoryIds.push(item.parent.id);
         } else {
-          item.children.forEach(child => {
+          item.children?.forEach(child => {
             if (category === child.name) {
               categoryIds.push(child.id)
             }
