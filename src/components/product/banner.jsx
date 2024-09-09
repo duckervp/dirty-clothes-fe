@@ -15,34 +15,27 @@ function HomeBanner() {
     autoplay: true,
   };
   return (
-    <Box className="slider-container" sx={{ boxShadow: 2}}>
+    <Box className="slider-container" sx={{ boxShadow: 2 }}>
       <Slider {...settings}>
         <Box>
           <img
-            src="https://bizweb.dktcdn.net/100/369/010/themes/914385/assets/slide-img1.jpg?1720758661032"
+            src="https://de8xyz7b91owd.cloudfront.net/banner/banner2.jpg"
             alt=""
-            style={{objectFit: "cover", borderRadius: "5px" }}
+            style={{ objectFit: "cover", borderRadius: "5px" }}
           />
         </Box>
         <Box>
           <img
-            src="https://bizweb.dktcdn.net/100/369/010/themes/914385/assets/slide-img5.jpg?1720758661032"
+            src="https://de8xyz7b91owd.cloudfront.net/banner/banner3.jpg"
             alt=""
-            style={{objectFit: "cover", borderRadius: "5px" }}
+            style={{ objectFit: "cover", borderRadius: "5px" }}
           />
         </Box>
         <Box>
           <img
-            src="https://bizweb.dktcdn.net/100/369/010/themes/914385/assets/slide-img1.jpg?1720758661032"
+            src="https://de8xyz7b91owd.cloudfront.net/banner/banner1.jpg"
             alt=""
-            style={{objectFit: "cover", borderRadius: "5px" }}
-          />
-        </Box>
-        <Box>
-          <img
-            src="https://bizweb.dktcdn.net/100/369/010/themes/914385/assets/slide-img3.jpg?1720758661032"
-            alt=""
-            style={{objectFit: "cover", borderRadius: "5px" }}
+            style={{ objectFit: "cover", borderRadius: "5px" }}
           />
         </Box>
       </Slider>

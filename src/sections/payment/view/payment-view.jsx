@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
+import { useMemo, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
@@ -55,14 +55,14 @@ export default function PaymentView() {
   const { showErrorMsg, showSuccessMsg, showCustomErrorMsg } = useNotify();
 
   const defaultShippingAddress = {
-    address: null,
-    district: null,
-    name: null,
-    note: null,
-    phone: null,
-    province: null,
-    ward: null,
-    zip: null,
+    address: '',
+    district: '',
+    name: '',
+    note: '',
+    phone: '',
+    province: '',
+    ward: '',
+    zip: '',
   };
 
   const dispatch = useDispatch();
@@ -98,6 +98,19 @@ export default function PaymentView() {
   const [createAddressModalOpen, setCreateAddressModalOpen] = useState(false);
 
   const [createAddress] = useCreateAddressMutation();
+
+  const defaultState = useMemo(() => ({
+    name: '',
+    province: '',
+    district: '',
+    ward: '',
+    address: '',
+    phone: '',
+    zip: '',
+    note: ''
+  }), []);
+
+  const [err, setErr] = useState(defaultState);
 
   useEffect(() => {
     if (addressData) {
@@ -175,7 +188,31 @@ export default function PaymentView() {
     setCreateAddressModalOpen(true);
   };
 
+  const validate = () => {
+    let isValid = true;
+    const newErr = { ...err };
+    Object.keys(shippingAddress).forEach((key) => {
+      if (shippingAddress[key] === '' || !shippingAddress[key]) {
+        if (['zip', 'note'].includes(key)) {
+          // do nothing
+        } else {
+          newErr[key] = t('address.form.error.field-required');
+          isValid = false;
+        }
+      }
+    });
+
+    setErr(newErr);
+
+    console.log(newErr);
+    
+
+    return isValid;
+  };
+
   const handleAddAddressClick = () => {
+    if (!validate()) return;
+
     const payload = {
       name: shippingAddress.name,
       phone: shippingAddress.phone,
@@ -254,6 +291,8 @@ export default function PaymentView() {
           setWard={setWard}
           address={shippingAddress}
           setAddress={setShippingAddress}
+          err={err}
+          setErr={setErr}
         />
         <LoadingButton
           fullWidth
@@ -270,7 +309,7 @@ export default function PaymentView() {
       <Grid container spacing={5}>
         <Grid container xs={12} sm={12} md={7}>
           <Stack sx={{ p: 2, width: 1 }}>
-            <Logo sx={{ fontSize: '40px', m: 0, textAlign: {xs: "center", md: "left"} }} />
+            <Logo sx={{ fontSize: '40px', m: 0, textAlign: { xs: "center", md: "left" } }} />
 
             <Box
               sx={{

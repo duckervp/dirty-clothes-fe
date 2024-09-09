@@ -87,7 +87,10 @@
       "btn-new": "Tạo mới",
       "form": {
         "title": "Địa chỉ mới",
-        "btn-submit": "Tạo"
+        "btn-submit": "Tạo",
+        "error": {
+          "field-required": "Không được để trống!"
+        }
       }
     },
     "order-summary": {

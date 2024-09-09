@@ -87,7 +87,10 @@
       "btn-new": "New",
       "form": {
         "title": "New Address",
-        "btn-submit": "Submit"
+        "btn-submit": "Submit",
+        "error": {
+          "field-required": "Field value required!"
+        }
       }
     },
     "order-summary": {
