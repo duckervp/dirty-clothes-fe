@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import { Container } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import CallIcon from '@mui/icons-material/Call';
 import Typography from '@mui/material/Typography';
@@ -29,10 +30,9 @@ export default function Footer() {
 
   const currentLang = useSelector(selectCurrentLang);
 
-
   const renderContent = (
-    <Box sx={{ px: { xs: 3, lg: 5 }, pt: 3, pb: 5, background: (theme) => theme.palette.grey[200] }}>
-      <Stack justifyContent="space-around" sx={{ flexDirection: { xs: "column", md: "row" } }}>
+    <Box sx={{ pt: 3, pb: 5 }}>
+      <Stack justifyContent="space-between" sx={{ flexDirection: { xs: "column", md: "row" } }}>
         <Box>
           <Typography sx={{ color: 'black', fontWeight: 'bold' }}>{t('store')}</Typography>
           <Box>
@@ -54,7 +54,7 @@ export default function Footer() {
               </Box>
             ))}
           </Box>
-          <Stack direction="row" alignItems="center" spacing={1} sx={{ ml: "3px" }}>
+          <Stack direction="row" alignItems="center" spacing={1} sx={{ ml: "3px", mt: 0.5 }}>
             <Iconify icon="eva:phone-fill" sx={{ width: "15px" }} />
             <Typography variant='subtitle2'>{store.phone}</Typography>
           </Stack>
@@ -88,17 +88,17 @@ export default function Footer() {
   );
 
   return (
-    <Box id="contact">
-      {renderContent}
+    <Box id="contact" sx={{
+      backgroundColor: (theme) =>
+        theme.palette.mode === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
+    }}>
+      <Container>
+        {renderContent}
+      </Container>
       <Divider />
       <Box
         component="footer"
-        sx={{
-          py: 3,
-          px: 2,
-          backgroundColor: (theme) =>
-            theme.palette.mode === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
-        }}
+        sx={{ py: 3 }}
       >
         <Copyright />
       </Box>
