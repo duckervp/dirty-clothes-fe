@@ -15,7 +15,7 @@ function HomeBanner() {
     autoplay: true,
   };
   return (
-    <Box className="slider-container" sx={{ boxShadow: 2 }}>
+    <Box className="slider-container">
       <Slider {...settings}>
         <Box>
           <img
