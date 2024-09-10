@@ -15,6 +15,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import { useRouter } from 'src/routes/hooks';
+import { ORDER, getUrl } from 'src/routes/route-config';
 
 import useNotify from 'src/hooks/use-notify';
 
@@ -137,7 +138,7 @@ export default function PaymentView() {
       await createOrder(produceOrder()).unwrap();
       dispatch(removeAllCartItems());
       showSuccessMsg('custom.order.create-success');
-      router.push('/order');
+      router.push(getUrl(ORDER));
     } catch (error) {
       showErrorMsg(error);
     }
@@ -203,10 +204,6 @@ export default function PaymentView() {
     });
 
     setErr(newErr);
-
-    console.log(newErr);
-    
-
     return isValid;
   };
 

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
@@ -5,40 +7,57 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import CallIcon from '@mui/icons-material/Call';
 import Typography from '@mui/material/Typography';
-import YouTubeIcon from '@mui/icons-material/YouTube';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
+import { useResponsive } from 'src/hooks/use-responsive';
+
+import { selectCurrentLang } from 'src/app/api/lang/langSlice';
+
+import Iconify from 'src/components/iconify';
+import SvgColor from 'src/components/svg-color';
+
 import Copyright from './copyright';
-import store_branchs from './config-store-branches';
+import store from './config-store-info';
 
 // ----------------------------------------------------------------------
 
 export default function Footer() {
-  const { t } = useTranslation('translation', { keyPrefix: 'footer' })
+  const { t } = useTranslation('translation', { keyPrefix: 'footer' });
+
+  const mdUp = useResponsive('up', 'md');
+
+  const currentLang = useSelector(selectCurrentLang);
+
+
   const renderContent = (
     <Box sx={{ px: { xs: 3, lg: 5 }, pt: 3, pb: 5, background: (theme) => theme.palette.grey[200] }}>
-      <Stack justifyContent="space-around" flexWrap="wrap" spacing={2} sx={{flexDirection: {xs: "column", sm: "row"}}}>
+      <Stack justifyContent="space-around" sx={{ flexDirection: { xs: "column", md: "row" } }}>
         <Box>
-          <Box sx={{ color: 'black', fontWeight: 'bold' }}>{t('store')}</Box>
+          <Typography sx={{ color: 'black', fontWeight: 'bold' }}>{t('store')}</Typography>
           <Box>
-            {store_branchs.map((branch) => (
+            {store[currentLang.value]?.branches?.map((branch) => (
               <Box key={branch.city} sx={{ color: '#000' }}>
                 <Stack direction="row" alignItems="center">
                   <LocationOnIcon style={{ fontSize: 18 }} />
                   <Typography sx={{ ml: 1 }} variant='subtitle1'>{branch.city}</Typography>
                 </Stack>
-                {branch.stores.map((store) => (
-                  <Stack direction="row" alignItems="center" key={store.address} sx={{ ml: 3 }}>
-                    <Typography variant='subtitle2'>{store.address}</Typography>
-                    <CallIcon style={{ fontSize: 15 }} sx={{ ml: 2 }} />
-                    <Typography variant='subtitle2'>{store.hotline}</Typography>
+                {branch.stores.map((item) => (
+                  <Stack direction={mdUp ? "row" : "column"} flexWrap="wrap" alignItems={mdUp ? "center" : "flex-start"} key={item.address} sx={{ ml: 3 }} spacing={mdUp ? 1 : 0}>
+                    <Typography variant='subtitle2' sx={{ fontWeight: 300 }}>{item.address}</Typography>
+                    {store.displayBranchHotline && <Stack direction="row" alignItems="center" spacing={0.25}>
+                      <CallIcon style={{ fontSize: 15 }} />
+                      <Typography variant='subtitle2' sx={{ fontWeight: 300 }}>{item.hotline}</Typography>
+                    </Stack>}
                   </Stack>
                 ))}
               </Box>
             ))}
           </Box>
+          <Stack direction="row" alignItems="center" spacing={1} sx={{ ml: "3px" }}>
+            <Iconify icon="eva:phone-fill" sx={{ width: "15px" }} />
+            <Typography variant='subtitle2'>{store.phone}</Typography>
+          </Stack>
         </Box>
 
         {/* <Box sx={{ color: 'black', fontWeight: 'bold' }}>
@@ -51,23 +70,19 @@ export default function Footer() {
           </Stack>
         </Box> */}
 
-        <Box sx={{ color: 'black', fontWeight: 'bold', mt: {xs: 2, sm: 0} }}>
-          {t('social-media')}
-          <Stack>
-            <Stack direction="row">
-              <FacebookIcon />
-              <Typography variant="subtitle2" sx={{ ml: 1 }}>fb.com/co-trang-viet-vtt</Typography>
-            </Stack>
-            <Stack direction="row">
-              <YouTubeIcon />
-              <Typography variant="subtitle2" sx={{ ml: 1 }}>youtube.com/co-trang-viet-vtt</Typography>
-            </Stack>
-            <Stack direction="row">
-              <InstagramIcon />
-              <Typography variant="subtitle2" sx={{ ml: 1 }}>instagram.com/co-trang-viet-vtt</Typography>
+        <Stack sx={{ mt: { xs: 2, md: 0 } }}>
+          <Typography sx={{ color: 'black', fontWeight: 'bold' }}>{t('social-media')}</Typography>
+          <Stack spacing={1}>
+            <Stack direction="row" spacing={1} justifyContent={mdUp ? "center" : "flex-start"}>
+              <Box component={Link} to="https://www.facebook.com/profile.php?id=100082969437458" sx={{ color: "black" }}>
+                <FacebookIcon />
+              </Box>
+              <Box component={Link} to="https://www.tiktok.com/@cotrangvietvutamthu" sx={{ color: "black" }}>
+                <SvgColor src="/assets/icons/tiktok-icon.svg" sx={{ width: "16px" }} />
+              </Box>
             </Stack>
           </Stack>
-        </Box>
+        </Stack>
       </Stack>
     </Box>
   );

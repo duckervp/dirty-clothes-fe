@@ -23,8 +23,6 @@ export const GHN = {
   serviceId: parseInt(import.meta.env.VITE_GHN_SERVICE_ID, 10)
 }
 
-
-
 // ----------------------------------------------------------------------
 
 export const TARGET_OPTIONS = [
