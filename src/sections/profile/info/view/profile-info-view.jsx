@@ -172,7 +172,7 @@ export default function ProfileInfoView() {
             </Typography>
             <TextField
               name="name"
-              autoComplete="false"
+              autoComplete="off"
               value={state.name}
               onChange={handleStateChange}
               error={err.name !== ''}
@@ -230,7 +230,7 @@ export default function ProfileInfoView() {
                     </InputAdornment>
                   ),
                 }}
-                autoComplete="false"
+                autoComplete="off"
                 value={state.oldPassword}
                 onChange={handleStateChange}
                 error={err.oldPassword !== ''}
@@ -260,7 +260,7 @@ export default function ProfileInfoView() {
                     </InputAdornment>
                   ),
                 }}
-                autoComplete="false"
+                autoComplete="off"
                 value={state.newPassword}
                 onChange={handleStateChange}
                 error={err.newPassword !== ''}

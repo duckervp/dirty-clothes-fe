@@ -123,7 +123,7 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
         <TextField
           name="inventory"
           fullWidth
-          autoComplete="false"
+          autoComplete="off"
           value={state?.inventory}
           onChange={handleStateChange}
           error={err.inventory !== ''}
@@ -138,7 +138,7 @@ function DetailForm({ data, colors, setData, isEdit, closePopup }) {
         <TextField
           name="sold"
           fullWidth
-          autoComplete="false"
+          autoComplete="off"
           value={state?.sold}
           onChange={handleStateChange}
           error={err.sold !== ''}

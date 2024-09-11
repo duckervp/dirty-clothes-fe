@@ -225,7 +225,7 @@ export default function ProductDetailView() {
         <TextField
           name="name"
           fullWidth
-          autoComplete="false"
+          autoComplete="off"
           value={state.name}
           onChange={handleStateChange}
           error={err.name !== ''}
@@ -265,7 +265,7 @@ export default function ProductDetailView() {
         <TextField
           name="price"
           fullWidth
-          autoComplete="false"
+          autoComplete="off"
           value={state.price}
           onChange={handleStateChange}
           error={err.price !== ''}
@@ -283,7 +283,7 @@ export default function ProductDetailView() {
           <TextField
             name="salePrice"
             fullWidth
-            autoComplete="false"
+            autoComplete="off"
             value={state.salePrice}
             onChange={handleStateChange}
             error={err.salePrice !== ''}

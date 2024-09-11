@@ -1,5 +1,31 @@
 import { API } from '../endpoints';
-import { apiSlice } from '../apiSlice';
+import { apiSlice, noAuthApiSlice } from '../apiSlice';
+
+export const noTokenApiSlice = noAuthApiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    getProvinces: builder.query({
+      query: (params) => ({
+        url: `${API.address}/public/province`,
+        method: "GET",
+        params
+      }),
+    }),
+    getDistricts: builder.mutation({
+      query: (params) => ({
+        url: `${API.address}/public/district`,
+        method: "GET",
+        params
+      }),
+    }),
+    getWards: builder.mutation({
+      query: (params) => ({
+        url: `${API.address}/public/ward`,
+        method: "GET",
+        params
+      }),
+    }),
+  }),
+});
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -42,6 +68,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
   }),
 });
+
+
+export const {
+  useGetProvincesQuery,
+  useGetDistrictsMutation,
+  useGetWardsMutation
+} = noTokenApiSlice;
 
 export const {
   useGetAllAddressesQuery,

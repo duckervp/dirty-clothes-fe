@@ -10,7 +10,9 @@ import {
   useGetWardsMutation,
   useGetProvincesQuery,
   useGetDistrictsMutation,
-} from 'src/app/api/payment/ghnApiSlice';
+} from 'src/app/api/address/addressApiSlice';
+
+// -----------------------------------------------------------------
 
 export default function AddressForm({ ward, setWard, address, setAddress, err, setErr }) {
   const { t } = useTranslation('product', { keyPrefix: 'address-form' });
@@ -32,7 +34,7 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
   React.useEffect(() => {
     if (address) {
       if (provinces) {
-        const orgProvince = provinces.data?.filter(p => p.ProvinceName === address.province).at(0);
+        const orgProvince = provinces.data?.filter(p => p.fullName === address.province).at(0);
 
         if (orgProvince) {
           setProvince(orgProvince);
@@ -43,39 +45,43 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
 
   React.useEffect(() => {
     const fetchDistricts = async () => {
-      const { data } = await getDistricts({ province_id: province.ProvinceID }).unwrap();
+      const { data } = await getDistricts({ provinceCode: province.code }).unwrap();
       setDistricts(data || []);
-
-      if (address.district && address.district !== '') {
-        const orgDistrict = data?.filter(p => p.DistrictName === address.district).at(0);
-        if (orgDistrict) {
-          setDistrict(orgDistrict);
-        }
-      }
     };
 
-    if (province && province.ProvinceID) {
+    if (province && province.code) {
       fetchDistricts();
     }
-  }, [getDistricts, province, address]);
+  }, [getDistricts, province]);
+
+  React.useEffect(() => {
+    if (address.district && address.district !== '') {
+      const orgDistrict = districts?.filter(p => p.fullName === address.district).at(0);
+      if (orgDistrict) {
+        setDistrict(orgDistrict);
+      }
+    }
+  }, [districts, address]);
 
   React.useEffect(() => {
     const fetchWards = async () => {
-      const { data } = await getWards({ district_id: district.DistrictID }).unwrap();
+      const { data } = await getWards({ districtCode: district.code }).unwrap();
       setWards(data || []);
-
-      if (address.ward && address.ward !== '') {
-        const orgWard = data?.filter(p => p.WardName === address.ward).at(0);
-        if (orgWard) {
-          setWard(orgWard);
-        }
-      }
     };
 
-    if (district && district.DistrictID) {
+    if (district && district.code) {
       fetchWards();
     }
-  }, [getWards, district, address, setWard]);
+  }, [getWards, district]);
+
+  React.useEffect(() => {
+    if (address.ward && address.ward !== '') {
+      const orgWard = wards?.filter(p => p.fullName === address.ward).at(0);
+      if (orgWard) {
+        setWard(orgWard);
+      }
+    }
+  }, [wards, address, setWard]);
 
   const handleProvinceChange = (e, newValue) => {
     setProvince(newValue);
@@ -85,7 +91,7 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
     setWard(null);
 
     const newAddress = { ...address };
-    newAddress.province = newValue.ProvinceName;
+    newAddress.province = newValue.fullName;
     setAddress(newAddress);
 
     if (err.province !== '') {
@@ -101,7 +107,7 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
     setWard(null);
 
     const newAddress = { ...address };
-    newAddress.district = newValue.DistrictName;
+    newAddress.district = newValue.fullName;
     setAddress(newAddress);
 
     if (err.district !== '') {
@@ -115,7 +121,7 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
     setWard(newValue);
 
     const newAddress = { ...address };
-    newAddress.ward = newValue.WardName;
+    newAddress.ward = newValue.fullName;
     setAddress(newAddress);
 
     if (err.ward !== '') {
@@ -139,6 +145,14 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
   return (
     <Box>
       <TextField
+        id="name1"
+        name="name1"
+        variant="outlined"
+        fullWidth
+        sx={{ mb: 1.5, display: "none" }}
+        autoComplete="off"
+      />
+      <TextField
         id="name"
         name="name"
         label={t('input-label.receiver-name')}
@@ -146,7 +160,7 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
         variant="outlined"
         fullWidth
         sx={{ mb: 1.5 }}
-        autoComplete="nothing"
+        autoComplete="n2m7-nothing"
         onChange={handleTextfieldChange}
         error={err?.name !== ''}
         helperText={err?.name !== '' && err?.name}
@@ -156,10 +170,10 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
         id="combo-box-province"
         options={provinces?.data || []}
         value={province || ''}
-        getOptionLabel={(option) => (option?.ProvinceName ? option.ProvinceName : '')}
+        getOptionLabel={(option) => (option?.fullName ? option.fullName : '')}
         isOptionEqualToValue={
           (option, value) =>
-            !value || option.ProvinceID === value.ProvinceID
+            !value || option.code === value.code
         }
         sx={{ mb: 1.5 }}
         renderInput={(params) => (
@@ -168,8 +182,9 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
             label={t('input-label.province')}
             inputProps={{
               ...params.inputProps,
-              autoComplete: 'nothing', // disable autocomplete and autofill
+              autoComplete: 'pr0-nothing', // disable autocomplete and autofill
             }}
+            autoComplete='off'
             error={err?.province !== ''}
             helperText={err?.province !== '' && err?.province}
           />
@@ -181,10 +196,10 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
         id="combo-box-district"
         options={districts || []}
         value={district || ''}
-        getOptionLabel={(option) => (option?.DistrictName ? option.DistrictName : '')}
+        getOptionLabel={(option) => (option?.fullName ? option.fullName : '')}
         isOptionEqualToValue={
           (option, value) =>
-            !value || option.DistrictID === value.DistrictID
+            !value || option.code === value.code
         }
         sx={{ mb: 1.5 }}
         renderInput={(params) => (
@@ -193,7 +208,7 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
             label={t('input-label.district')}
             inputProps={{
               ...params.inputProps,
-              autoComplete: 'nothing', // disable autocomplete and autofill
+              autoComplete: 'ds1-nothing', // disable autocomplete and autofill
             }}
             error={err?.district !== ''}
             helperText={err?.district !== '' && err?.district}
@@ -208,10 +223,10 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
         id="combo-box-ward"
         options={wards || {}}
         value={ward || ''}
-        getOptionLabel={(option) => (option?.WardName ? option.WardName : '')}
+        getOptionLabel={(option) => (option?.fullName ? option.fullName : '')}
         isOptionEqualToValue={
           (option, value) =>
-            !value || option.WardCode === value.WardCode
+            !value || option.code === value.code
         }
         sx={{ mb: 1.5 }}
         renderInput={(params) => (
@@ -220,7 +235,7 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
             label={t('input-label.ward')}
             inputProps={{
               ...params.inputProps,
-              autoComplete: 'nothing', // disable autocomplete and autofill
+              autoComplete: 'wr2-nothing', // disable autocomplete and autofill
             }}
             error={err?.ward !== ''}
             helperText={err?.ward !== '' && err?.ward}
@@ -236,7 +251,7 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
         fullWidth
         value={address?.address}
         sx={{ mb: 1.5 }}
-        autoComplete="nothing"
+        autoComplete="ads4-nothing"
         onChange={handleTextfieldChange}
         error={err?.address !== ''}
         helperText={err?.address !== '' && err?.address}
@@ -249,7 +264,7 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
         value={address?.phone}
         fullWidth
         sx={{ mb: 1.5 }}
-        autoComplete="nothing"
+        autoComplete="pn24-nothing"
         onChange={handleTextfieldChange}
         error={err?.phone !== ''}
         helperText={err?.phone !== '' && err?.phone}
@@ -262,7 +277,7 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
         value={address?.zip}
         fullWidth
         sx={{ mb: 1.5 }}
-        autoComplete="nothing"
+        autoComplete="zp2d-nothing"
         onChange={handleTextfieldChange}
         error={err?.zip !== ''}
         helperText={err?.zip !== '' && err?.zip}
@@ -274,7 +289,7 @@ export default function AddressForm({ ward, setWard, address, setAddress, err, s
         variant="outlined"
         value={address?.note}
         fullWidth
-        autoComplete="nothing"
+        autoComplete="nt12-nothing"
         onChange={handleTextfieldChange}
         error={err?.note !== ''}
         helperText={err?.note !== '' && err?.note}
