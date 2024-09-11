@@ -91,13 +91,13 @@ function OrderItemTable({ orderItems, handleOrderClick }) {
                         <Typography
                           variant="subtitle2"
                           sx={
-                            item && item.totalItems > 1
+                            item && item.totalItemQuantity > 1
                               ? { ml: 0.75, fontWeight: 700 }
                               : { display: 'none' }
                           }
                         >
-                          View more {item ? item.totalItems - 1 : 0}{' '}
-                          {item && item.totalItems - 1 > 1 ? 'items' : 'item'}
+                          View more {item && item.firstItem ? item.totalItemQuantity - item.firstItem.quantity : 0}{' '}
+                          {item && item.firstItem && item.totalItemQuantity - item.firstItem.quantity > 1 ? 'items' : 'item'}
                         </Typography>
                       </Stack>
                     </Stack>
@@ -133,7 +133,7 @@ function OrderItemStack({ orderItems, handleOrderClick }) {
       <Card sx={{ py: 1 }}>
         {orderItems?.map((item, index) => (
           <Stack key={item?.id} onClick={() => handleOrderClick(item)}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ px: 1, py: 0.5 }} >
+            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ px: 2, py: 0.5 }} >
               <Tooltip title={item?.code}>
                 <Typography variant="subtitle2">
                   {item?.code?.length > 20
@@ -147,14 +147,13 @@ function OrderItemStack({ orderItems, handleOrderClick }) {
               <CheckoutItem
                 item={item?.firstItem}
                 divider={false}
-                totalItems={item?.totalItems}
+                viewMoreQuantity={item.totalItemQuantity - item.firstItem.quantity || 0}
               />
-              <Stack direction="row" justifyContent="space-between">
+              <Stack direction="row" justifyContent="space-between" sx={{px: 1}}>
                 <Stack direction="row" spacing={1} justifyContent="flex-end">
                   <Typography variant="subtitle2" sx={{ fontWeight: 300 }}>
-                    {item?.totalItems} {" "}
-                    {item?.totalItems > 1 ? t('items') : t('item')}
-
+                    {item?.totalItemQuantity} {" "}
+                    {item?.totalItemQuantity > 1 ? t('items') : t('item')}
                   </Typography>
                 </Stack>
                 <Stack direction="row" spacing={1} justifyContent="flex-end">

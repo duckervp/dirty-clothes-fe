@@ -15,7 +15,7 @@ import { fViCurrency } from 'src/utils/format-number';
 import { ColorPreview } from 'src/components/color-utils';
 import QuantityButtonGroup from 'src/components/product/quantity-button-group';
 
-export default function CheckoutItem({ item, divider, cart, handleQuantityChange, handleDeleteCartItem, totalItems }) {
+export default function CheckoutItem({ item, divider, cart, handleQuantityChange, handleDeleteCartItem, viewMoreQuantity }) {
   const { t } = useTranslation('product', { keyPrefix: 'checkout-item' });
   return (
     <Box>
@@ -58,17 +58,17 @@ export default function CheckoutItem({ item, divider, cart, handleQuantityChange
             />}
             <Typography variant="caption">{fViCurrency(item?.price)}</Typography>
             {
-              totalItems &&
+              viewMoreQuantity &&
               <Typography
                 variant="caption"
                 sx={
-                  totalItems > 1
+                  viewMoreQuantity > 0
                     ? { ml: 0.75, fontWeight: 700 }
                     : { display: 'none' }
                 }
               >
-                {t('view-more')} {totalItems - 1}{' '}
-                {totalItems - 1 > 1 ? t('items') : t('item')}
+                {t('view-more')} {viewMoreQuantity}{' '}
+                {viewMoreQuantity > 1 ? t('items') : t('item')}
               </Typography>
             }
           </Stack>
@@ -88,5 +88,5 @@ CheckoutItem.propTypes = {
   cart: PropTypes.bool,
   handleQuantityChange: PropTypes.func,
   handleDeleteCartItem: PropTypes.func,
-  totalItems: PropTypes.number,
+  viewMoreQuantity: PropTypes.number,
 };

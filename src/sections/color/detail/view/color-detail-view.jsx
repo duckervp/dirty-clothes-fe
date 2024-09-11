@@ -179,7 +179,7 @@ export default function ColorDetailView() {
           <TextField
             name="name"
             fullWidth
-            autoComplete="false"
+            autoComplete="off"
             value={state.name}
             onChange={handleStateChange}
             error={err.name !== ''}

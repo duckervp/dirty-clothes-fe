@@ -121,7 +121,7 @@ export default function RegisterView() {
         <TextField
           name="name"
           label={t('form.name')}
-          autoComplete="false"
+          autoComplete="off"
           value={state.name}
           onChange={handleStateChange}
           error={err.name !== ''}
@@ -131,7 +131,7 @@ export default function RegisterView() {
         <TextField
           name="email"
           label={t('form.email')}
-          autoComplete="false"
+          autoComplete="off"
           value={state.email}
           onChange={handleStateChange}
           error={!isValidEmail() || err.email !== ''}
@@ -153,7 +153,7 @@ export default function RegisterView() {
               </InputAdornment>
             ),
           }}
-          autoComplete="false"
+          autoComplete="off"
           value={state.password}
           onChange={handleStateChange}
           error={err.password !== ''}
@@ -173,7 +173,7 @@ export default function RegisterView() {
               </InputAdornment>
             ),
           }}
-          autoComplete="false"
+          autoComplete="off"
           value={state.confirmPassword}
           onChange={handleStateChange}
           error={isIncorrectConfirmPassword() || err.confirmPassword !== ''}

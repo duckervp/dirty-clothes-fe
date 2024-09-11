@@ -232,7 +232,7 @@ export default function UserDetailView() {
             </InputAdornment>
           ),
         }}
-        autoComplete="false"
+        autoComplete="off"
         value={state.password}
         onChange={handleStateChange}
         error={err.password !== ''}
@@ -259,7 +259,7 @@ export default function UserDetailView() {
             </InputAdornment>
           ),
         }}
-        autoComplete="false"
+        autoComplete="off"
         value={state.confirmPassword}
         onChange={handleStateChange}
         error={isIncorrectConfirmPassword() || err.confirmPassword !== ''}
@@ -281,7 +281,7 @@ export default function UserDetailView() {
           <TextField
             name="name"
             fullWidth
-            autoComplete="false"
+            autoComplete="off"
             value={state.name}
             onChange={handleStateChange}
             error={err.name !== ''}
@@ -297,7 +297,7 @@ export default function UserDetailView() {
           <TextField
             fullWidth
             name="email"
-            autoComplete="false"
+            autoComplete="off"
             value={state.email}
             onChange={handleStateChange}
             error={!isValidEmail() || err.email !== ''}

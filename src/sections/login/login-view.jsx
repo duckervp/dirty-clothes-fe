@@ -115,7 +115,7 @@ export default function LoginView() {
         <TextField
           name="email"
           label={t('form.email')}
-          autoComplete="false"
+          autoComplete="off"
           value={state.email}
           onChange={handleStateChange}
           error={!isValidEmail() || err.email !== ''}
@@ -137,7 +137,7 @@ export default function LoginView() {
               </InputAdornment>
             ),
           }}
-          autoComplete="false"
+          autoComplete="off"
           value={state.password}
           onChange={handleStateChange}
           error={err.password !== ''}
