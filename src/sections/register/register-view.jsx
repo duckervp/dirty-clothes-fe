@@ -50,6 +50,8 @@ export default function RegisterView() {
 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const [debounceTimeouts, setDebounceTimeouts] = useState({});
+
   const [register, { isLoading }] = useRegisterMutation();
 
   const handleLogin = useLogin();
@@ -64,7 +66,37 @@ export default function RegisterView() {
       newErr[e.target.name] = '';
       setErr(newErr);
     }
+
+    if (debounceTimeouts[e.target.name]) {
+      clearTimeout(debounceTimeouts[e.target.name]);
+    }
+
+    const newTimeout = setTimeout(() => {
+      validateInput(e.target.name, e.target.value);
+    }, 500);
+
+    setDebounceTimeouts((prevTimeouts) => ({
+      ...prevTimeouts,
+      [e.target.name]: newTimeout,
+    }));
+
   };
+
+  const validateInput = (name, value) => {
+    const newErr = { ...err };
+
+    newErr[name] = '';
+    
+    if (name === 'email' && value !== '' && !isValidEmail(value)) {
+      newErr[name] = t('form.error.invalid-email');
+    } else if (name === 'confirmPassword' && isIncorrectConfirmPassword()) {
+      newErr[name] = t('form.error.confirm-password');
+    }
+  
+    setErr(newErr);
+  };
+
+  const isValidEmail = () => state.email.match(EMAIL_REGEX);
 
   const handleClick = async (e) => {
     if (!validate()) return;
@@ -86,8 +118,6 @@ export default function RegisterView() {
     state.password !== '' &&
     state.confirmPassword !== '' &&
     state.confirmPassword !== state.password;
-
-  const isValidEmail = () => state.email === '' || state.email.match(EMAIL_REGEX);
 
   const validate = () => {
     let isValid = true;
@@ -134,9 +164,9 @@ export default function RegisterView() {
           autoComplete="off"
           value={state.email}
           onChange={handleStateChange}
-          error={!isValidEmail() || err.email !== ''}
+          error={err.email !== ''}
           helperText={
-            (!isValidEmail() && t('form.error.invalid-email')) || (err.email !== '' && err.email)
+            (err.email !== '' && err.email)
           }
         />
 
@@ -176,9 +206,8 @@ export default function RegisterView() {
           autoComplete="off"
           value={state.confirmPassword}
           onChange={handleStateChange}
-          error={isIncorrectConfirmPassword() || err.confirmPassword !== ''}
+          error={err.confirmPassword !== ''}
           helperText={
-            (isIncorrectConfirmPassword() && t('form.error.confirm-password')) ||
             (err.confirmPassword !== '' && err.confirmPassword)
           }
           onKeyPress={handleKeyPress}

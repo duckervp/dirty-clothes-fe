@@ -1,22 +1,20 @@
+import { useTranslation } from 'react-i18next';
+
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
-import Logo from 'src/components/logo';
+import Logo from 'src/layouts/common/logo';
 
 // ----------------------------------------------------------------------
 
 export default function NotFoundView() {
-  const router = useRouter();
 
-  const handleGoBack = () => {
-    router.back();
-  }
+  const { t } = useTranslation('404');
 
   const renderHeader = (
     <Box
@@ -53,12 +51,11 @@ export default function NotFoundView() {
           }}
         >
           <Typography variant="h3" sx={{ mb: 3 }}>
-            Sorry, page not found!
+            {t('title')}
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
-            Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be
-            sure to check your spelling.
+            {t('message')}
           </Typography>
 
           <Box
@@ -71,12 +68,9 @@ export default function NotFoundView() {
             }}
           />
 
-          <Stack direction="row" spacing={3}>
-            <Button size="large" variant="contained" color='inherit' sx={{width: 200}} onClick={handleGoBack}>
-              Go back
-            </Button>
-            <Button href="/" size="large" variant="contained" component={RouterLink}  sx={{width: 200}}>
-              Go to Home
+          <Stack direction="row">
+            <Button href="/" size="large" variant="contained" component={RouterLink} sx={{ width: 200 }}>
+              {t('btn-home')}
             </Button>
           </Stack>
         </Box>

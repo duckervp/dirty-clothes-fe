@@ -39,6 +39,8 @@ export default function LoginView() {
 
   const [login, { isLoading }] = useLoginMutation();
 
+  const [debounceTimeouts, setDebounceTimeouts] = useState({});
+
   const defaultState = {
     email: '',
     password: '',
@@ -73,15 +75,40 @@ export default function LoginView() {
     newState[e.target.name] = e.target.value;
     setState(newState);
 
+    if (debounceTimeouts[e.target.name]) {
+      clearTimeout(debounceTimeouts[e.target.name]);
+    }
+
     if (err[e.target.name] !== '') {
       const newErr = { ...err };
       newErr[e.target.name] = '';
       setErr(newErr);
     }
+
+    const newTimeout = setTimeout(() => {
+      validateInput(e.target.name, e.target.value);
+    }, 500);
+
+    setDebounceTimeouts((prevTimeouts) => ({
+      ...prevTimeouts,
+      [e.target.name]: newTimeout,
+    }));
+
   };
 
-  const isValidEmail = () =>
-    state.email === '' || state.email.match(EMAIL_REGEX);
+  const validateInput = (name, value) => {
+    const newErr = { ...err };
+    
+    newErr[name] = '';
+    
+    if (name === 'email' && !isValidEmail(value)) {
+      newErr[name] = t('form.error.invalid-email');
+    }
+  
+    setErr(newErr);
+  };
+
+  const isValidEmail = () => state.email.match(EMAIL_REGEX);
 
   const validate = () => {
     let isValid = true;
@@ -93,7 +120,7 @@ export default function LoginView() {
       }
     });
 
-    if (isValid && !state.email.match('^[a-zA-Z0-9+_.\\-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]+$')) {
+    if (isValid && !state.email.match(EMAIL_REGEX)) {
       newErr.email = t('form.error.invalid-email');
       isValid = false;
     }
@@ -118,9 +145,9 @@ export default function LoginView() {
           autoComplete="off"
           value={state.email}
           onChange={handleStateChange}
-          error={!isValidEmail() || err.email !== ''}
+          error={ err.email !== ''}
           helperText={
-            (!isValidEmail() && t('form.error.invalid-email')) || (err.email !== '' && err.email)
+            (err.email !== '' && err.email)
           }
         />
 

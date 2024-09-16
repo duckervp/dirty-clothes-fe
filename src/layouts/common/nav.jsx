@@ -9,12 +9,14 @@ import { alpha } from '@mui/material/styles';
 import ListItemButton from '@mui/material/ListItemButton';
 
 import { usePathname } from 'src/routes/hooks';
+import { PROFILE } from 'src/routes/route-config';
 import { RouterLink } from 'src/routes/components';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
 import Scrollbar from 'src/components/scrollbar';
 
+import Logo from './logo';
 import { NAV } from './config-layout';
 import AccountDisplay from './account-display';
 
@@ -51,6 +53,11 @@ export default function Nav({ openNav, onCloseNav, navConfig, namespace, keyPref
         },
       }}
     >
+      {pathname.includes(PROFILE) ?
+        <Box sx={{ pt: 10 }} />
+        :
+        <Logo sx={{ mt: { xs: 1, sm: 2 }, fontSize: { md: "20px", sm: "16px" }, display: "flex", textAlign: "center" }} />
+      }
       <AccountDisplay />
       {renderMenu}
     </Scrollbar>
@@ -73,7 +80,6 @@ export default function Nav({ openNav, onCloseNav, navConfig, namespace, keyPref
             borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
           }}
         >
-          <Box sx={{ pt: 10 }} />
           {renderContent}
         </Box>
       ) : (

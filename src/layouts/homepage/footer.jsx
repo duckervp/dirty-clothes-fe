@@ -74,7 +74,7 @@ export default function Footer() {
           <Typography sx={{ color: 'black', fontWeight: 'bold' }}>{t('social-media')}</Typography>
           <Stack spacing={1}>
             <Stack direction="row" spacing={1} justifyContent={mdUp ? "center" : "flex-start"}>
-              <Box component={Link} to="https://www.facebook.com/profile.php?id=100082969437458" sx={{ color: "black" }}>
+              <Box component={Link} to="https://www.facebook.com/profile.php?id=61562450362862" sx={{ color: "black" }}>
                 <FacebookIcon />
               </Box>
               <Box component={Link} to="https://www.tiktok.com/@cotrangvietvutamthu" sx={{ color: "black" }}>
