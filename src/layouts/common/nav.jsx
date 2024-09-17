@@ -53,7 +53,7 @@ export default function Nav({ openNav, onCloseNav, navConfig, namespace, keyPref
         },
       }}
     >
-      {(pathname.includes(PROFILE) || pathname.includes(ORDER) || pathname.includes(ADDRESS)) ?
+      {(pathname.endsWith(PROFILE) || pathname.endsWith(ORDER) || pathname.endsWith(ADDRESS)) ?
         <Box sx={{ pt: 10 }} />
         :
         <Logo sx={{ mt: { xs: 1, sm: 2 }, fontSize: { md: "20px", sm: "16px" }, display: "flex", textAlign: "center" }} />

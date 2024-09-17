@@ -1,7 +1,7 @@
 {
   "no-data": {
     "title": "Không tìm thấy",
-    "content": "Không tìm thấy kết quả nào cho \u00a0 <strong>\"{query}\"</strong>. <br /> Hãy thử kiểm tra lỗi chính tả hoặc sử dụng các từ hoàn chỉnh."
+    "content": "Không tìm thấy kết quả nào cho\u00a0 <strong>\"{{query}}\"</strong>. <br /> Hãy thử kiểm tra lỗi chính tả hoặc sử dụng các từ hoàn chỉnh."
   },
   "table-row": {
     "btn-edit": "Sửa",

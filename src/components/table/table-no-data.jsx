@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 // ----------------------------------------------------------------------
 
 export default function TableNoData({ query }) {
-  const { t } = useTranslation('table')
+  const { t } = useTranslation('table', {keyPrefix: "no-data"})
   return (
     <TableRow>
       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -23,7 +23,7 @@ export default function TableNoData({ query }) {
           </Typography>
 
           <Typography variant="body2">
-            <Trans i18nKey="content" ns='table'>
+            <Trans i18nKey="no-data.content" ns='table' values={{ query }}>
               No results found for &nbsp;
               <strong>&quot;{query}&quot;</strong>.
               <br /> Try checking for typos or using complete words.

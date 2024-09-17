@@ -1,7 +1,7 @@
 {
   "no-data": {
     "title": "Not found",
-    "content": "No results found for \u00a0 <strong>\"{query}\"</strong>. <br /> Try checking for typos or using complete words."
+    "content": "No results found for \u00a0 <strong>\"{{query}}\"</strong>. <br /> Try checking for typos or using complete words."
   },
   "table-row": {
     "btn-edit": "Edit",

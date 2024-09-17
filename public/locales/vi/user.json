@@ -8,7 +8,7 @@
   "table-column": {
     "name": "Tên",
     "email": "Địa chỉ Email",
-    "role": "Chức vụ",
+    "role": "Tài khoản",
     "status": "Trạng thái",
     "created-at": "Ngày được tạo"
   },

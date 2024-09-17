@@ -6,7 +6,9 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
+import TableRow from '@mui/material/TableRow';
 import Container from '@mui/material/Container';
+import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
@@ -26,11 +28,11 @@ import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import Loading from 'src/components/auth/Loading';
 import ModalPopup from 'src/components/modal/modal';
-import TableNoData from 'src/components/table/table-no-data';
 import CustomTableHead from 'src/components/table/table-head';
 import TableEmptyRows from 'src/components/table/table-empty-rows';
 
 import OrderSummary from 'src/sections/order/order-summary';
+import OrderNoData from 'src/sections/order/order-not-found';
 
 import OrderTableRow from '../order-table-row';
 import OrderTableToolbar from '../order-table-toolbar';
@@ -60,12 +62,25 @@ export default function OrderView() {
 
   const [nameFilter, setNameFilter] = useState('');
 
+  const [filterType, setFilterType] = useState('username');
+
+  const [statusFilter, setStatusFilter] = useState({ orderStatus: ORDER_STATUS.ALL });
+
+  const getSearchFilter = (type, value) => {
+    if (filterType === type) {
+      return nameFilter.trim() !== '' ? nameFilter : undefined;
+    }
+    return undefined;
+  }
+
   const { data: orderData, isLoading } = useGetAllOrdersQuery({
     pageNo: page - 1,
     pageSize: PAGE_SIZE,
     sort: order,
     sortBy: orderBy,
-    name: nameFilter.trim() !== '' ? nameFilter : undefined
+    username: getSearchFilter('username'),
+    code: getSearchFilter('orderCode'),
+    status: statusFilter.orderStatus !== ORDER_STATUS.ALL ? statusFilter.orderStatus : undefined
   });
 
   useEffect(() => {
@@ -219,6 +234,10 @@ export default function OrderView() {
           handleBulkActionRefuse={handleBulkActionRefuse}
           handleBulkActionDelivery={handleBulkActionDelivery}
           handleBulkActionDone={handleBulkActionDone}
+          filterType={filterType}
+          setFilterType={setFilterType}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
         />
 
         <Scrollbar>
@@ -269,7 +288,14 @@ export default function OrderView() {
                   height={77}
                 />
 
-                {notFound && <TableNoData query={filterName} />}
+                {notFound &&
+
+                  <TableRow>
+                    <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <OrderNoData manage query={filterName} />
+                    </TableCell>
+                  </TableRow>
+                }
               </TableBody>}
             </Table>
           </TableContainer>

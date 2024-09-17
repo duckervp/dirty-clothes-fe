@@ -4,8 +4,10 @@ import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import Select from '@mui/material/Select';
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
+import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -15,10 +17,16 @@ import { ORDER_STATUS } from 'src/config';
 
 import Iconify from 'src/components/iconify';
 
+import OrderFilter from '../order/order-filter';
+
 // ----------------------------------------------------------------------
 
 export default function OrderTableToolbar({
   selected,
+  filterType,
+  setFilterType,
+  statusFilter,
+  setStatusFilter,
   filterName,
   onFilterName,
   placeholder,
@@ -48,29 +56,43 @@ export default function OrderTableToolbar({
         setOrderStatus(null);
       }
     }
-  }, [selected])
+  }, [selected]);
+
+  const handleChange = (e) => {
+    setFilterType(e.target.value);
+  }
 
   const renderFilter = (
-    filterName ?
-      <OutlinedInput
-        value={filterName}
-        onChange={onFilterName}
-        placeholder={placeholder || t('def-filter-placeholder')}
-        startAdornment={
-          <InputAdornment position="start">
-            <Iconify
-              icon="eva:search-fill"
-              sx={{ color: 'text.disabled', width: 20, height: 20 }}
-            />
-          </InputAdornment>
-        }
-      />
-      : <Box />
+    <>
+      <Stack direction="row" alignItems="center" spacing={2}>
+        <Box width={200}>
+          <Select
+            fullWidth
+            id="order-status-filter"
+            value={filterType || ''}
+            onChange={handleChange}
+          >
+            <MenuItem value="username">{t('filter.username')}</MenuItem>
+            <MenuItem value="orderCode">{t('filter.orderCode')}</MenuItem>
+          </Select>
+        </Box>
+        <OutlinedInput
+          value={filterName}
+          onChange={onFilterName}
+          placeholder={placeholder || t(`filter.placeholder.${filterType}`)}
+          startAdornment={
+            <InputAdornment position="start">
+              <Iconify
+                icon="eva:search-fill"
+                sx={{ color: 'text.disabled', width: 20, height: 20 }}
+              />
+            </InputAdornment>
+          }
+        />
+      </Stack>
+      <OrderFilter manage state={statusFilter} setState={setStatusFilter} />
+    </>
   )
-
-  if (numSelected === 0) {
-    return <Box />;
-  }
 
   return (
     <Toolbar
@@ -146,4 +168,8 @@ OrderTableToolbar.propTypes = {
   handleBulkActionRefuse: PropTypes.func,
   handleBulkActionDelivery: PropTypes.func,
   handleBulkActionDone: PropTypes.func,
+  setFilterType: PropTypes.func,
+  filterType: PropTypes.oneOf(['username', 'orderCode']),
+  setStatusFilter: PropTypes.func,
+  statusFilter: PropTypes.object,
 };

@@ -26,7 +26,8 @@ export default function CustomTableRowCell({
   handleOpenMenu,
   handleRowClick,
   disabled,
-  noSelect
+  noSelect,
+  noMoreOptions,
 }) {
   return (
     <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
@@ -148,7 +149,7 @@ export default function CustomTableRowCell({
         })
       }
 
-      {!disabled && <TableCell align="right">
+      {(!disabled && !noMoreOptions) && <TableCell align="right">
         <IconButton onClick={handleOpenMenu}>
           <Iconify icon="eva:more-vertical-fill" />
         </IconButton>
@@ -165,4 +166,5 @@ CustomTableRowCell.propTypes = {
   handleRowClick: PropTypes.func,
   disabled: PropTypes.bool,
   noSelect: PropTypes.bool,
+  noMoreOptions: PropTypes.bool,
 };

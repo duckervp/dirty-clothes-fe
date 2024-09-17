@@ -56,6 +56,8 @@ export default function OrderTableRow({
     handleCloseMenu();
   };
 
+  const isFinalStatus = [ORDER_STATUS.CANCELLED, ORDER_STATUS.REFUSED, ORDER_STATUS.DONE].includes(orderStatus);
+
   return (
     <>
       <CustomTableRowCell
@@ -65,9 +67,10 @@ export default function OrderTableRow({
         handleOpenMenu={handleOpenMenu}
         handleRowClick={handleRowClick}
         disabled={disabled}
+        noMoreOptions={isFinalStatus}
       />
 
-      {![ORDER_STATUS.CANCELLED, ORDER_STATUS.REFUSED, ORDER_STATUS.DONE].includes(orderStatus) && <Popover
+      {!isFinalStatus && <Popover
         open={!!open}
         anchorEl={open}
         onClose={handleCloseMenu}

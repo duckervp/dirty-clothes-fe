@@ -14,6 +14,7 @@
     "created-at": "Created Date"
   },
   "status-option": {
+    "ALL": "All Status",
     "ORDER": "ORDER",
     "REFUSED": "REFUSED",
     "ACCEPTED": "ACCEPTED",
@@ -28,7 +29,15 @@
     "tooltip-delivery": "Delivery",
     "tooltip-done": "Done",
     "tooltip-refuse": "Refuse",
-    "tooltip-filter-list": "Filter list"
+    "tooltip-filter-list": "Filter list",
+    "filter": {
+      "username": "User Name",
+      "orderCode": "Order Code",
+      "placeholder": {
+        "username": "Find by user name...",
+        "orderCode": "Find by order code..."
+      }
+    }
   },
   "table-row-option": {
     "btn-accept": "Accept",

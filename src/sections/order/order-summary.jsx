@@ -136,7 +136,7 @@ export default function OrderSummary({
   }
 
   if (isLoading || isLoading2 || isCanceling) {
-    return <Loading fullScreen/>;
+    return <Loading fullScreen />;
   }
 
   return (
@@ -165,9 +165,12 @@ export default function OrderSummary({
             <Typography variant="subtitle1" sx={{ mb: 1 }}>
               {t('user-account')}
             </Typography>
-            <Typography variant="subtitle1" sx={{ fontWeight: 300 }}>
-              {orderDetail?.user?.name || "test"}
-            </Typography>
+            {
+              orderDetail?.user &&
+              <Typography variant="subtitle1" sx={{ fontWeight: 300 }}>
+                {orderDetail?.user?.name}
+              </Typography>
+            }
           </Box>
         </>
       }

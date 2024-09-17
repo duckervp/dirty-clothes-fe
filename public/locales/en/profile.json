@@ -22,6 +22,11 @@
   "order": {
     "title": "ORDER",
     "no-order-message": "You have no order yet.",
+    "filter-no-data": {
+      "title": "Not found",
+      "content": "No results found for\u00a0<strong>\"{{query}}\"</strong> order. <br /> Try clearing all filters or try a different filter instead.",
+      "admin-content": "No order results found. <br /> Try clearing all filters or try a different filter instead."
+    },
     "order-no": "Order No",
     "status": "Status",
     "total": "Total",
@@ -47,6 +52,7 @@
       "btn-done": "Done"
     },
     "status-option": {
+      "ALL": "ALL STATUS",
       "ORDER": "ORDER",
       "REFUSED": "REFUSED",
       "ACCEPTED": "ACCEPTED",

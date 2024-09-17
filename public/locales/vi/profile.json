@@ -22,6 +22,11 @@
   "order": {
     "title": "ĐƠN HÀNG ĐÃ ĐẶT",
     "no-order-message": "Bạn chưa đặt đơn hàng nào.",
+    "filter-no-data": {
+      "title": "Không tìm thấy",
+      "content": "Không tìm thấy đơn hàng\u00a0<strong>\"{{query}}\"</strong> nào. <br /> Hãy thay đổi bộ lọc trạng thái đơn hàng khác.",
+      "admin-content": "Không tìm thấy đơn hàng nào. <br /> Hãy thay đổi bộ lọc tìm kiếm hoặc chọn trạng thái đơn hàng khác."
+    },
     "order-no": "Mã đơn hàng",
     "status": "Trạng thái",
     "total": "Tổng",
@@ -47,6 +52,7 @@
       "btn-done": "Hoàn Thành"
     },
     "status-option": {
+      "ALL": "Tất cả trạng thái",
       "ORDER": "Chờ xác nhận",
       "REFUSED": "Ngươi bán từ chối",
       "ACCEPTED": "Chờ lấy hàng",

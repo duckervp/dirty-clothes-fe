@@ -16,7 +16,7 @@ export default function TableRowOption({
 }) {
   const { t } = useTranslation('table', { keyPrefix: 'table-row' });
 
-  return (
+  return !!open && (
     <Popover
       open={!!open}
       anchorEl={open}

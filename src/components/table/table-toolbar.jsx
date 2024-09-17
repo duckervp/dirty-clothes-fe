@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-import Box from '@mui/material/Box';
+// import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -16,26 +16,24 @@ import Iconify from 'src/components/iconify';
 export default function TableToolbar({ numSelected, filterName, onFilterName, placeholder, handleDeleteMultipleItems }) {
   const { t } = useTranslation('table', { keyPrefix: 'table-toolbar' });
   const renderFilter = (
-    filterName ?
-      <OutlinedInput
-        value={filterName}
-        onChange={onFilterName}
-        placeholder={placeholder || t('def-filter-placeholder')}
-        startAdornment={
-          <InputAdornment position="start">
-            <Iconify
-              icon="eva:search-fill"
-              sx={{ color: 'text.disabled', width: 20, height: 20 }}
-            />
-          </InputAdornment>
-        }
-      />
-      : <Box />
+    <OutlinedInput
+      value={filterName}
+      onChange={onFilterName}
+      placeholder={placeholder || t('def-filter-placeholder')}
+      startAdornment={
+        <InputAdornment position="start">
+          <Iconify
+            icon="eva:search-fill"
+            sx={{ color: 'text.disabled', width: 20, height: 20 }}
+          />
+        </InputAdornment>
+      }
+    />
   )
 
-  if (numSelected === 0) {
-    return <Box />;
-  }
+  // if (numSelected === 0) {
+  //   return <Box />;
+  // }
 
   return (
     <Toolbar

@@ -71,6 +71,7 @@ export const PRICE_OPTIONS = [
   },
 ];
 export const ORDER_STATUS = {
+  ALL: "ALL",
   ORDER: "ORDER",
   REFUSED: "REFUSED",
   ACCEPTED: "ACCEPTED",

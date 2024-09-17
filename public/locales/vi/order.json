@@ -14,6 +14,7 @@
     "created-at": "Ngày đặt"
   },
   "status-option": {
+    "ALL": "Tất cả trạng thái",
     "ORDER": "Đã đặt hàng",
     "REFUSED": "Đã từ chối",
     "ACCEPTED": "Đã xác nhận",
@@ -28,7 +29,15 @@
     "tooltip-delivery": "Giao Hàng",
     "tooltip-done": "Hoàn Thành",
     "tooltip-refuse": "Từ Chối",
-    "tooltip-filter-list": "Bộ lọc"
+    "tooltip-filter-list": "Bộ lọc",
+    "filter": {
+      "username": "Người Đặt Hàng",
+      "orderCode": "Mã Đơn Hàng",
+      "placeholder": {
+        "username": "Tìm theo tên người đặt...",
+        "orderCode": "Tìm theo mã đơn hàng..."
+      }
+    }
   },
   "table-row-option": {
     "btn-accept": "Xác Nhận",
