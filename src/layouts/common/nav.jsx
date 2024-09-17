@@ -9,8 +9,8 @@ import { alpha } from '@mui/material/styles';
 import ListItemButton from '@mui/material/ListItemButton';
 
 import { usePathname } from 'src/routes/hooks';
-import { PROFILE } from 'src/routes/route-config';
 import { RouterLink } from 'src/routes/components';
+import { ORDER, ADDRESS, PROFILE } from 'src/routes/route-config';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
@@ -53,7 +53,7 @@ export default function Nav({ openNav, onCloseNav, navConfig, namespace, keyPref
         },
       }}
     >
-      {pathname.includes(PROFILE) ?
+      {(pathname.includes(PROFILE) || pathname.includes(ORDER) || pathname.includes(ADDRESS)) ?
         <Box sx={{ pt: 10 }} />
         :
         <Logo sx={{ mt: { xs: 1, sm: 2 }, fontSize: { md: "20px", sm: "16px" }, display: "flex", textAlign: "center" }} />
