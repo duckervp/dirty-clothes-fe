@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-// import Box from '@mui/material/Box';
+import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -13,9 +13,9 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function TableToolbar({ numSelected, filterName, onFilterName, placeholder, handleDeleteMultipleItems }) {
+export default function TableToolbar({ numSelected, filterName, onFilterName, placeholder, handleDeleteMultipleItems, disableFilter }) {
   const { t } = useTranslation('table', { keyPrefix: 'table-toolbar' });
-  const renderFilter = (
+  const renderFilter = disableFilter ? <Box /> : (
     <OutlinedInput
       value={filterName}
       onChange={onFilterName}
@@ -31,15 +31,11 @@ export default function TableToolbar({ numSelected, filterName, onFilterName, pl
     />
   )
 
-  // if (numSelected === 0) {
-  //   return <Box />;
-  // }
-
   return (
     <Toolbar
       sx={{
-        height: 96,
-        display: 'flex',
+        height: disableFilter ? 0 : 96,
+        display: disableFilter && numSelected === 0 ? 'none' : 'flex',
         justifyContent: 'space-between',
         p: (theme) => theme.spacing(0, 1, 0, 3),
         ...(numSelected > 0 && {
@@ -77,4 +73,5 @@ TableToolbar.propTypes = {
   onFilterName: PropTypes.func,
   placeholder: PropTypes.string,
   handleDeleteMultipleItems: PropTypes.func,
+  disableFilter: PropTypes.bool,
 };

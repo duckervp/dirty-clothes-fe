@@ -9,6 +9,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'PATCH',
         body: { ...payload },
       }),
+      invalidatesTags: ['User'],
     }),
     updateAvatar: builder.mutation({
       query: (payload) => ({
@@ -16,8 +17,8 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'PATCH',
         body: { ...payload },
       }),
+      invalidatesTags: ['User'],
     }),
-
     getAllUsers: builder.query({
       query: (params) => ({
         url: API.user,

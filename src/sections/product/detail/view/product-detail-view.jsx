@@ -127,11 +127,11 @@ export default function ProductDetailView() {
       if (!isEditScreen) {
         const { data } = await createProduct(payload).unwrap();
         showSuccessMessage(data);
-        router.push(getUrl(PRODUCT_MANAGEMENT.INDEX));
       } else {
         const { data } = await updateProduct({ id, payload }).unwrap();
         showSuccessMessage(data);
       }
+      router.push(getUrl(PRODUCT_MANAGEMENT.INDEX));
     } catch (error) {
       handleError(error);
     }

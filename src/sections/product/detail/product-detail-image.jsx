@@ -389,6 +389,7 @@ export default function ProductDetailImage({ productDetailImages, setProductDeta
           filterName={filterName}
           onFilterName={handleFilterByName}
           handleDeleteMultipleItems={handleDeleteMultipleItems}
+          disableFilter
         />
 
         <Scrollbar>

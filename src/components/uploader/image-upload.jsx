@@ -169,6 +169,7 @@ const ImageUploader = ({ imageUrl, setImageUrl, removable, disabled }) => {
         id="upload"
         type="file"
         onChange={handleOnChange}
+        disabled={disabled}
       />
     </Stack>
   );

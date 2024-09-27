@@ -49,8 +49,12 @@ const AvatarUpload = ({ imageUrl, setImageUrl, name }) => {
   };
 
   const handleRemoveClick = (event) => {
-    if (image) {
-      event.preventDefault();
+    event.preventDefault();
+    if (canPerformSave) {
+      setImage(imageUrl);
+      setCanPerformSave(false);
+      setRawImage(null);
+    } else if (image) {
       setImage(null);
       setCanPerformSave(true);
     }
@@ -68,6 +72,7 @@ const AvatarUpload = ({ imageUrl, setImageUrl, name }) => {
         const { url } = data;
         setImageUrl(url);
         setCanPerformSave(false);
+        setRawImage(null);
       } catch (error) {
         showErrorMessage(error);
       }
@@ -91,7 +96,7 @@ const AvatarUpload = ({ imageUrl, setImageUrl, name }) => {
       <Box>
         <Tooltip title={t('upload')}>
           <IconButton
-            sx={{ position: 'absolute', top: -30, right: 20, background: 'white' }}
+            sx={canPerformSave ? { display: "none" } : { position: 'absolute', top: -30, right: 20, background: 'white' }}
             onClick={handleUploadButtonClick}
           >
             <FileUploadIcon sx={{ cursor: 'pointer', fontSize: '13px' }} />
@@ -108,20 +113,24 @@ const AvatarUpload = ({ imageUrl, setImageUrl, name }) => {
         onChange={handleOnChange}
       />
 
-      <Tooltip title={t('remove')}>
+      {(imageUrl || canPerformSave) && <Tooltip title={canPerformSave ? t('cancel') : t('remove')}>
         <IconButton
-          sx={{ position: 'absolute', top: -15, right: -8, background: 'white' }}
+          sx={
+            canPerformSave
+              ? { position: 'absolute', top: -15, right: -8, background: 'white', color: "red", border: "1px solid red" }
+              : { position: 'absolute', top: -15, right: -8, background: 'white' }
+          }
           onClick={handleRemoveClick}
         >
           <CloseIcon sx={{ cursor: 'pointer', fontSize: '13px' }} />
         </IconButton>
-      </Tooltip>
+      </Tooltip>}
 
       <Tooltip title={t('save')}>
         <IconButton
           sx={
             canPerformSave
-              ? { position: 'absolute', top: 10, right: -28, background: 'white' }
+              ? { position: 'absolute', top: 10, right: -28.5, background: 'white', color: "green", border: "1px solid green" }
               : { display: 'none' }
           }
           onClick={handleSaveClick}

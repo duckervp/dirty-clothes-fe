@@ -79,3 +79,5 @@ export const ORDER_STATUS = {
   DONE: "DONE",
   CANCELLED: "CANCELLED"
 }
+
+export const SHOW_SUCCESS_MESSAGE = false;

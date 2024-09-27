@@ -1,6 +1,8 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { SHOW_SUCCESS_MESSAGE } from "src/config";
+
 export const handleError = (err, defaultMessage) => {
   console.log(err)
   const { status, data } = err
@@ -18,10 +20,12 @@ export const handleError = (err, defaultMessage) => {
 }
 
 export const showSuccessMessage = (message) => {
-  toast.success(message, {
-    position: "top-right",
-    autoClose: 500
-  });
+  if (SHOW_SUCCESS_MESSAGE) {
+    toast.success(message, {
+      position: "top-right",
+      autoClose: 500
+    });
+  }
 }
 
 export const showErrorMessage = (message) => {

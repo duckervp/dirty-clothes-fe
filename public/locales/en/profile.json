@@ -84,7 +84,8 @@
     "tooltip": {
       "upload": "Upload new avatar",
       "remove": "Remove avatar",
-      "save": "Save"
+      "save": "Save",
+      "cancel": "Cancel"
     }
   },
   "image": {

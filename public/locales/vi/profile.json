@@ -91,7 +91,8 @@
     "tooltip": {
       "upload": "Tải hình ảnh mới",
       "remove": "Loại bỏ hình ảnh",
-      "save": "Lưu"
+      "save": "Lưu",
+      "cancel": "Huỷ"
     }
   }
 }
