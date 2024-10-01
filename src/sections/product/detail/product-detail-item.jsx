@@ -416,8 +416,8 @@ export default function ProductDetailItem({ productDetailItems, setProductDetail
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
               <CustomTableHead
-                order={order}
-                orderBy={orderBy}
+                // order={order}
+                // orderBy={orderBy}
                 rowCount={items?.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}

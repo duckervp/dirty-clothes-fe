@@ -35,7 +35,7 @@ export const TARGET_OPTIONS = [
 export const PRODUCT_STATUS_OPTIONS = [
   { value: 'NEW', label: 'New' },
   { value: 'SALE', label: 'On Sale' },
-  { value: null, label: 'Normal' },
+  { value: 'NORMAL', label: 'Normal' }
 ];
 
 export const SIZE_OPTIONS = [

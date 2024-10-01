@@ -135,6 +135,7 @@ export default function ProductDetailView() {
       });
       const payload = {
         ...state,
+        status: state.status === 'NORMAL' ? null : state.status,
         description,
         categoryIds,
         productDetails,
@@ -271,7 +272,7 @@ export default function ProductDetailView() {
         <Typography variant="subtitle2">
           <span style={{ color: 'red' }}>*</span> {t('form.status')}
         </Typography>
-        <Select id="select-target" value={state.status} onChange={handleStateChange} name='status' fullWidth disabled={isDetailScreen}>
+        <Select id="select-status" value={state.status === null ? 'NORMAL' : state.status} onChange={handleStateChange} name='status' fullWidth disabled={isDetailScreen}>
           {PRODUCT_STATUS_OPTIONS.map(item => <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>)}
         </Select>
       </Box>
