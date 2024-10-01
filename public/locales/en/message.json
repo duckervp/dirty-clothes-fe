@@ -13,6 +13,9 @@
     },
     "order": {
       "create-success": "Created Order successfully!"
+    },
+    "product": {
+      "lack-item-color-image": "Need to add image corresponds to each product item color!" 
     }
   },
   "code": {

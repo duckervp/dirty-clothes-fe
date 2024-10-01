@@ -58,7 +58,7 @@ export default function CheckoutItem({ item, divider, cart, handleQuantityChange
             />}
             <Typography variant="caption">{fViCurrency(item?.price)}</Typography>
             {
-              viewMoreQuantity &&
+              viewMoreQuantity > 0 &&
               <Typography
                 variant="caption"
                 sx={

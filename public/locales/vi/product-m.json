@@ -8,8 +8,8 @@
   "table-column": {
     "name": "Tên",
     "price": "Giá",
-    "sale": "Giảm Giá",
-    "status": "Trạng Thái",
+    "sale": "Giảm giá",
+    "status": "Trạng thái",
     "created-at": "Ngày được tạo"
   },
   "status": {

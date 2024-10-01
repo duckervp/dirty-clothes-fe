@@ -13,6 +13,9 @@
     },
     "order": {
       "create-success": "Đặt hàng thành công!"
+    },
+    "product": {
+      "lack-item-color-image": "Cần thêm ảnh tương ứng với mỗi màu sắc của sản phẩm!" 
     }
   },
   "code": {

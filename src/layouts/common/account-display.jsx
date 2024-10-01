@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 
 import { selectCurrentUser } from 'src/app/api/auth/authSlice';
 
+// ----------------------------------------------------------------------
 
 export default function AccountDisplay() {
   const user = useSelector(selectCurrentUser);

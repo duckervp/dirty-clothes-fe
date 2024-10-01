@@ -408,7 +408,7 @@ export default function PaymentView() {
               ) : (
                 cartItems?.map((item, index) => (
                   <CheckoutItem
-                    key={item?.productDetailId}
+                    key={index}
                     item={item}
                     divider={index < cartItems.length - 1}
                   />

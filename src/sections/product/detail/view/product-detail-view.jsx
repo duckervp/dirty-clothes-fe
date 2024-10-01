@@ -14,8 +14,9 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { useRouter } from 'src/routes/hooks';
 import { getUrl, PRODUCT_MANAGEMENT } from 'src/routes/route-config';
 
+import useNotify from 'src/hooks/use-notify';
+
 import { fDateTime } from 'src/utils/format-time';
-import { handleError, showSuccessMessage } from 'src/utils/notify';
 
 import { SIZE_OPTIONS, TARGET_OPTIONS, PRODUCT_STATUS_OPTIONS } from 'src/config';
 import { useUpdateProductMutation, useCreateProductMutation, useDeleteProductMutation, useGetProductDetailMutation } from 'src/app/api/product/productApiSlice';
@@ -38,6 +39,8 @@ export default function ProductDetailView() {
   const location = useLocation();
 
   const { id } = useParams();
+
+  const { showErrorMsg, showSuccessMsg, showCustomErrorMsg } = useNotify();
 
   const isEditScreen = location.pathname.includes('edit');
 
@@ -104,6 +107,20 @@ export default function ProductDetailView() {
   const handleClick = async (e) => {
     if (!validate()) return;
 
+    const itemColorIds = productDetailItems.map(item => item.colorId);
+    const imageColorIds = productDetailImages.map(item => item.colorId);
+    let isImageItemsValid = true;
+    itemColorIds.forEach(colorId => {
+      if (!imageColorIds.includes(colorId)) {
+        isImageItemsValid = false;
+      }
+    });
+
+    if (!isImageItemsValid) {
+      showCustomErrorMsg('custom.product.lack-item-color-image');
+      return;
+    }
+
     try {
       const productDetails = [];
       productDetailItems.forEach(item => {
@@ -126,14 +143,14 @@ export default function ProductDetailView() {
 
       if (!isEditScreen) {
         const { data } = await createProduct(payload).unwrap();
-        showSuccessMessage(data);
+        showSuccessMsg(data);
       } else {
         const { data } = await updateProduct({ id, payload }).unwrap();
-        showSuccessMessage(data);
+        showSuccessMsg(data);
       }
       router.push(getUrl(PRODUCT_MANAGEMENT.INDEX));
     } catch (error) {
-      handleError(error);
+      showErrorMsg(error);
     }
   };
 
@@ -185,10 +202,10 @@ export default function ProductDetailView() {
   const handleDelete = async () => {
     try {
       const { data } = await deleteProduct(id).unwrap();
-      showSuccessMessage(data);
+      showSuccessMsg(data);
       router.push(getUrl(PRODUCT_MANAGEMENT.INDEX));
     } catch (error) {
-      handleError(error);
+      showErrorMsg(error);
     }
   }
 
@@ -336,13 +353,26 @@ export default function ProductDetailView() {
           </Box>
 
           <Stack spacing={3} sx={{ mt: 3, px: 5, }}>
-            <ProductDetailCategory categories={productDetail.categories} disabled={isDetailScreen} setSelectedCategories={setCategoryIds} />
+            <ProductDetailCategory
+              categories={productDetail.categories}
+              disabled={isDetailScreen}
+              setSelectedCategories={setCategoryIds}
+            />
           </Stack>
           <Stack spacing={3} sx={{ mt: 3, px: 5, pt: 2, pb: 5, background: "#E7FBE6" }}>
-            <ProductDetailItem productDetailItems={productDetailItems} setProductDetailItems={setProductDetailItems} disabled={isDetailScreen} />
+            <ProductDetailItem
+              productDetailItems={productDetailItems}
+              setProductDetailItems={setProductDetailItems}
+              disabled={isDetailScreen}
+            />
           </Stack>
           <Stack spacing={3} sx={{ mt: 3, px: 5, pt: 2, pb: 5, background: "#E7FBE6" }}>
-            <ProductDetailImage productDetailImages={productDetailImages} setProductDetailImages={setProductDetailImages} disabled={isDetailScreen} />
+            <ProductDetailImage
+              productDetailImages={productDetailImages}
+              setProductDetailImages={setProductDetailImages}
+              disabled={isDetailScreen}
+              productDetailItems={productDetailItems}
+            />
           </Stack>
           <Stack spacing={3} sx={{ mt: 3, px: 5, }}>
             <Editor label={t('form.description')} data={state.description} setData={setDescription} disabled={isDetailScreen} />

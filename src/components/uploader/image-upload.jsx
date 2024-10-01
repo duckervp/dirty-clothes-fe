@@ -19,7 +19,7 @@ import Loading from '../auth/Loading';
 
 //------------------------------------------------------------
 
-const ImageUploader = ({ imageUrl, setImageUrl, removable, disabled }) => {
+const ImageUploader = ({ imageUrl, setImageUrl, removable, disabled, saveable }) => {
   const { t } = useTranslation('profile', { keyPrefix: 'image.tooltip' });
   const [image, _setImage] = useState(null);
   const [rawImage, setRawImage] = useState();
@@ -58,6 +58,10 @@ const ImageUploader = ({ imageUrl, setImageUrl, removable, disabled }) => {
       setCanPerformSave(true);
       setIsDoneUploading(false);
     }
+
+    if (!saveable) {
+      handleSaveClick(newImage);
+    }
   };
 
   const handleRemoveClick = (event) => {
@@ -68,11 +72,15 @@ const ImageUploader = ({ imageUrl, setImageUrl, removable, disabled }) => {
     }
   };
 
-  const handleSaveClick = async () => {
+  const handleSaveClick = async (rawImageFile) => {
     try {
       setIsUploading(true);
       const formData = new FormData();
-      formData.append('file', rawImage);
+      if (rawImageFile) {
+        formData.append('file', rawImageFile);
+      } else {
+        formData.append('file', rawImage);
+      }
       const { data } = await uploadFile({ formData }).unwrap();
       const { url } = data;
       setImageUrl(url);
@@ -148,7 +156,7 @@ const ImageUploader = ({ imageUrl, setImageUrl, removable, disabled }) => {
           </IconButton>
         </Tooltip>}
 
-        <Tooltip title={t('save')}>
+        {saveable && <Tooltip title={t('save')}>
           <IconButton
             sx={
               canPerformSave
@@ -159,7 +167,7 @@ const ImageUploader = ({ imageUrl, setImageUrl, removable, disabled }) => {
           >
             <CheckIcon sx={{ cursor: 'pointer', fontSize: '13px' }} />
           </IconButton>
-        </Tooltip>
+        </Tooltip>}
       </Stack>}
 
       <input
@@ -180,6 +188,7 @@ ImageUploader.propTypes = {
   setImageUrl: PropTypes.func,
   removable: PropTypes.bool,
   disabled: PropTypes.bool,
+  saveable: PropTypes.bool,
 };
 
 export default ImageUploader;

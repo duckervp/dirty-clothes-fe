@@ -154,7 +154,7 @@ DetailForm.propTypes = {
   closePopup: PropTypes.func,
 }
 
-export default function ProductDetailImage({ productDetailImages, setProductDetailImages, disabled }) {
+export default function ProductDetailImage({ productDetailImages, setProductDetailImages, disabled, productDetailItems }) {
   const { t } = useTranslation('product-m', { keyPrefix: 'product-detail.product-image' });
 
   const [deleteMultipleItems, setDeleteMultipleItems] = useState(false);
@@ -166,8 +166,9 @@ export default function ProductDetailImage({ productDetailImages, setProductDeta
   const [colors, setColors] = useState([]);
 
   useEffect(() => {
-    setColors(colorData?.data?.content);
-  }, [colorData]);
+    const allowedColorIds = productDetailItems.map(item => item.colorId);
+    setColors(colorData?.data?.content.filter(item => allowedColorIds.includes(item.id)));
+  }, [colorData, productDetailItems]);
 
   const getColor = (id) => {
     const filteredColors = colors?.filter(color => color.id === id) || [];
@@ -471,4 +472,5 @@ ProductDetailImage.propTypes = {
   productDetailImages: PropTypes.array,
   setProductDetailImages: PropTypes.func,
   disabled: PropTypes.bool,
+  productDetailItems: PropTypes.array,
 }

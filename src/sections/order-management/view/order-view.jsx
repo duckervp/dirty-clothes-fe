@@ -252,8 +252,7 @@ export default function OrderView() {
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'code', label: t('table-column.code') },
-                  { id: 'user', label: t('table-column.user') },
-                  { id: 'totalItems', label: t('table-column.total-items'), align: "center" },
+                  { id: 'userName', label: t('table-column.user') },
                   { id: 'total', label: t('table-column.total') },
                   { id: 'status', label: t('table-column.status') },
                   { id: 'createdAt', label: t('table-column.created-at'), align: "center" },
@@ -267,8 +266,7 @@ export default function OrderView() {
                       key={row.id}
                       cells={[
                         { value: row.code, type: "code" },
-                        { value: row.user.name },
-                        { value: row.totalItems, align: "center" },
+                        { value: row.userName },
                         { value: fViCurrency(row.total) },
                         { value: t(`status-option.${row.status}`) },
                         { value: row.createdAt, type: "datetime", align: "center" },

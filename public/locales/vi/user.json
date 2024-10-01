@@ -13,8 +13,8 @@
     "created-at": "Ngày được tạo"
   },
   "role": {
-    "USER": "Người dùng",
-    "ADMIN": "Quản lý"
+    "USER": "USER",
+    "ADMIN": "ADMIN"
   },
   "user-detail": {
     "title": {

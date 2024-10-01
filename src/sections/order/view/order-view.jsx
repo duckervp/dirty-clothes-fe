@@ -145,7 +145,7 @@ function OrderItemStack({ orderItems, handleOrderClick }) {
             <CheckoutItem
               item={item?.firstItem}
               divider={false}
-              viewMoreQuantity={item.totalItemQuantity - item.firstItem.quantity || 0}
+              viewMoreQuantity={item.firstItem ? item.totalItemQuantity - item.firstItem.quantity : 0}
             />
             <Stack direction="row" justifyContent="space-between" sx={{ px: 1 }}>
               <Stack direction="row" spacing={1} justifyContent="flex-end">
